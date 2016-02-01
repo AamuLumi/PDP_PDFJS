@@ -9,6 +9,7 @@ let express = require('express'),
 
 let path = require("path");
 let Generator = require('./generator');
+let Translator = require('./translator');
 
 // Express server configuration
 app.use(bodyParser.urlencoded({
