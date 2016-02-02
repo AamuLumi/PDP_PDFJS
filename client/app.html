@@ -5,20 +5,24 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.7/css/bootstrap-material-design.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.7/css/ripples.min.css">
+  <link rel="stylesheet" href="styles/css/bootstrap-material-design.min.css">
+  <link rel="stylesheet" href="styles/css/ripples.min.css">
+
+  <script src="styles/js/material.js" type="text/javascript"></script>
+  <script src="styles/js/ripples.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    window.addEventListener("load", function(){
+      $.material.init();
+    }, false);
+  </script>
 </head>
 
 <body>
+  {{> navbar}}
   <div class="container">
-    <div class="row">
-      <center>
-        <h1>PDFJS</h1>
-      </center>
+    <div class="col-md-6 col-md-offset-3">
+      {{> form ""}}
+      <br /> {{> generatedLink ""}}
     </div>
-
-    {{> form ""}}
-    <br />
-    {{> generatedLink ""}}
   </div>
 </body>
