@@ -1,6 +1,13 @@
 <template name="form">
-  <form class="generatePDF">
-    {{#each fields}} {{> formField}} {{/each}}
-    <input class="generatePDF" type="submit" value="Generate PDF">
-  </form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="well bs-component">
+        <form class="generatePDF form-horizontal">
+          {{#each fields}} {{> formField}} {{/each}}
+          <input class="generatePDF btn btn-primary" type="submit" value="Generate PDF">
+        </form>
+      </div>
+    </div>
+  </div>
+
 </template>
