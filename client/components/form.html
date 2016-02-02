@@ -1,0 +1,6 @@
+<template name="form">
+  <form class="generatePDF">
+    {{#each fields}} {{> formField}} {{/each}}
+    <input class="generatePDF" type="submit" value="Generate PDF">
+  </form>
+</template>

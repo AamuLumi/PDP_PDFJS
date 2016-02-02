@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports.translate = function translate(data){
+Meteor.myFunctions.translate_XML = function (data){
   console.log("XML File detected. Translation begins.");
 
   return undefined;

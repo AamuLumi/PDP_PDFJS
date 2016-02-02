@@ -1,15 +1,14 @@
-'use strict';
+let PDFKit = Meteor.npmRequire('pdfkit');
+let fs = Meteor.npmRequire('fs');
+let path = Meteor.npmRequire('path');
 
-let PDFKit = require('pdfkit');
-let fs = require('fs');
-let path = require('path');
-
-module.exports.generate = function generate(publicFolder, textArray){
+Meteor.myFunctions.generatePDF = function (textArray){
   if (!textArray) return undefined;
 
   let doc = new PDFKit();
   let x = 100, y = 100;
   let filename = "pdf/" + Date.now() + ".pdf";
+  let publicFolder = process.env.PWD + "/public/";
 
   console.log("Create file " + publicFolder + filename);
 
