@@ -1,12 +1,13 @@
 <template name="form">
   <div class="row">
     <div class="col-md-6">
-      <div class="well bs-component">
-        <form class="generatePDF form-horizontal">
-          {{#each fields}} {{> formField}} {{/each}}
-          <input class="generatePDF btn btn-primary" type="submit" value="Generate PDF">
+        <form class="generatePDF well bs-component form-horizontal">
+          <fieldset>
+            <legend>Données du PDF</legend>
+            {{#each fields}} {{> formField}} {{/each}}
+            <button class="generatePDF btn btn-primary" type="submit">Generate PDF</button>
+          </fieldset>
         </form>
-      </div>
     </div>
   </div>
 
