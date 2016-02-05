@@ -8,7 +8,7 @@ Meteor.myFunctions.translate = function (data, filename){
     translator = Meteor.myFunctions.translate_XML;
 
   if (translator)
-    return translator(data);
+    return translator.translate(data);
   else
     return undefined;
 }

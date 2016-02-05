@@ -1,5 +1,7 @@
 {
   "console-stamp": "0.2.0",
   "datejs": "0.0.2",
-  "pdfkit": "0.7.2"
+  "pdfkit": "0.7.2",
+  "simple-xml2json": "1.2.3",
+  "xsd-schema-validator":"0.3.1"
 }

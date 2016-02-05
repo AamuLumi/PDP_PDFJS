@@ -7,8 +7,10 @@ Meteor.myFunctions.generatePDF = function (textArray){
 
   let doc = new PDFKit();
   let x = 100, y = 100;
-  let filename = "pdf/" + Date.now() + ".pdf";
-  let publicFolder = process.env.PWD + "/public/";
+  var dir = process.cwd() + '/.files/'; 
+  
+  let filename = Date.now() + ".pdf";
+  let publicFolder = dir;
 
   console.log("Create file " + publicFolder + filename);
 
@@ -21,6 +23,6 @@ Meteor.myFunctions.generatePDF = function (textArray){
   }
 
   doc.end();
-
-  return filename;
+  
+  return "pdf/" + filename;
 }
