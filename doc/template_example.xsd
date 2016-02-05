@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 <!--********************** definition of simple types ***********************-->
@@ -74,7 +72,7 @@
 
 <xs:complexType name="field">
     <xs:attribute name="type" type="field_type"/>
-	  <xs:attributeGroup ref="fontAttributes" use="required"/>
+	  <xs:attributeGroup ref="fontAttributes"/>
  </xs:complexType>
 
 

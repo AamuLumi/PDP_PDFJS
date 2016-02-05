@@ -1,0 +1,90 @@
+ {
+     "document": {
+         "fontsize": 16,
+         "font": "arial",
+         "fontcolor": "black",
+         "table": {
+             "fontsize": 16,
+             "font": "helvetica",
+             "fontcolor": "black",
+             "th": {
+                 "fontsize": 16,
+                 "font": "courrier",
+                 "fontcolor": "yellow",
+                 "tr": {
+                     "fontsize": 16,
+                     "font": "courrier",
+                     "fontcolor": "red",
+                     "text": {
+                         "fontsize": 16,
+                         "font": "helvetica",
+                         "fontcolor": "black"
+                     },
+                     "field": {
+                         "type": "text",
+                         "fontsize": 16,
+                         "font": "helvetica",
+                         "fontcolor": "green"
+                     }
+                 },
+                 "text": {
+                     "fontsize": 16,
+                     "font": "arial",
+                     "fontcolor": "green"
+                 },
+                 "field": {
+                     "type": "text",
+                     "fontsize": 16,
+                     "font": "courrier",
+                     "fontcolor": "green"
+                 }
+             },
+             "td": {
+                 "fontsize": 16,
+                 "font": "arial",
+                 "fontcolor": "yellow",
+                 "tr": {
+                     "fontsize": 16,
+                     "font": "courrier",
+                     "fontcolor": "green",
+                     "text": {
+                         "fontsize": 16,
+                         "font": "helvetica",
+                         "fontcolor": "yellow"
+                     },
+                     "field": {
+                         "type": "numbers",
+                         "fontsize": 16,
+                         "font": "courrier",
+                         "fontcolor": "black"
+                     }
+                 },
+                 "text": {
+                     "fontsize": 16,
+                     "font": "courrier",
+                     "fontcolor": "green"
+                 },
+                 "field": {
+                     "type": "numbers",
+                     "fontsize": 16,
+                     "font": "helvetica",
+                     "fontcolor": "yellow"
+                 }
+             }
+         },
+         "line": {
+             "type": "horizontal"
+         },
+         "text": {
+             "fontsize": 16,
+             "font": "helvetica",
+             "fontcolor": "black"
+         },
+         "field": {
+             "type": "date",
+             "fontsize": 16,
+             "font": "arial",
+             "fontcolor": "blue"
+         }
+     }
+ }

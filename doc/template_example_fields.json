@@ -1,0 +1,26 @@
+[{
+    "type": "text",
+    "fontsize": 16,
+    "font": "helvetica",
+    "fontcolor": "green"
+}, {
+    "type": "text",
+    "fontsize": 16,
+    "font": "courrier",
+    "fontcolor": "green"
+}, {
+    "type": "numbers",
+    "fontsize": 16,
+    "font": "courrier",
+    "fontcolor": "black"
+}, {
+    "type": "numbers",
+    "fontsize": 16,
+    "font": "helvetica",
+    "fontcolor": "yellow"
+}, {
+    "type": "date",
+    "fontsize": 16,
+    "font": "arial",
+    "fontcolor": "blue"
+}]
