@@ -28,13 +28,12 @@ Template.form.events({
       }
     });
 
-    Meteor.call('PDF.generate', {
-      datas: datas
-    }, (err, res) => {
-      if (err)
-        alert(err);
-      else
-        Session.set('generatedLink', res);
-    });
+    Meteor.call('PDF.generate',
+      datas, (err, res) => {
+        if (err)
+          console.log(err);
+        else
+          Session.set('generatedFile', res);
+      });
   }
 });

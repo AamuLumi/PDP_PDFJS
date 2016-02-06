@@ -1,5 +1,7 @@
 {
   "console-stamp": "0.2.0",
   "datejs": "0.0.2",
-  "pdfkit": "0.7.2"
+  "pdfkit": "0.7.2",
+  "fibers": "1.0.8",
+  "base64-stream": "0.1.3"
 }

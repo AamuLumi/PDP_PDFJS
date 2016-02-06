@@ -23,3 +23,7 @@ meteorhacks:npm
 npm-container
 percolate:momentum
 twbs:bootstrap
+cfs:standard-packages
+cfs:gridfs
+cfs:ejson-file
+iron:router

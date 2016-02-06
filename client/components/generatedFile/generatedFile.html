@@ -1,0 +1,25 @@
+<template name="generatedFile">
+  {{#momentum plugin="fade"}} {{#if file}}
+  <div class="row">
+    <div class="bs-component">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">PDF généré !</h3>
+        </div>
+        <div class="panel-body">
+          {{#if file.isUploaded}}
+          <div>
+            Nom : {{file.name}}
+            <br /> Taille : {{file.size}} octets
+          </div>
+          <a class="generatedPDFLink" name={{file.name}} href={{file.url}}>
+            Ouvrir le PDF
+          </a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/if}} {{/momentum}}
+
+</template>
