@@ -1,0 +1,131 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!--********************** definition of simple types ***********************-->
+
+<!-- attributes -->
+<!-- form : [name of the complex/simple type]_[name of the attribute] -->
+
+<xs:simpleType name="line_type">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="vertical"/>
+    <xs:enumeration value="horizontal"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="field_type">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="date"/>
+    <xs:enumeration value="text"/>
+	<xs:enumeration value="numbers"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_fontColor">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="blue"/>
+    <xs:enumeration value="red"/>
+	<xs:enumeration value="green"/>
+	<xs:enumeration value="black"/>
+	<xs:enumeration value="yellow"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_font">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="arial"/>
+    <xs:enumeration value="helvetica"/>
+	<xs:enumeration value="courrier"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_fontSize">
+  <xs:restriction base="xs:integer">
+      <xs:minInclusive value="8"/>
+      <xs:maxInclusive value="16"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<!-- group of attributes -->
+
+<xs:attributeGroup name="fontAttributes">
+  <xs:attribute name="fontSize" type="all_fontSize" />
+  <xs:attribute name="font" type="all_font"/> 
+  <xs:attribute name="fontColor" type="all_fontColor"/>
+</xs:attributeGroup>
+
+
+<!--********************** definition of complex types ***********************-->
+
+ <xs:complexType name="text">
+  <xs:simpleContent>
+    <xs:extension base="xs:string">
+      <xs:attributeGroup ref="fontAttributes"/>
+    </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+ 
+
+<xs:complexType name="line">
+    <xs:attribute name="type" type="line_type" use="required"/>
+ </xs:complexType>
+
+
+<xs:complexType name="field">
+    <xs:attribute name="type" type="field_type"/>
+	  <xs:attributeGroup ref="fontAttributes"/>
+ </xs:complexType>
+
+
+<xs:complexType name="tr">
+    <xs:sequence>
+			<xs:element name="text" type="text" maxOccurs="unbounded"/>
+			<xs:element name="field" type="field" maxOccurs="unbounded"/>
+    </xs:sequence>
+	  <xs:attributeGroup ref="fontAttributes"/>
+ </xs:complexType>
+
+
+<xs:complexType name="td">
+	<xs:choice maxOccurs="unbounded">
+		<xs:element name="tr" type="tr" maxOccurs="unbounded"/>
+		<xs:element name="text" type="text" maxOccurs="unbounded"/>
+		<xs:element name="field" type="field" maxOccurs="unbounded"/>
+	</xs:choice>
+	<xs:attributeGroup ref="fontAttributes"/>
+</xs:complexType>
+
+
+<xs:complexType name="th">
+	<xs:choice maxOccurs="unbounded">
+		<xs:element name="tr" type="tr" maxOccurs="unbounded"/>
+		<xs:element name="text" type="text" maxOccurs="unbounded"/>
+		<xs:element name="field" type="field" maxOccurs="unbounded"/>
+	</xs:choice>
+    <xs:attributeGroup ref="fontAttributes"/>
+</xs:complexType>
+
+
+<xs:complexType name="table">
+    <xs:sequence>
+      <xs:element name="th" type="th" minOccurs="0"/>
+	  <xs:element name="td" type="td" minOccurs="1"/>
+    </xs:sequence>
+	<xs:attributeGroup ref="fontAttributes"/>
+</xs:complexType>
+
+<!--********************** definition of complex elements ***********************-->
+
+<!-- root -->
+<xs:element name="document">
+  <xs:complexType>
+    <xs:choice maxOccurs="unbounded">
+		<xs:element name="table" type="table" maxOccurs="unbounded"/>
+		<xs:element name="line" type="line" maxOccurs="unbounded"/>
+		<xs:element name="text" type="text" maxOccurs="unbounded"/>
+		<xs:element name="field" type="field" maxOccurs="unbounded"/>
+    </xs:choice>
+  <xs:attributeGroup ref="fontAttributes"/>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
