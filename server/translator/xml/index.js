@@ -1,23 +1,32 @@
-let xml2json = Meteor.npmRequire("simple-xml2json");
+let nodexml = Meteor.npmRequire("nodexml");
 let xmlvalidator = Meteor.npmRequire("xsd-schema-validator");
+let Future = Meteor.npmRequire('fibers/future');
+
+//TODO:comments 
 
 let translate_XML = function() {
+	
     this.schema = "../web.browser/app/template_example.xsd";
 	this.fieldName = 'field';
 };
 
 translate_XML.prototype.translate = function(data) {
 
-    this.verifiySchema(data);
-    console.log("Starting..");
+	console.log("Starting..");
+	
+   // if (this.verifiySchema(data)){
+    	return this.toJSON(data);
+	//}	
+	
+	return;
 
 };
 
 translate_XML.prototype.toJSON = function(data) {
 
-    let template = xml2json.parser(data);
+    let template = nodexml.xml2obj(data);
     console.log(JSON.stringify(template));
-    let fields = this.getObject(template);
+    let fields = this.getFields(template);
     console.log(JSON.stringify(fields));
     return {
         template: template,
@@ -25,7 +34,7 @@ translate_XML.prototype.toJSON = function(data) {
     };
 };
 
-translate_XML.prototype.getObject = function(data) {
+translate_XML.prototype.getFields = function(data) {
 
     let result = [];
 
@@ -35,7 +44,7 @@ translate_XML.prototype.getObject = function(data) {
             result = result.concat(data[prop]);
         } else if (data[prop] instanceof Object) {
 
-            let resultTemp = this.getObject(data[prop]);
+            let resultTemp = this.getFields(data[prop]);
 
             if (resultTemp) {
                 result = result.concat(resultTemp);
@@ -47,19 +56,23 @@ translate_XML.prototype.getObject = function(data) {
 }
 
 translate_XML.prototype.verifiySchema = function(data) {
+	
+	let future = new Future();
 
-    return xmlvalidator.validateXML(data, this.schema, function(err, result) {
+    xmlvalidator.validateXML(data, this.schema, function(err, result) {
 
         console.log(result);
 
         if (err) {
-            console.log(err);
-        } else {
-
-            Meteor.myFunctions.translate_XML.toJSON(data);
-        }
+			console.log(err);
+			return future.return(false);
+		}
+		else 
+            return future.return(true);
 
     });
+	
+	return future.wait();
 };
 
 
