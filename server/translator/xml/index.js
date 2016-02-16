@@ -2,7 +2,7 @@ let nodexml = Meteor.npmRequire("nodexml");
 let xmlvalidator = Meteor.npmRequire("xsd-schema-validator");
 let Future = Meteor.npmRequire('fibers/future');
 
-//TODO:comments 
+//TODO: returns
 
 let translate_XML = function() {
 	
@@ -10,18 +10,27 @@ let translate_XML = function() {
 	this.fieldName = 'field';
 };
 
+/**
+ * Validate the XML template against the XSD schema and
+ * convert the XML template in two JSON object, the template and the fields
+ * @param {data} XML template
+ */
 translate_XML.prototype.translate = function(data) {
 
 	console.log("Starting..");
 	
-   // if (this.verifiySchema(data)){
+    if (this.verifiySchema(data)){
     	return this.toJSON(data);
-	//}	
+	}	
 	
 	return;
 
 };
 
+/**
+ * Convert the XML template in two JSON object, the template and the fields
+ * @param {data} XML template
+ */
 translate_XML.prototype.toJSON = function(data) {
 
     let template = nodexml.xml2obj(data);
@@ -34,6 +43,10 @@ translate_XML.prototype.toJSON = function(data) {
     };
 };
 
+/**
+ * Extract fields from the XML template
+ * @param {data} XML template
+ */
 translate_XML.prototype.getFields = function(data) {
 
     let result = [];
@@ -55,6 +68,10 @@ translate_XML.prototype.getFields = function(data) {
     return result;
 }
 
+/**
+ * Validate the XML template against the XSD schema
+ * @param {data} XML template
+ */
 translate_XML.prototype.verifiySchema = function(data) {
 	
 	let future = new Future();

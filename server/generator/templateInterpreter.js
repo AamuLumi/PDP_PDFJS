@@ -1,8 +1,15 @@
 let fs = Meteor.npmRequire('fs');
 let Future = Meteor.npmRequire('fibers/future');
 
+//TODO: returns
+
 let templateInterpreter = function() {};
-	
+
+/**
+ * Convert fields data and template to a pdfmake object
+ * @param {textArray} text from form fields 
+ * @param {templateId} id of the choosen template 
+ */
 templateInterpreter.prototype.templateToObject = function(textArray, templateId) {
 
 	let template = Meteor.myFunctions.translate_XML.translate(this.getTemplate(templateId)).template;
@@ -23,6 +30,10 @@ templateInterpreter.prototype.templateToObject = function(textArray, templateId)
 	
 };
 
+/**
+ * Get template from the DB
+ * @param {templateId} id of the choosen template 
+ */
 templateInterpreter.prototype.getTemplate = function(templateId){
 	
 	let future = new Future();
@@ -41,6 +52,11 @@ templateInterpreter.prototype.getTemplate = function(templateId){
 	
 }
 
+/**
+ * Convert the JSON template en the fields data to a pdfmake object
+ * @param {content} JSON template  
+ * @param {fieldsData} text from form fields 
+ */
 templateInterpreter.prototype.setPDFmakeObject = function(content, fieldsData){
 	
 	
@@ -48,12 +64,31 @@ templateInterpreter.prototype.setPDFmakeObject = function(content, fieldsData){
 	
 	for (var i=0; i < content.length; i++) {
 
-		if (content[i] instanceof Array)
-			return;
-        else if ('text' in content[i]) 
-           result.push(content[i].text);
-        else if ('field' in content[i]) 
-            result.push(fieldsData.shift());
+		if ('text' in content[i]) {
+		
+			if (typeof content[i].text == 'string' || content[i].text instanceof String) 
+				result.push(content[i].text);
+			else {
+				let text = {};
+				if('fontSize' in content[i].text)
+					text.fontSize = parseInt(content[i].text.fontSize);
+				if('fontColor' in content[i].text)
+					text.color = content[i].text.fontColor;
+
+				text.text = content[i].text['@text'];
+				result.push(text);
+			}
+		}
+        else if ('field' in content[i]) {
+			
+			let data = fieldsData.shift();
+			if (data)
+            	result.push(data);
+			else {
+				result.push(" ");
+			}
+			
+		}
 		else if ('line' in content[i]){
 			
 			let object = content[i].line;
@@ -67,7 +102,6 @@ templateInterpreter.prototype.setPDFmakeObject = function(content, fieldsData){
 			line.lineWidth = parseInt(object.width);
 			canvas.push(line);
 			result.push({canvas : canvas});
-			console.log(line);
 			
 		}
 		else if ('table' in content[i]){
@@ -81,14 +115,10 @@ templateInterpreter.prototype.setPDFmakeObject = function(content, fieldsData){
 			result.push({table : table});
 		}
 
-		
-		console.log(content[i]);
-			
     }
 	
 	return result;
 
-	
 }
 
 

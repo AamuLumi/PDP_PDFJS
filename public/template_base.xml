@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
-<document fontSize="16" font="arial" fontColor="black">
+<document>
   
 	<content>
 		<text>Field 1 :</text>
 	</content>
 	<content>
-		<field type="date" fontSize="16" font="arial" fontColor="blue"/>
+		<field/>
 	</content>
 	<content>
 		<text>Field 2 :</text>
 	</content>
 	<content>
-		<field type="date" fontSize="16" font="arial" fontColor="blue"/>
+		<field/>
 	</content>
 	<content>
 		<text>Field 3 :</text>
 	</content>
 	<content>
-		<field type="date" fontSize="16" font="arial" fontColor="blue"/>
+		<field/>
 	</content>
 	<content>
 		<text> H Line :</text>
@@ -82,6 +82,12 @@
 	</content>
 	<content>
 		<line x1="100" x2="100" y1="10" y2="100" width="1"/>
+	</content>
+	<content>
+		<text fontColor="blue">Color</text>
+	</content>
+		<content>
+		<text fontSize="8">Size</text> 
 	</content>
 	
 </document>
