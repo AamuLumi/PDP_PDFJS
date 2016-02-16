@@ -7,6 +7,7 @@ let b64 = Meteor.npmRequire('base64-stream');
  */
 function PDFGenerate(datas){
   return Meteor.myFunctions.generatePDF(datas);
+	//Meteor.myFunctions.testXMLtoJSON();
 }
 
 /**
