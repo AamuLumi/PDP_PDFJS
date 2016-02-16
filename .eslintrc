@@ -12,7 +12,6 @@
     "forOf": true,
     "spread": true,
     "templateString": true,
-    "jsx": true,
     "globalReturn": true
   },
   "rules": {
