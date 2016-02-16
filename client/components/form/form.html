@@ -3,7 +3,10 @@
     <form class="generatePDF well bs-component form-horizontal">
       <fieldset>
         <legend>Données du PDF</legend>
-        {{#each fields}} {{> formField}} {{/each}}
+        	{{#autoForm id="templateSelect" schema=templatesOptions}}
+			  {{> afQuickFields id="templatedd"}}
+			{{/autoForm}}
+			{{#each formSchema}} {{> formField}} {{/each}}
         <button class="generatePDF btn btn-primary" type="submit">Generate PDF</button>
       </fieldset>
     </form>

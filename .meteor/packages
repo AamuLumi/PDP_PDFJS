@@ -27,3 +27,4 @@ cfs:standard-packages
 cfs:gridfs
 cfs:ejson-file
 iron:router
+aldeed:autoform
