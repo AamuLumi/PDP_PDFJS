@@ -1,14 +1,16 @@
 let path = Meteor.npmRequire('path');
 
-Meteor.myFunctions.translate = function (data, filename){
+Meteor.myFunctions.translate = function(data, filename) {
   let ext = path.extname(filename);
   let translator = undefined;
 
-  if (ext === ".xml")
+  if (ext === '.xml') {
     translator = Meteor.myFunctions.translate_XML;
+  }
 
-  if (translator)
+  if (translator) {
     return translator.translate(data);
-  else
+  } else {
     return undefined;
-}
+  }
+};

@@ -1,3 +1,3 @@
-Meteor.publish("pdfs", function(){
+Meteor.publish('pdfs', function(){
   return Collections.PDF.find();
 });

@@ -1,5 +1,4 @@
 let Future = Meteor.npmRequire('fibers/future');
-let b64 = Meteor.npmRequire('base64-stream');
 
 /**
  * Generate a PDF based on datas
@@ -19,7 +18,7 @@ function PDFGet(name){
   let stream = Collections.PDF.findOne(name).createReadStream();
 
   let future = new Future();
-  let data = "";
+  let data = '';
 
   stream.on('data', (d) => {
     data += d;

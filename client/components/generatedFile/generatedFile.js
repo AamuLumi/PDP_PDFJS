@@ -6,16 +6,14 @@ Template.generatedFile.helpers({
   'data': function(){
 
   }
-})
+});
 
 Template.generatedFile.events({
-  "click .generatedPDFLink": function(event) {
+  'click .generatedPDFLink': function(event) {
     event.preventDefault();
 
-    console.log("test");
-
     let url = 'data:application/pdf;base64,';
-    Meteor.call("PDF.get",
+    Meteor.call('PDF.get',
       event.target.name, (err, res) => {
         console.log(err);
         window.open(url + res);

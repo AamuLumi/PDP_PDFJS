@@ -4,12 +4,13 @@
       <fieldset>
         <legend>Données du PDF</legend>
         	{{#autoForm id="templateSelect" schema=templatesOptions}}
-			  {{> afQuickFields id="templatedd"}}
-			{{/autoForm}}
-			{{#each formSchema}} {{> formField}} {{/each}}
-        <button class="generatePDF btn btn-primary" type="submit">Generate PDF</button>
+			       {{> afQuickFields id="templatedd"}}
+			    {{/autoForm}}
+			    {{#each formSchema}} {{> formField}} {{/each}}
+        <button class="generatePDF btn btn-primary" type="submit">
+          Generate PDF
+        </button>
       </fieldset>
     </form>
   </div>
-
 </template>

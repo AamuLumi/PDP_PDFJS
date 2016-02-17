@@ -1,3 +1,3 @@
 Stores = {};
 
-Stores.PDF = new FS.Store.GridFS("pdfs");
+Stores.PDF = new FS.Store.GridFS('pdfs');

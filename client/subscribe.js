@@ -1,1 +1,1 @@
-Meteor.subscribe("pdfs");
+Meteor.subscribe('pdfs');

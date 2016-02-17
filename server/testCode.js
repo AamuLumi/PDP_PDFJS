@@ -1,6 +1,5 @@
 Meteor.myFunctions.testXMLtoJSON = function() {
-	
-	//nothing for now 
-	
+	//nothing for now
+
 	return;
-}
+};
