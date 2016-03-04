@@ -9,18 +9,7 @@
 - [x] Send PDF to client
 - [x] Read XML template files
 
-## Installation
-
-``` 
-meteor
-```
-
-Currently, a XML library needs Java to works, and a JAVA_HOME variable set with the JVM. For example, on Linux : 
-```
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64/
-```
-
-## Running
+## Installation & Running
 
 ``` 
 meteor
