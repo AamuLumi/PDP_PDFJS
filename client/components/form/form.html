@@ -2,14 +2,16 @@
   <div class="row">
     <form class="generatePDF well bs-component form-horizontal">
       <fieldset>
-        <legend>Données du PDF</legend>
-        	{{#autoForm id="templateSelect" schema=templatesOptions}}
-			       {{> afQuickFields id="templatedd"}}
-			    {{/autoForm}}
-			    {{#each formSchema}} {{> formField}} {{/each}}
-        <button class="generatePDF btn btn-primary" type="submit">
-          Generate PDF
-        </button>
+          <legend>Données du PDF</legend>
+
+            	{{#autoForm id="templateSelect" schema=templatesOptions}}
+    			       {{> afQuickFields id="templatedd"}}
+    			    {{/autoForm}}
+  			    {{#each formSchema}} {{> formField}} {{/each}}
+          <button class="generatePDF btn btn-primary" type="submit">
+            Generate PDF
+          </button>
+
       </fieldset>
     </form>
   </div>
