@@ -86,7 +86,16 @@ if (Meteor.isClient) {
           if (err) {
             console.log(err);
           } else {
-            Session.set('generatedFile', res);
+            let tmp = Session.get('generatedFiles');
+            console.log(tmp);
+
+            if (tmp === undefined) {
+              tmp = [res];
+            } else {
+              tmp.push(res);
+            }
+
+            Session.set('generatedFiles', tmp);
           }
         });
     }
