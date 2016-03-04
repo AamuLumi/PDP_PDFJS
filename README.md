@@ -3,22 +3,32 @@
 
 ## Features
 
-- [x] Generate a basic PDF file from an HTML form
-- [x] Send the PDF
+- [x] Generate defaults forms
+- [x] Send PDF datas (fields values)
+- [x] Generate a PDF
+- [x] Send PDF to client
+- [x] Read XML template files
 
 ## Installation
 
 ``` 
-git clone https://github.com/AamuLumi/PDP_PDFJS/
-cd ./PDP_PDFJS
-npm install
+meteor
+```
+
+Currently, a XML library needs Java to works, and a JAVA_HOME variable set with the JVM. For example, on Linux : 
+```
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64/
 ```
 
 ## Running
 
 ``` 
-npm start
+meteor
 ```
 
-This command will launch an ExpressJS server on port 9900.
-An `index.html` with a basic form will be displayed on `http://localhost:9000` if server works.
+This command will start a server on port 3000.
+An application must run on **http://localhost:3000**.
+
+## Licence
+
+This project is MIT Licensed.
