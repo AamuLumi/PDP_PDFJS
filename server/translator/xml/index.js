@@ -1,5 +1,5 @@
 let nodexml = Meteor.npmRequire('nodexml');
-let xmlvalidator = Meteor.npmRequire('xsd-schema-validator');
+let xmlvalidator = Meteor.npmRequire('libxml-xsd');
 let Future = Meteor.npmRequire('fibers/future');
 
 /**
@@ -72,16 +72,17 @@ translateXML.prototype.getFields = function(data) {
 translateXML.prototype.verifiySchema = function(data) {
   let future = new Future();
 
-  xmlvalidator.validateXML(data, this.schema, function(err,
-    result) {
-    console.log('Result : ' + result);
+  xmlvalidator.parseFile(this.schema, function(err, s){
+    s.validate(data, function(err, validationErrors){
+      console.log('Result : ' + validationErrors);
 
-    if (err) {
-      console.log(err);
-      return future.return(false);
-    } else {
-      return future.return(true);
-    }
+      if (err) {
+        console.log(err);
+        return future.return(false);
+      } else {
+        return future.return(true);
+      }
+    });
   });
 
   return future.wait();
