@@ -2,11 +2,11 @@ Template.generatedFiles.helpers({
   'files': function() {
     if (Session.get('generatedFiles') === undefined)
       return [];
-      
+
     let files = [];
 
     for (let f of Session.get('generatedFiles')){
-      files.push(Collections.PDF.findOne(f));
+      files.unshift(Collections.PDF.findOne(f));
     }
 
     return files;
