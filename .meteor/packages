@@ -28,3 +28,4 @@ cfs:gridfs
 cfs:ejson-file
 iron:router
 aldeed:autoform
+velocity:console-reporter

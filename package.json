@@ -1,0 +1,13 @@
+{
+  "name": "PDFJS",
+  "version": "0.0.0",
+  "description": "A PDF Creator in JavaScript",
+  "private": true,
+  "scripts": {
+    "start": "meteor",
+    "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=.features",
+    "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=.features"
+  },
+  "author": "Florian Kauder <flokauder@hotmail.com>",
+  "license": "MIT"
+}

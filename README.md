@@ -11,23 +11,33 @@
 
 ## Installation
 
-``` 
-meteor
+```
+npm start
 ```
 
-Currently, a XML library needs Java to works, and a JAVA_HOME variable set with the JVM. For example, on Linux : 
+Currently, a XML library needs Java to works, and a JAVA_HOME variable set with the JVM. For example, on Linux :
 ```
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64/
 ```
 
 ## Running
 
-``` 
-meteor
+```
+npm start
 ```
 
 This command will start a server on port 3000.
 An application must run on **http://localhost:3000**.
+
+## Test
+
+```
+npm Install
+npm run tests
+```
+
+This command will run chimp tests on the application.
+**Server must be running**.
 
 ## Licence
 
