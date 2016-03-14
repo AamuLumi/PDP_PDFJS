@@ -2,7 +2,7 @@ let PdfPrinter = Meteor.npmRequire('pdfmake');
 let Future = Meteor.npmRequire('fibers/future');
 let base64 = Meteor.npmRequire('base64-stream');
 
-Meteor.myFunctions.generatePDF = function(textArray) {
+Meteor.myFunctions.generatePDF = function(textArray, templateName) {
 
   if (!textArray) {
     return undefined;
@@ -29,7 +29,7 @@ Meteor.myFunctions.generatePDF = function(textArray) {
   let filename = Date.now() + '.pdf';
 
   let dd = Meteor.myFunctions.templateInterpreter.templateToObject(
-    textArray, '');
+    textArray, templateName);
 
   let pdfDoc = printer.createPdfKitDocument(dd);
 

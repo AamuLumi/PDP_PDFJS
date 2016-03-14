@@ -11,12 +11,11 @@ let templateInterpreter = function() {};
  * @param {templateId} id of the choosen template
  */
 templateInterpreter.prototype.templateToObject = function(
-  textArray, templateId) {
+  textArray, templateName) {
 
-  let template = Meteor.myFunctions.translateXML.translate(
-    this.getTemplate(templateId)).template;
+  let template = this.getTemplate(templateName).content;
 
-  // console.log(template);
+  console.log(template);
 
   let fieldsData = [];
 
@@ -39,19 +38,12 @@ templateInterpreter.prototype.templateToObject = function(
  * Get template from the DB
  * @param {templateId} id of the choosen template
  */
-templateInterpreter.prototype.getTemplate = function(templateId) {
-  let future = new Future();
+templateInterpreter.prototype.getTemplate = function(templateName) {
 
-  fs.readFile('../web.browser/app/template_base.xml', 'utf8',
-    Meteor.bindEnvironment(function(err, data) {
-      if (err) {
-        return console.log(err);
-      }
+  return Collections.Templates.findOne({
+    title: templateName
+  });
 
-      return future.return(data);
-    }));
-
-  return future.wait();
 };
 
 /**
@@ -62,6 +54,9 @@ templateInterpreter.prototype.getTemplate = function(templateId) {
 templateInterpreter.prototype.setPDFmakeObject = function(
   content, fieldsData) {
   let result = [];
+
+  if (!Array.isArray(content))
+    content = [content];
 
   for (let i = 0; i < content.length; i++) {
     if ('text' in content[i]) {
@@ -77,6 +72,24 @@ templateInterpreter.prototype.setPDFmakeObject = function(
         if ('fontColor' in content[i].text){
           text.color = content[i].text.fontColor;
 				}
+
+        if ('alignment' in content[i].text){
+          text.alignment = content[i].text.alignment;
+        }
+
+        if ('italic' in content[i].text){
+          if (content[i].text.italic == 'true')
+            text.italic = true;
+          else
+            text.italic = false;
+        }
+
+        if ('bold' in content[i].text){
+          if (content[i].text.bold == 'true')
+            text.bold = true;
+          else
+            text.bold = false;
+        }
 
         text.text = content[i].text['@text'];
         result.push(text);

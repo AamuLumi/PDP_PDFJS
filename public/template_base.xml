@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <document>
-  
+
 	<content>
 		<text>Field 1 :</text>
 	</content>
 	<content>
-		<field/>
+		<field type ="date"/>
 	</content>
 	<content>
-		<text>Field 2 :</text>
+		<text bold="true">Field 2 :</text>
 	</content>
 	<content>
-		<field/>
+		<field type ="numbers" name ="Nombre test"/>
 	</content>
 	<content>
 		<text>Field 3 :</text>
 	</content>
 	<content>
-		<field/>
+		<field type ="text" default="Ceci est un champ prérempli"/>
 	</content>
 	<content>
 		<text> H Line :</text>
@@ -87,7 +87,7 @@
 		<text fontColor="blue">Color</text>
 	</content>
 		<content>
-		<text fontSize="8">Size</text> 
+		<text fontSize="8">Size</text>
 	</content>
-	
+
 </document>

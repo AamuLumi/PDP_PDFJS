@@ -1,6 +1,7 @@
 let nodexml = Meteor.npmRequire('nodexml');
 let xmlvalidator = Meteor.npmRequire('libxml-xsd');
 let Future = Meteor.npmRequire('fibers/future');
+let sleep = Meteor.npmRequire('sleep');
 
 /**
  * This module need to setup JAVA_HOME variable in system environment
@@ -33,10 +34,12 @@ translateXML.prototype.translate = function(data) {
  */
 translateXML.prototype.toJSON = function(data) {
   let template = nodexml.xml2obj(data);
-  // console.log(JSON.stringify(template));
+   console.log(JSON.stringify(template));
   let fields = this.getFields(template);
-  // console.log(JSON.stringify(fields));
+   console.log(JSON.stringify(fields));
   //
+  //sleep.sleep(10);
+
   return {
     template: template,
     fields: fields
@@ -74,7 +77,6 @@ translateXML.prototype.verifiySchema = function(data) {
 
   xmlvalidator.parseFile(this.schema, function(err, s){
     s.validate(data, function(err, validationErrors){
-      console.log('Result : ' + validationErrors);
 
       if (err) {
         console.log(err);

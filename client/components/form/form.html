@@ -3,7 +3,7 @@
     <form class="generatePDF well bs-component form-horizontal">
       <fieldset>
           <legend>Données du PDF</legend>
-
+            {{> upload}}
             	{{#autoForm id="templateSelect" schema=templatesOptions}}
     			       {{> afQuickFields id="templatedd"}}
     			    {{/autoForm}}
