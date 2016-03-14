@@ -11,7 +11,7 @@
 		<text bold="true">Field 2 :</text>
 	</content>
 	<content>
-		<field type ="numbers" name ="Nombre test"/>
+		<field type ="number" name ="Nombre test"/>
 	</content>
 	<content>
 		<text>Field 3 :</text>
