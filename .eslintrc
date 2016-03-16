@@ -31,7 +31,6 @@
     "no-obj-calls": [2],
     "no-unreachable": [2],
     // General rules
-    "curly": [2],
     "default-case": [2],
     "dot-notation": [2],
     "eqeqeq": [2],
