@@ -8,5 +8,6 @@
   "libxml-xsd": "0.5.2",
   "pdfmake":"0.1.18",
   "sleep":"3.0.1",
-  "adm-zip": "0.4.7"
+  "adm-zip": "0.4.7",
+  "xml2js": "0.4.16"
 }

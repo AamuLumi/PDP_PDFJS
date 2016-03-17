@@ -1,6 +1,7 @@
 let ADMZip = Meteor.npmRequire('adm-zip');
 let fs = Meteor.npmRequire('fs');
-let nodexml = Meteor.npmRequire('nodexml');
+let parser = Meteor.npmRequire('xml2js');
+let Future = Meteor.npmRequire('fibers/future');
 
 let STR_NOT_FOUND = -1;
 
@@ -67,8 +68,8 @@ TranslateDOCX.prototype.getHorizontalLine = function (width) {
   return res;
 };
 
-TranslateDOCX.prototype.addProperty = function (object, objectTag, propertyName,
-  propertyValue) {
+TranslateDOCX.prototype.addProperty = function(object, objectTag,
+  propertyName, propertyValue) {
   if (object[objectTag] === undefined)
     object[objectTag] = {};
 
@@ -80,45 +81,79 @@ TranslateDOCX.prototype.addProperty = function (object, objectTag, propertyName,
   object[objectTag][propertyName] = propertyValue;
 };
 
-TranslateDOCX.prototype.analyzeParagraph = function (p) {
+TranslateDOCX.prototype.getArrayFor = function(array) {
+  let res = {
+    'table': {}
+  };
+  let currentRow = [];
+  let currentContent = null;
+
+  for (let row of array['w:tr']) {
+    currentContent = [];
+    for (let cell of row['w:tc']) {
+      currentContent.push(this.analyzeParagraph(cell['w:p']));
+    }
+
+    currentRow.push({
+      'content': currentContent
+    });
+  }
+
+  res.table = {'row' : currentRow};
+
+  return res;
+};
+
+TranslateDOCX.prototype.getTextFor = function(textArray) {
   let res = {};
-  let current = null;
 
-  if (p['w:pPr'] && p['w:pPr']['w:pBdr'] && p['w:pPr']['w:pBdr']['w:top']
-    && !p['w:r'])
-    return this.getHorizontalLine(p['w:pPr']['w:pBdr']['w:top']['w:sz']);
+  // Get run properties
+  if (textArray['w:rPr']) {
+    if (textArray['w:rPr']['w:color'])
+      this.addProperty(res, 'text', 'fontColor',
+        this.getColorFor(textArray['w:rPr']['w:color']['@']['w:val'])
+      );
 
-    if (p['w:r']) {
-      current = p['w:r'];
+    if (textArray['w:rPr']['w:sz'])
+      this.addProperty(res, 'text', 'fontSize',
+        this.getFontSizeFor(textArray['w:rPr']['w:sz']['@']['w:val'])
+      );
 
-      // Get run properties
-      if (current['w:rPr']) {
-        if (current['w:rPr']['w:color'])
-          this.addProperty(res, 'text', 'fontColor',
-            this.getColorFor(current['w:rPr']['w:color']['w:val']));
+    if (textArray['w:rPr']['w:rFonts'])
+      this.addProperty(res, 'text', 'font',
+        this.getFontFor(textArray['w:rPr']['w:rFonts']['@'][
+          'w:ascii'
+        ]));
+  }
 
-        if (current['w:rPr']['w:sz'])
-          this.addProperty(res, 'text', 'fontSize',
-            this.getFontSizeFor(current['w:rPr']['w:sz']['w:val']));
-
-        if (current['w:rPr']['w:rFonts'])
-          this.addProperty(res, 'text', 'font',
-            this.getFontFor(current['w:rPr']['w:rFonts']['w:ascii']));
-      }
-
-      // Get text
-      if (current['w:t'])
-        if (res.text)
-          res.text['@text'] = p['w:r']['w:t']['@text'];
-        else {
-          res.text = p['w:r']['w:t']['@text'];
-        }
+  // Get text
+  if (textArray['w:t'])
+    if (res.text) {
+      res.text['@text'] = textArray['w:t']['_'];
+    } else {
+      res.text = textArray['w:t']['_'];
     }
 
   return res;
 };
 
-TranslateDOCX.prototype.createTemplateFrom = function (data) {
+TranslateDOCX.prototype.analyzeParagraph = function(p) {
+  let res = {};
+
+  if (p['w:pPr'] && p['w:pPr']['w:pBdr'] && p['w:pPr'][
+      'w:pBdr'
+    ]['w:top'] && !p['w:r'])
+    return this.getHorizontalLine(p['w:pPr']['w:pBdr']['w:top']
+      ['w:sz']);
+
+  if (p['w:r']) {
+    return this.getTextFor(p['w:r']);
+  }
+
+  return res;
+};
+
+TranslateDOCX.prototype.createTemplateFrom = function(data) {
   let template = {
     'document': {}
   };
@@ -127,29 +162,46 @@ TranslateDOCX.prototype.createTemplateFrom = function (data) {
   let body = data['w:document']['w:body'];
 
   // Pour chaque paragraphe du document
-  for (let p of body['w:p']) {
-    let pAnalyzed = this.analyzeParagraph(p);
+  for (let p of body['@@']) {
+    if (p['#name'] === 'w:p') {
+      let pAnalyzed = this.analyzeParagraph(p);
 
-    if (!this.isEmptyObject(pAnalyzed)) tDocument.content.push(
-      pAnalyzed);
+      if (!this.isEmptyObject(pAnalyzed)) tDocument.content.push(
+        pAnalyzed);
+    }
+    else if (p['#name'] === 'w:tbl')
+      tDocument.content.push(this.getArrayFor(p));
   }
 
   return template;
 };
 
-TranslateDOCX.prototype.translate = function (data){
+TranslateDOCX.prototype.translate = function(data) {
   console.log('Starting DOCX translating ..');
 
   let fileString = this.getDocument(data);
-  let dataJSON = nodexml.xml2obj(fileString);
-  let template = this.createTemplateFrom(dataJSON);
+  let future = new Future();
 
-  console.log('Translating finished');
+  parser.parseString(fileString, {
+    attrkey: '@',
+    explicitArray: false,
+    explicitChildren: true,
+    preserveChildrenOrder: true,
+    childkey: '@@'
+  }, Meteor.bindEnvironment((err, dataJSON) => {
+    fs.writeFileSync('./text.json', JSON.stringify(
+      dataJSON));
+    let template = this.createTemplateFrom(dataJSON);
 
-  return {
-    template : template,
-    fields : null
-  };
+    console.log('DOCX Translation : OK ..');
+
+    return future.return({
+      template: template,
+      fields: null
+    });
+  }));
+
+  return future.wait();
 };
 
 Meteor.myFunctions.translateDOCX = new TranslateDOCX();
