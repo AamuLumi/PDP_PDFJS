@@ -26,15 +26,30 @@ let TranslateDOCX = function() {
 
 };
 
+/**
+ * Get document.xml file contained in a .docx file
+ * @param  {String} data - DOCX filename
+ * @return {Buffer}      the readed document.xml file
+ */
 TranslateDOCX.prototype.getDocument = function(data) {
   let zip = new ADMZip(data);
   return zip.readFile('word/document.xml');
 };
 
+/**
+ * Check if an object is empty
+ * @param  {Object} obj - the object to check
+ * @return {Boolean}    true if empty
+ */
 TranslateDOCX.prototype.isEmptyObject = function(obj) {
   return !Object.keys(obj).length;
 };
 
+/**
+ * Return an XML avalaible color
+ * @param  {String} strColor - the color in hexadecimal
+ * @return {String}          an available color
+ */
 TranslateDOCX.prototype.getColorFor = function(strColor) {
   if (strColor === 'ff0000')
     return 'red';
@@ -46,11 +61,22 @@ TranslateDOCX.prototype.getColorFor = function(strColor) {
   return 'black';
 };
 
+/**
+ * Return the real font size
+ * DOCX fontSize are doubled (to be stock in integer)
+ * @param  {String} strFontSize - the DOCX font size
+ * @return {String}             the real font size
+ */
 TranslateDOCX.prototype.getFontSizeFor = function(strFontSize) {
   // Font in docx are doubled
   return (parseInt(strFontSize) / 2).toString();
 };
 
+/**
+ * Return a avalaible font
+ * @param  {String} strFont - the name of the font
+ * @return {String}         an available font
+ */
 TranslateDOCX.prototype.getFontFor = function(strFont) {
   if (strFont.indexOf('Helvetica') > STR_NOT_FOUND)
     return 'helvetica';
@@ -60,6 +86,11 @@ TranslateDOCX.prototype.getFontFor = function(strFont) {
   return 'arial';
 };
 
+/**
+ * Create a horizontal line with a specific width
+ * @param  {String} width - the width of the line
+ * @return {Object}       the JSON object who represents the line
+ */
 TranslateDOCX.prototype.getHorizontalLine = function(width) {
   let res = horizontalLine;
 
@@ -68,6 +99,15 @@ TranslateDOCX.prototype.getHorizontalLine = function(width) {
   return res;
 };
 
+/**
+ * Add a property to an object
+ * This function is used to add, for example, some new properties
+ * 	to a text object.
+ * @param  {Object} object        - the base object to manipulate
+ * @param  {String} objectTag     - the tag where property must be added
+ * @param  {String} propertyName  - the name of the property
+ * @param  {Object} propertyValue - the value of the property
+ */
 TranslateDOCX.prototype.addProperty = function(object, objectTag,
   propertyName, propertyValue) {
   if (object[objectTag] === undefined)
@@ -81,6 +121,11 @@ TranslateDOCX.prototype.addProperty = function(object, objectTag,
   object[objectTag][propertyName] = propertyValue;
 };
 
+/**
+ * Create a 'table' element from a 'w:tbl' DOCX element
+ * @param  {Object} array - the 'w:tbl' element to analyze
+ * @return {Object}       the 'table' element
+ */
 TranslateDOCX.prototype.getArrayFor = function(array) {
   let res = {
     'table': {}
@@ -106,6 +151,11 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
   return res;
 };
 
+/**
+ * Create a 'text' element from a 'w:p' DOCX element
+ * @param  {Object} textArray - the 'w:p' element to analyze
+ * @return {Object}           - the 'text' element
+ */
 TranslateDOCX.prototype.getTextFor = function(textArray) {
   let res = [];
   let current = null;
@@ -139,14 +189,14 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
       }
 
       // Get text
-      if (el['w:t'] && el['w:t']._) {
+      if (el['w:t'] && el['w:t']._){
         // Sometimes, text is contained in field ['_']
         if (current.text) {
           current.text['@text'] = el['w:t']._;
         } else {
           current.text = el['w:t']._;
         }
-      } else if (el['w:t'] && (typeof el['w:t'] !== 'object')) {
+      } else if (el['w:t'] && (typeof el['w:t'] !== 'object')){
         // Sometimes, it's contained in the classic ['w:t']
         //  but it may not contains text. So we need to check
         //  if the ['w:t'] element isn't an object.
@@ -164,11 +214,11 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
   }
 
   if (res.length === 1) return res[0];
-  else if (res.length > 1) {
+  else if (res.length > 1){
     // We concatenate nested strings, because Word separates them.
     let tmp = '';
 
-    for (let i = 1; i < res.length; i++) {
+    for (let i = 1; i < res.length; i++){
       if (res[i].text['@text']) tmp += res[i].text['@text'];
       else tmp += res[i].text;
     }
@@ -182,6 +232,11 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
   return res;
 };
 
+/**
+ * Analyze a 'w:p' element
+ * @param  {Object} p - the 'w:p' element to analyze
+ * @return {Object}   the corresponding template element
+ */
 TranslateDOCX.prototype.analyzeParagraph = function(p) {
   if (p['w:pPr'] && p['w:pPr']['w:pBdr'] &&
     p['w:pPr']['w:pBdr']['w:top'] &&
@@ -194,6 +249,11 @@ TranslateDOCX.prototype.analyzeParagraph = function(p) {
   }
 };
 
+/**
+ * Analyze elements from a DOCX element
+ * @param  {Object} data - the element to analyze
+ * @return {Object}      the corresponding template element
+ */
 TranslateDOCX.prototype.analyzeElement = function(data) {
   let res = [];
 
@@ -212,6 +272,11 @@ TranslateDOCX.prototype.analyzeElement = function(data) {
   return res;
 };
 
+/**
+ * Create a template from a document.xml JSON
+ * @param  {Object} data - the JSON to analyze
+ * @return {Object}      the template
+ */
 TranslateDOCX.prototype.createTemplateFrom = function(data) {
   let template = {
     'document': {}
@@ -225,6 +290,11 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
   return template;
 };
 
+/**
+ * Translate a DOCX file to a JSON template & fields
+ * @param  {String} data - the DOCX filename
+ * @return {Object}      a JSON template & fields
+ */
 TranslateDOCX.prototype.translate = function(data) {
   console.log('Starting DOCX translating ..');
 
