@@ -22,20 +22,20 @@ let horizontalLine = {
   }
 };
 
-let TranslateDOCX = function(){
+let TranslateDOCX = function() {
 
 };
 
-TranslateDOCX.prototype.getDocument = function (data) {
+TranslateDOCX.prototype.getDocument = function(data) {
   let zip = new ADMZip(data);
   return zip.readFile('word/document.xml');
 };
 
-TranslateDOCX.prototype.isEmptyObject = function (obj) {
+TranslateDOCX.prototype.isEmptyObject = function(obj) {
   return !Object.keys(obj).length;
 };
 
-TranslateDOCX.prototype.getColorFor = function (strColor) {
+TranslateDOCX.prototype.getColorFor = function(strColor) {
   if (strColor === 'ff0000')
     return 'red';
   else if (strColor === '00ff00')
@@ -46,12 +46,12 @@ TranslateDOCX.prototype.getColorFor = function (strColor) {
   return 'black';
 };
 
-TranslateDOCX.prototype.getFontSizeFor = function (strFontSize){
+TranslateDOCX.prototype.getFontSizeFor = function(strFontSize) {
   // Font in docx are doubled
-  return (parseInt(strFontSize)/2).toString();
+  return (parseInt(strFontSize) / 2).toString();
 };
 
-TranslateDOCX.prototype.getFontFor = function (strFont) {
+TranslateDOCX.prototype.getFontFor = function(strFont) {
   if (strFont.indexOf('Helvetica') > STR_NOT_FOUND)
     return 'helvetica';
   else if (strFont.indexOf('Courier') > STR_NOT_FOUND)
@@ -60,7 +60,7 @@ TranslateDOCX.prototype.getFontFor = function (strFont) {
   return 'arial';
 };
 
-TranslateDOCX.prototype.getHorizontalLine = function (width) {
+TranslateDOCX.prototype.getHorizontalLine = function(width) {
   let res = horizontalLine;
 
   res.line.width = width;
@@ -99,71 +99,111 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
     });
   }
 
-  res.table = {'row' : currentRow};
+  res.table = {
+    'row': currentRow
+  };
 
   return res;
 };
 
 TranslateDOCX.prototype.getTextFor = function(textArray) {
-  let res = {};
+  let res = [];
+  let current = null;
 
-  // Get run properties
-  if (textArray['w:rPr']) {
-    if (textArray['w:rPr']['w:color'])
-      this.addProperty(res, 'text', 'fontColor',
-        this.getColorFor(textArray['w:rPr']['w:color']['@']['w:val'])
-      );
+  // We search every run of the paragraph
+  for (let el of textArray['@@']) {
+    if (el['#name'] === 'w:r') {
+      current = {};
 
-    if (textArray['w:rPr']['w:sz'])
-      this.addProperty(res, 'text', 'fontSize',
-        this.getFontSizeFor(textArray['w:rPr']['w:sz']['@']['w:val'])
-      );
+      // Get run properties
+      if (el['w:rPr']) {
+        if (el['w:rPr']['w:color'])
+          this.addProperty(current, 'text', 'fontColor',
+            this.getColorFor(el['w:rPr']['w:color']['@'][
+              'w:val'
+            ])
+          );
 
-    if (textArray['w:rPr']['w:rFonts'])
-      this.addProperty(res, 'text', 'font',
-        this.getFontFor(textArray['w:rPr']['w:rFonts']['@'][
-          'w:ascii'
-        ]));
+        if (el['w:rPr']['w:sz'])
+          this.addProperty(current, 'text', 'fontSize',
+            this.getFontSizeFor(el['w:rPr']['w:sz']['@'][
+              'w:val'
+            ])
+          );
+
+        if (el['w:rPr']['w:rFonts'])
+          this.addProperty(current, 'text', 'font',
+            this.getFontFor(el['w:rPr']['w:rFonts']['@'][
+              'w:ascii'
+            ]));
+      }
+
+      // Get text
+      if (el['w:t'] && el['w:t']._) {
+        // Sometimes, text is contained in field ['_']
+        if (current.text) {
+          current.text['@text'] = el['w:t']._;
+        } else {
+          current.text = el['w:t']._;
+        }
+      } else if (el['w:t'] && (typeof el['w:t'] !== 'object')) {
+        // Sometimes, it's contained in the classic ['w:t']
+        //  but it may not contains text. So we need to check
+        //  if the ['w:t'] element isn't an object.
+        if (current.text) {
+          current.text['@text'] = el['w:t'];
+        } else {
+          current.text = el['w:t'];
+        }
+      } else {
+        current = undefined;
+      }
+
+      if (current) res.push(current);
+    }
   }
 
-  // Get text
-  if (textArray['w:t'])
-    if (res.text) {
-      res.text['@text'] = textArray['w:t'];
-    } else {
-      res.text = textArray['w:t'];
+  if (res.length === 1) return res[0];
+  else if (res.length > 1) {
+    // We concatenate nested strings, because Word separates them.
+    let tmp = '';
+
+    for (let i = 1; i < res.length; i++) {
+      if (res[i].text['@text']) tmp += res[i].text['@text'];
+      else tmp += res[i].text;
     }
+
+    if (res[0].text['@text']) res[0].text['@text'] += tmp;
+    else res[0].text += tmp;
+
+    return res[0];
+  }
 
   return res;
 };
 
 TranslateDOCX.prototype.analyzeParagraph = function(p) {
-  let res = {};
-
-  if (p['w:pPr'] && p['w:pPr']['w:pBdr'] && p['w:pPr'][
-      'w:pBdr'
-    ]['w:top'] && !p['w:r'])
+  if (p['w:pPr'] && p['w:pPr']['w:pBdr'] &&
+    p['w:pPr']['w:pBdr']['w:top'] &&
+    !p['w:r'])
     return this.getHorizontalLine(p['w:pPr']['w:pBdr']['w:top']
       ['w:sz']);
 
   if (p['w:r']) {
-    return this.getTextFor(p['w:r']);
+    return this.getTextFor(p);
   }
-
-  return res;
 };
 
-TranslateDOCX.prototype.analyzeElement = function(data){
+TranslateDOCX.prototype.analyzeElement = function(data) {
   let res = [];
 
   for (let p of data['@@']) {
     if (p['#name'] === 'w:p') {
       let pAnalyzed = this.analyzeParagraph(p);
 
-      if (!this.isEmptyObject(pAnalyzed)) res.push(
+      if (pAnalyzed && !this.isEmptyObject(pAnalyzed)) res.push(
         pAnalyzed);
-    }
-    else if (p['#name'] === 'w:tbl')
+    } else if (p['#name'] === 'w:tbl')
       res.push(this.getArrayFor(p));
   }
 
@@ -178,7 +218,9 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
   };
   let tDocument = template.document;
 
-  tDocument.content = this.analyzeElement(data['w:document']['w:body']);
+  tDocument.content = this.analyzeElement(data['w:document'][
+    'w:body'
+  ]);
 
   return template;
 };
