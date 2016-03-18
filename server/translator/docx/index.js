@@ -91,7 +91,7 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
   for (let row of array['w:tr']) {
     currentContent = [];
     for (let cell of row['w:tc']) {
-      currentContent.push(this.analyzeParagraph(cell['w:p']));
+      currentContent.push(this.analyzeElement(cell));
     }
 
     currentRow.push({
@@ -129,9 +129,9 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
   // Get text
   if (textArray['w:t'])
     if (res.text) {
-      res.text['@text'] = textArray['w:t']['_'];
+      res.text['@text'] = textArray['w:t'];
     } else {
-      res.text = textArray['w:t']['_'];
+      res.text = textArray['w:t'];
     }
 
   return res;
@@ -153,25 +153,32 @@ TranslateDOCX.prototype.analyzeParagraph = function(p) {
   return res;
 };
 
+TranslateDOCX.prototype.analyzeElement = function(data){
+  let res = [];
+
+  for (let p of data['@@']) {
+    if (p['#name'] === 'w:p') {
+      let pAnalyzed = this.analyzeParagraph(p);
+
+      if (!this.isEmptyObject(pAnalyzed)) res.push(
+        pAnalyzed);
+    }
+    else if (p['#name'] === 'w:tbl')
+      res.push(this.getArrayFor(p));
+  }
+
+  if (res.length === 1) return res[0];
+
+  return res;
+};
+
 TranslateDOCX.prototype.createTemplateFrom = function(data) {
   let template = {
     'document': {}
   };
   let tDocument = template.document;
-  tDocument.content = [];
-  let body = data['w:document']['w:body'];
 
-  // Pour chaque paragraphe du document
-  for (let p of body['@@']) {
-    if (p['#name'] === 'w:p') {
-      let pAnalyzed = this.analyzeParagraph(p);
-
-      if (!this.isEmptyObject(pAnalyzed)) tDocument.content.push(
-        pAnalyzed);
-    }
-    else if (p['#name'] === 'w:tbl')
-      tDocument.content.push(this.getArrayFor(p));
-  }
+  tDocument.content = this.analyzeElement(data['w:document']['w:body']);
 
   return template;
 };
