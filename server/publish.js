@@ -9,3 +9,7 @@ Meteor.publish("templates", function () {
 Meteor.publish("fields", function () {
     return Collections.Fields.find();
 });
+
+Meteor.publish("messages", function () {
+    return Collections.Messages.find();
+});

@@ -14,3 +14,5 @@ Collections.FilesToProcess = new FS.Collection('filestoprocess', {
 Collections.Templates = new Mongo.Collection("templates");
 
 Collections.Fields = new Mongo.Collection("fields");
+
+Collections.Messages = new Mongo.Collection("messages", { connection: null });
