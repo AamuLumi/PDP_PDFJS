@@ -2,7 +2,7 @@ let PdfPrinter = Meteor.npmRequire('pdfmake');
 let Future = Meteor.npmRequire('fibers/future');
 let base64 = Meteor.npmRequire('base64-stream');
 
-Meteor.myFunctions.generatePDF = function(textArray, templateName) {
+Meteor.myFunctions.generatePDF = function(textArray, templateName, SubscribeID) {
 
   if (!textArray) {
     return undefined;
@@ -63,13 +63,14 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName) {
       Collections.PDF.insert(fileOutput);
 
       // Return the filename when all finished
-      future.return(filename);
+      future.return({ name:filename, size:fileOutput.size});
     } catch (e) {
       future.return(e);
     }
   }));
 
   // Wait all process finish
-  return future.wait();
+  result = future.wait();
+  Meteor.myFunctions.messageSender.new(result.name, result, SubscribeID);
 
 };

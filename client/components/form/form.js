@@ -1,6 +1,7 @@
 if (Meteor.isClient) {
   Session.setDefault('formSchema', []);
   Session.setDefault('selectedTemplate', '');
+  Session.set('uuid', 'test');
 
 
   Template.form.helpers({
@@ -106,22 +107,7 @@ if (Meteor.isClient) {
 
       if (selectedTemplate != '') {
         Meteor.call('PDF.generate',
-          datas, selectedTemplate, (err, res) => {
-            if (err) {
-              console.log(err);
-            } else {
-              let tmp = Session.get('generatedFiles');
-              console.log(tmp);
-
-              if (tmp === undefined) {
-                tmp = [res];
-              } else {
-                tmp.push(res);
-              }
-
-              Session.set('generatedFiles', tmp);
-            }
-          });
+          datas, selectedTemplate, Session.get('SubscribeID'));
         }
     }
   });
