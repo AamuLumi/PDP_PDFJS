@@ -18,7 +18,9 @@ let translateXML = function() {
  * convert the XML template in two JSON object, the template and the fields
  * @param {data} XML template
  */
-translateXML.prototype.translate = function(data) {
+translateXML.prototype.translate = function(data, msObject) {
+
+  this.msObject = msObject;
   console.log('Starting XML translating ..');
 
   if (this.verifiySchema(data)) {
@@ -37,8 +39,9 @@ translateXML.prototype.toJSON = function(data) {
    console.log(JSON.stringify(template));
   let fields = this.getFields(template);
    console.log(JSON.stringify(fields));
-  //
-  //sleep.sleep(10);
+
+   Meteor.myFunctions.messageSender.new({templateUpload:true, title:"Template en cours d'upload..", percent:60}, this.msObject);
+  //sleep.sleep(3);
 
   return {
     template: template,
@@ -75,17 +78,19 @@ translateXML.prototype.getFields = function(data) {
 translateXML.prototype.verifiySchema = function(data) {
   let future = new Future();
 
-  xmlvalidator.parseFile(this.schema, function(err, s){
-    s.validate(data, function(err, validationErrors){
+  let self = this;
+  xmlvalidator.parseFile(this.schema, Meteor.bindEnvironment((err, s) => {
+    s.validate(data,  Meteor.bindEnvironment((err, validationErrors) => {
 
       if (err) {
-        console.log(err);
+        let errStr = " Ligne "+err.int1+" colonne "+err.column+".";
+        Meteor.myFunctions.messageSender.new({templateUpload:true, title:"Erreur lors de la validation du XML..", errorMessage:errStr, percent:20}, self.msObject);
         return future.return(false);
       } else {
         return future.return(true);
       }
-    });
-  });
+    }));
+  }));
 
   return future.wait();
 };

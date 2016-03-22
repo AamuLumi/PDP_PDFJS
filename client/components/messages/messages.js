@@ -1,6 +1,6 @@
 Template.generatedFiles.helpers({
 
-  'files': function() {
+  'messages': function() {
 
     let messages = [];
     Collections.Messages.find({}).forEach(function(obj){

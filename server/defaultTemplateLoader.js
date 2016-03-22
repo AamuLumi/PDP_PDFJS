@@ -10,7 +10,14 @@ let defaultTemplateLoader = function() {
 };
 
 defaultTemplateLoader.prototype.load = function() {
-    Collections.FilesToProcess.insert(this.files[0]);
+
+    let filefs = new FS.File(this.files[0]);
+
+    filefs.metadata = {
+        subscribeID: 'server'
+    };
+
+    Collections.FilesToProcess.insert(filefs);
 };
 
 Meteor.myFunctions.defaultTemplateLoader = new defaultTemplateLoader();

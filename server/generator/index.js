@@ -2,7 +2,9 @@ let PdfPrinter = Meteor.npmRequire('pdfmake');
 let Future = Meteor.npmRequire('fibers/future');
 let base64 = Meteor.npmRequire('base64-stream');
 
-Meteor.myFunctions.generatePDF = function(textArray, templateName, SubscribeID) {
+Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
+
+  Meteor.myFunctions.messageSender.new({}, msObject)
 
   if (!textArray) {
     return undefined;
@@ -28,10 +30,12 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, SubscribeID) 
   // Base filename is <timestamp>.pdf
   let filename = Date.now() + '.pdf';
 
-  let dd = Meteor.myFunctions.templateInterpreter.templateToObject(
-    textArray, templateName);
+  let tObject;
 
-  let pdfDoc = printer.createPdfKitDocument(dd);
+  tObject = Meteor.myFunctions.templateInterpreter.templateToObject(
+  textArray, templateName);
+
+  let pdfDoc = printer.createPdfKitDocument(tObject);
 
   let stream = pdfDoc.pipe(base64.encode());
 
@@ -63,14 +67,14 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, SubscribeID) 
       Collections.PDF.insert(fileOutput);
 
       // Return the filename when all finished
-      future.return({ name:filename, size:fileOutput.size});
+      future.return({fileGeneration:true, title:'PDF généré!', name:filename, size:fileOutput.size()});
     } catch (e) {
       future.return(e);
     }
   }));
 
   // Wait all process finish
-  result = future.wait();
-  Meteor.myFunctions.messageSender.new(result.name, result, SubscribeID);
+  Meteor.myFunctions.messageSender.new(future.wait(), msObject);
+
 
 };

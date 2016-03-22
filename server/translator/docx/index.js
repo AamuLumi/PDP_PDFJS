@@ -295,7 +295,7 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
  * @param  {String} data - the DOCX filename
  * @return {Object}      a JSON template & fields
  */
-TranslateDOCX.prototype.translate = function(data) {
+TranslateDOCX.prototype.translate = function(data, msObject) {
   console.log('Starting DOCX translating ..');
 
   let fileString = this.getDocument(data);

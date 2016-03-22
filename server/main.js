@@ -4,10 +4,9 @@ let Future = Meteor.npmRequire('fibers/future');
  * Generate a PDF based on datas
  * @param {JSON} datas JSON object with fields and values to add in PDF
  */
-function PDFGenerate(datas, selectedTemplate, SubscribeID){
-
-  Meteor.myFunctions.generatePDF(datas, selectedTemplate, SubscribeID);
-	//Meteor.myFunctions.testXMLtoJSON();
+function PDFGenerate(datas, selectedTemplate, subscribeID){
+  let msObject = Meteor.myFunctions.messageSender.generateMSObject(subscribeID);
+  Meteor.myFunctions.generatePDF(datas, selectedTemplate, msObject);
 }
 
 /**

@@ -1,7 +1,6 @@
 if (Meteor.isClient) {
   Session.setDefault('formSchema', []);
   Session.setDefault('selectedTemplate', '');
-  Session.set('uuid', 'test');
 
 
   Template.form.helpers({
@@ -107,7 +106,7 @@ if (Meteor.isClient) {
 
       if (selectedTemplate != '') {
         Meteor.call('PDF.generate',
-          datas, selectedTemplate, Session.get('SubscribeID'));
+          datas, selectedTemplate, Session.get('subscribeID'));
         }
     }
   });
