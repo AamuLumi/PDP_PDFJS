@@ -191,7 +191,6 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
         // Check if this run is a field
         if (this.runIsField(el)) {
           isField = true;
-          console.log('Field found');
         }
 
         if (el['w:rPr']['w:color'])
@@ -246,25 +245,35 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
           for (let k in current.text)
             if (current.text.hasOwnProperty(k)) {
               if (k === '@text')
-                fieldObject.text = current.text[k];
+                fieldObject.default = current.text[k];
               else if (k !== '@')
                 fieldObject[k] = current.text[k];
             }
         } else
           fieldObject.text = current.text;
 
+        let fieldOptions = fieldObject.default.split('!');
+        let isEmptyField = false;
+        fieldObject.default = undefined;
 
-        if (fieldObject.text === 'empty') {
-          res.push({
-            'field': ''
-          });
-        } else {
-          res.push({
-            'field': fieldObject.text
-          });
+        for (let opt of fieldOptions){
+          if (opt === '$n')
+            fieldObject.type = 'number';
+          else if (opt === '$d')
+            fieldObject.type = 'date';
+          else if (opt === '$empty')
+            isEmptyField = true;
+          else
+            fieldObject.default = opt;
         }
 
-        fieldObject.text = undefined;
+
+        if (isEmptyField) {
+          fieldObject.default = undefined;
+        }
+
+        res.push({'field' : ''});
+
         fields.push(fieldObject);
       }
     }
@@ -358,11 +367,12 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
  * @param  {String} data - the DOCX filename
  * @return {Object}      a JSON template & fields
  */
-TranslateDOCX.prototype.translate = function(data, msObject) {
+TranslateDOCX.prototype.translate = function(data) {
   console.log('Starting DOCX translating ..');
 
   let fileString = this.getDocument(data);
   let future = new Future();
+  fields = [];
 
   parser.parseString(fileString, {
     attrkey: '@',

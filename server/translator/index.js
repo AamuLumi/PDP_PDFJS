@@ -9,11 +9,12 @@ let fs = Meteor.npmRequire('fs');
  * @param {name} The name of the file, without the file extension
  * @return {data} The content of the file
  */
-function GetTempFile(name){
+function GetTempFile(name) {
 
   let future = new Future();
 
-  fs.readFile('../web.browser/app/TempFiles/filestoprocess-'+name, 'utf8',
+  fs.readFile('../web.browser/app/TempFiles/filestoprocess-' +
+    name, 'utf8',
     Meteor.bindEnvironment(function(err, data) {
       if (err) {
         return console.log(err);
@@ -33,7 +34,12 @@ function GetTempFile(name){
  */
 Meteor.myFunctions.translate = function(id, filename, msObject) {
 
-  Meteor.myFunctions.messageSender.new({templateUpload:true, title: "Template en cours d'upload..", name:filename, percent:20}, msObject);
+  Meteor.myFunctions.messageSender.new({
+    templateUpload: true,
+    title: 'Template en cours d\'upload ...',
+    name: filename,
+    percent: 20
+  }, msObject);
 
   let ext = path.extname(filename);
   let nameWext = path.basename(filename, ext);
@@ -42,10 +48,11 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
   let data = undefined;
 
   if (ext === '.xml') {
-    data = GetTempFile(id+'-'+filename);
+    data = GetTempFile(id + '-' + filename);
     translator = Meteor.myFunctions.translateXML;
   } else if (ext === '.docx') {
-    data = '../web.browser/app/TempFiles/filestoprocess-'+id+'-'+filename;
+    data = '../web.browser/app/TempFiles/filestoprocess-' + id +
+      '-' + filename;
     translator = Meteor.myFunctions.translateDOCX;
   }
 
@@ -58,19 +65,24 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
 
     Collections.Templates.upsert({
       title: nameWext
-    },{
-      content : result.template,
+    }, {
+      content: result.template,
       title: nameWext
     });
 
     Collections.Fields.upsert({
       title: nameWext
-    },{
-      content : result.fields,
+    }, {
+      content: result.fields,
       title: nameWext
     });
 
-    Meteor.myFunctions.messageSender.new({templateUpload:true, title: "Template uploaded!", percent:100, name:filename}, msObject);
+    Meteor.myFunctions.messageSender.new({
+      templateUpload: true,
+      title: 'Template uploaded!',
+      percent: 100,
+      name: filename
+    }, msObject);
 
   }
 };
