@@ -5,6 +5,8 @@ let Future = Meteor.npmRequire('fibers/future');
 
 let STR_NOT_FOUND = -1;
 
+let fields = [];
+
 let horizontalLine = {
   'line': {
     '@': [
@@ -23,9 +25,8 @@ let horizontalLine = {
 };
 
 let TranslateDOCX = function() {
-
+  fields = [];
 };
-
 /**
  * Get document.xml file contained in a .docx file
  * @param  {String} data - DOCX filename
@@ -43,6 +44,11 @@ TranslateDOCX.prototype.getDocument = function(data) {
  */
 TranslateDOCX.prototype.isEmptyObject = function(obj) {
   return !Object.keys(obj).length;
+};
+
+TranslateDOCX.prototype.isArray = function(obj) {
+  return Object.prototype.toString.call(obj) ===
+    '[object Array]';
 };
 
 /**
@@ -151,14 +157,29 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
   return res;
 };
 
+TranslateDOCX.prototype.runIsField = function(run) {
+  if (!run['w:rPr']['w:highlight'] && !run['w:rPr']['w:shd'])
+    return false;
+  else if (run['w:rPr']['w:highlight'] && run['w:rPr'][
+      'w:highlight'
+    ]['@']['w:val'] === 'lightGray')
+    return true;
+  else if (run['w:rPr']['w:shd'] && run['w:rPr']['w:shd']['@']
+    ['w:fill'] === 'cccccc')
+    return true;
+
+  return false;
+};
+
 /**
  * Create a 'text' element from a 'w:p' DOCX element
  * @param  {Object} textArray - the 'w:p' element to analyze
- * @return {Object}           - the 'text' element
+ * @return {Object|Array}           - the 'text' element
  */
 TranslateDOCX.prototype.getTextFor = function(textArray) {
   let res = [];
   let current = null;
+  let isField = false;
 
   // We search every run of the paragraph
   for (let el of textArray['@@']) {
@@ -167,6 +188,12 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
 
       // Get run properties
       if (el['w:rPr']) {
+        // Check if this run is a field
+        if (this.runIsField(el)) {
+          isField = true;
+          console.log('Field found');
+        }
+
         if (el['w:rPr']['w:color'])
           this.addProperty(current, 'text', 'fontColor',
             this.getColorFor(el['w:rPr']['w:color']['@'][
@@ -189,14 +216,14 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
       }
 
       // Get text
-      if (el['w:t'] && el['w:t']._){
+      if (el['w:t'] && el['w:t']._) {
         // Sometimes, text is contained in field ['_']
         if (current.text) {
           current.text['@text'] = el['w:t']._;
         } else {
           current.text = el['w:t']._;
         }
-      } else if (el['w:t'] && (typeof el['w:t'] !== 'object')){
+      } else if (el['w:t'] && (typeof el['w:t'] !== 'object')) {
         // Sometimes, it's contained in the classic ['w:t']
         //  but it may not contains text. So we need to check
         //  if the ['w:t'] element isn't an object.
@@ -209,24 +236,56 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
         current = undefined;
       }
 
-      if (current) res.push(current);
+      if (current && !isField) res.push(current);
+      else if (current && isField) {
+        let fieldObject = {
+          'type': 'text'
+        };
+
+        if (typeof current.text === 'object') {
+          for (let k in current.text)
+            if (current.text.hasOwnProperty(k)) {
+              if (k === '@text')
+                fieldObject.text = current.text[k];
+              else if (k !== '@')
+                fieldObject[k] = current.text[k];
+            }
+        } else
+          fieldObject.text = current.text;
+
+
+        if (fieldObject.text === 'empty') {
+          res.push({
+            'field': ''
+          });
+        } else {
+          res.push({
+            'field': fieldObject.text
+          });
+        }
+
+        fieldObject.text = undefined;
+        fields.push(fieldObject);
+      }
     }
   }
 
   if (res.length === 1) return res[0];
-  else if (res.length > 1){
-    // We concatenate nested strings, because Word separates them.
-    let tmp = '';
+  else if (res.length > 1) {
+    // // We concatenate nested strings, because Word separates them.
+    // let tmp = '';
+    //
+    // let finalRes = [];
+    //
+    // for (let i = 0; i < res.length; i++){
+    //   if (res[i].text && res[i].text['@text']) tmp += res[i].text['@text'];
+    //   else if (res[i].text) tmp += res[i].text;
+    // }
+    //
+    // if (res[0].text['@text']) res[0].text['@text'] += tmp;
+    // else res[0].text += tmp;
 
-    for (let i = 1; i < res.length; i++){
-      if (res[i].text['@text']) tmp += res[i].text['@text'];
-      else tmp += res[i].text;
-    }
-
-    if (res[0].text['@text']) res[0].text['@text'] += tmp;
-    else res[0].text += tmp;
-
-    return res[0];
+    return res;
   }
 
   return res;
@@ -261,8 +320,12 @@ TranslateDOCX.prototype.analyzeElement = function(data) {
     if (p['#name'] === 'w:p') {
       let pAnalyzed = this.analyzeParagraph(p);
 
-      if (pAnalyzed && !this.isEmptyObject(pAnalyzed)) res.push(
-        pAnalyzed);
+      if (this.isArray(pAnalyzed)) {
+        for (let e of pAnalyzed)
+          res.push(e);
+      } else if (pAnalyzed && !this.isEmptyObject(pAnalyzed))
+        res.push(
+          pAnalyzed);
     } else if (p['#name'] === 'w:tbl')
       res.push(this.getArrayFor(p));
   }
@@ -316,7 +379,7 @@ TranslateDOCX.prototype.translate = function(data) {
 
     return future.return({
       template: template,
-      fields: null
+      fields: fields
     });
   }));
 
