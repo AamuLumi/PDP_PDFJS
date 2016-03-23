@@ -23,14 +23,14 @@ templateInterpreter.prototype.templateToObject = function(
     fieldsData.push(textArray[key]);
   }
 
-  let dd = {
+  let tObject = {
     content: []
   };
 
-  dd.content = this.setPDFmakeObject(template.document.content,
+  tObject.content = this.setPDFmakeObject(template.document.content,
     fieldsData);
 
-  return dd;
+  return tObject;
 
 };
 

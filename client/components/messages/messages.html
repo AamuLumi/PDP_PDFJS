@@ -1,0 +1,14 @@
+<template name="generatedFiles">
+  {{#each messages}}
+  <div class="message">
+    {{#momentum plugin="fade"}}
+      {{#if this.fileGeneration}}
+        {{> fileGeneration}}
+      {{/if}}
+      {{#if this.templateUpload}}
+        {{> templateUpload}}
+      {{/if}}
+    {{/momentum}}
+  </div>
+  {{/each}}
+</template>

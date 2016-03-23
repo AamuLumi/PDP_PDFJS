@@ -1,15 +1,14 @@
 Template.generatedFiles.helpers({
-  'files': function() {
-    if (Session.get('generatedFiles') === undefined)
-      return [];
 
-    let files = [];
+  'messages': function() {
 
-    for (let f of Session.get('generatedFiles')){
-      files.unshift(Collections.PDF.findOne(f));
-    }
+    let messages = [];
+    Collections.Messages.find({}).forEach(function(obj){
+      console.log(obj.content.name);
+        messages.unshift(obj.content);
+      });
+    return messages;
 
-    return files;
   }
 });
 
