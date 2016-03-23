@@ -25,7 +25,7 @@ let horizontalLine = {
 };
 
 let TranslateDOCX = function() {
-  fields = [];
+
 };
 /**
  * Get document.xml file contained in a .docx file
@@ -57,12 +57,19 @@ TranslateDOCX.prototype.isArray = function(obj) {
  * @return {String}          an available color
  */
 TranslateDOCX.prototype.getColorFor = function(strColor) {
-  if (strColor === 'ff0000')
+  let r = parseInt('0x' + strColor.substring(0, 2));
+  let g = parseInt('0x' + strColor.substring(2, 4));
+  let b = parseInt('0x' + strColor.substring(4, 6));
+  let mid = 0x80;
+
+  if (r >= mid && g < mid && b < mid)
     return 'red';
-  else if (strColor === '00ff00')
+  else if (r < mid && g < mid && b >= mid)
     return 'blue';
-  else if (strColor === '0000ff')
+  else if (r < mid && g > mid && b < mid)
     return 'green';
+  else if (r >= mid && g >= mid && b < mid)
+    return 'yellow';
 
   return 'black';
 };
@@ -256,7 +263,7 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
         let isEmptyField = false;
         fieldObject.default = undefined;
 
-        for (let opt of fieldOptions){
+        for (let opt of fieldOptions) {
           if (opt === '$n')
             fieldObject.type = 'number';
           else if (opt === '$d')
@@ -272,7 +279,9 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
           fieldObject.default = undefined;
         }
 
-        res.push({'field' : ''});
+        res.push({
+          'field': ''
+        });
 
         fields.push(fieldObject);
       }
