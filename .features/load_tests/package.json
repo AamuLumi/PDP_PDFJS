@@ -1,0 +1,14 @@
+{
+  "name": "PDFJS_load_tests",
+  "version": "0.0.1",
+  "description": "Load tests for app",
+  "private": true,
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "dependencies" : {
+    "meteor-down": "^2.6.0"
+  },
+  "author": "Florian Kauder <florian@kauder.fr>",
+  "license": "MIT"
+}
