@@ -7,7 +7,7 @@
     "start": "meteor",
     "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/.features",
     "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/.features",
-    "tests-perf": "meteor-down tests/load_tests/PDFGeneration.js"
+    "tests-perf": "cd tests/load_tests/ && npm install && npm start"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
   "license": "MIT"
