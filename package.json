@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "start": "meteor",
-    "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=.features",
-    "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=.features"
+    "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/.features",
+    "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/.features",
+    "tests-perf": "meteor-down tests/load_tests/PDFGeneration.js"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
   "license": "MIT"
