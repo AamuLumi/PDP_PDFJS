@@ -37,8 +37,6 @@
     "no-magic-numbers": [2],
     "no-redeclare": [2],
     "yoda": [2, "never"],
-    // Strict mode
-    "strict": [2, "never"],
     // Variables
     "init-declarations": [2, "always"],
     "no-delete-var": [2],
