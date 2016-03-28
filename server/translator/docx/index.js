@@ -24,11 +24,20 @@ let horizontalLine = {
   }
 };
 
+
+/**
+ * @summary Constructor for the DOCX translator
+ * An TranslateDOCX object is returned by Meteor.myFunctions.TranslateDOCX
+ * @instancename TranslateDOCX
+ * @class
+*/
 let TranslateDOCX = function() {
 
 };
 /**
- * Get document.xml file contained in a .docx file
+ * @summary Get document.xml file contained in a .docx file
+ * @method getDocument
+ * @memberOf TranslateDOCX
  * @param  {String} data - DOCX filename
  * @return {Buffer}      the readed document.xml file
  */
@@ -38,7 +47,9 @@ TranslateDOCX.prototype.getDocument = function(data) {
 };
 
 /**
- * Check if an object is empty
+ * @summary Check if an object is empty
+ * @method isEmptyObject
+ * @memberOf TranslateDOCX
  * @param  {Object} obj - the object to check
  * @return {Boolean}    true if empty
  */
@@ -52,7 +63,9 @@ TranslateDOCX.prototype.isArray = function(obj) {
 };
 
 /**
- * Return an XML avalaible color
+ * @summary Return an XML avalaible color
+ * @method getColorFor
+ * @memberOf TranslateDOCX
  * @param  {String} strColor - the color in hexadecimal
  * @return {String}          an available color
  */
@@ -75,8 +88,10 @@ TranslateDOCX.prototype.getColorFor = function(strColor) {
 };
 
 /**
- * Return the real font size
+ * @summary Return the real font size.
  * DOCX fontSize are doubled (to be stock in integer)
+ * @method getFontSizeFor
+ * @memberOf TranslateDOCX
  * @param  {String} strFontSize - the DOCX font size
  * @return {String}             the real font size
  */
@@ -86,7 +101,9 @@ TranslateDOCX.prototype.getFontSizeFor = function(strFontSize) {
 };
 
 /**
- * Return a avalaible font
+ * @summary Return a avalaible font
+ * @method getFontFor
+ * @memberOf TranslateDOCX
  * @param  {String} strFont - the name of the font
  * @return {String}         an available font
  */
@@ -100,7 +117,9 @@ TranslateDOCX.prototype.getFontFor = function(strFont) {
 };
 
 /**
- * Create a horizontal line with a specific width
+ * @summary Create a horizontal line with a specific width
+ * @method getHorizontalLine
+ * @memberOf TranslateDOCX
  * @param  {String} width - the width of the line
  * @return {Object}       the JSON object who represents the line
  */
@@ -113,9 +132,11 @@ TranslateDOCX.prototype.getHorizontalLine = function(width) {
 };
 
 /**
- * Add a property to an object
+ * @summary Add a property to an object.
  * This function is used to add, for example, some new properties
  * 	to a text object.
+ * @method addProperty
+ * @memberOf TranslateDOCX
  * @param  {Object} object        - the base object to manipulate
  * @param  {String} objectTag     - the tag where property must be added
  * @param  {String} propertyName  - the name of the property
@@ -135,7 +156,9 @@ TranslateDOCX.prototype.addProperty = function(object, objectTag,
 };
 
 /**
- * Create a 'table' element from a 'w:tbl' DOCX element
+ * @summary Create a 'table' element from a 'w:tbl' DOCX element
+ * @method getArrayFor
+ * @memberOf TranslateDOCX
  * @param  {Object} array - the 'w:tbl' element to analyze
  * @return {Object}       the 'table' element
  */
@@ -179,7 +202,9 @@ TranslateDOCX.prototype.runIsField = function(run) {
 };
 
 /**
- * Create a 'text' element from a 'w:p' DOCX element
+ * @summary Create a 'text' element from a 'w:p' DOCX element
+ * @method getTextFor
+ * @memberOf TranslateDOCX
  * @param  {Object} textArray - the 'w:p' element to analyze
  * @return {Object|Array}           - the 'text' element
  */
@@ -310,7 +335,9 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
 };
 
 /**
- * Analyze a 'w:p' element
+ * @summary Analyze a 'w:p' element
+ * @method analyzeParagraph
+ * @memberOf TranslateDOCX
  * @param  {Object} p - the 'w:p' element to analyze
  * @return {Object}   the corresponding template element
  */
@@ -327,7 +354,9 @@ TranslateDOCX.prototype.analyzeParagraph = function(p) {
 };
 
 /**
- * Analyze elements from a DOCX element
+ * @summary Analyze elements from a DOCX element
+ * @method analyzeElement
+ * @memberOf TranslateDOCX
  * @param  {Object} data - the element to analyze
  * @return {Object}      the corresponding template element
  */
@@ -354,7 +383,9 @@ TranslateDOCX.prototype.analyzeElement = function(data) {
 };
 
 /**
- * Create a template from a document.xml JSON
+ * @summary Create a template from a document.xml JSON
+ * @method createTemplateFrom
+ * @memberOf TranslateDOCX
  * @param  {Object} data - the JSON to analyze
  * @return {Object}      the template
  */
@@ -372,7 +403,9 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
 };
 
 /**
- * Translate a DOCX file to a JSON template & fields
+ * @summary Translate a DOCX file to a JSON template & fields
+ * @method translate
+ * @memberOf TranslateDOCX
  * @param  {String} data - the DOCX filename
  * @return {Object}      a JSON template & fields
  */

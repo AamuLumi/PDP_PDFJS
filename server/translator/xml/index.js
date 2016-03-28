@@ -4,21 +4,27 @@ let Future = Meteor.npmRequire('fibers/future');
 let sleep = Meteor.npmRequire('sleep');
 
 /**
- * This module need to setup JAVA_HOME variable in system environment
- */
-
-//TODO: returns
-let translateXML = function() {
+ * @summary Constructor for the XML translator
+ * An TranslateXML object is returned by Meteor.myFunctions.TranslateXML
+ * @instancename TranslateXML
+ * @class
+*/
+let TranslateXML = function() {
   this.schema = '../web.browser/app/template_example.xsd';
   this.fieldName = 'field';
 };
 
 /**
- * Validate the XML template against the XSD schema and
+ * @summary Validate the XML template against the XSD schema and
  * convert the XML template in two JSON object, the template and the fields
+ * @method translate
+ * @memberOf TranslateXML
  * @param {data} XML template
+ * @returns {Object} Teplate Object
+ * @returns {Object.template} Teplate in JSON format
+ * @returns {Object.fields} Fields in JSON format
  */
-translateXML.prototype.translate = function(data, msObject) {
+TranslateXML.prototype.translate = function(data, msObject) {
 
   this.msObject = msObject;
   console.log('Starting XML translating ..');
@@ -31,17 +37,21 @@ translateXML.prototype.translate = function(data, msObject) {
 };
 
 /**
- * Convert the XML template in two JSON object, the template and the fields
+ * @summary Convert the XML template in two JSON object, the template and the fields
+ * @method toJSON
+ * @memberOf TranslateXML
  * @param {data} XML template
+ * @returns {Object} Teplate Object
+ * @returns {Object.template} Teplate in JSON format
+ * @returns {Object.fields} Fields in JSON format
  */
-translateXML.prototype.toJSON = function(data) {
+TranslateXML.prototype.toJSON = function(data) {
   let template = nodexml.xml2obj(data);
    console.log(JSON.stringify(template));
   let fields = this.getFields(template);
    console.log(JSON.stringify(fields));
 
-   Meteor.myFunctions.messageSender.new({templateUpload:true, title:"Template en cours d'upload..", percent:60}, this.msObject);
-  //sleep.sleep(3);
+   Meteor.myFunctions.MessageSender.new({templateUpload:true, title:"Template en cours d'upload..", percent:60}, this.msObject);
 
   return {
     template: template,
@@ -50,32 +60,39 @@ translateXML.prototype.toJSON = function(data) {
 };
 
 /**
- * Extract fields from the XML template
+ * @summary Extract fields from the XML template
+ * @memberOf TranslateXML
+ * @method getFields
  * @param {data} XML template
+ * @returns {Array} Array of all fields in the XMl template
  */
-translateXML.prototype.getFields = function(data) {
-  let result = [];
+TranslateXML.prototype.getFields = function(data) {
+  let fields = [];
 
   for (let prop in data) {
     if (prop === this.fieldName) {
-      result = result.concat(data[prop]);
+      fields = fields.concat(data[prop]);
     } else if (data[prop] instanceof Object) {
       let resultTemp = this.getFields(data[prop]);
 
       if (resultTemp) {
-        result = result.concat(resultTemp);
+        fields = fields.concat(resultTemp);
       }
     }
   }
 
-  return result;
+  return fields;
 };
 
 /**
- * Validate the XML template against the XSD schema
+ * @summary Validate the XML template against the XSD schema
+ * @memberOf TranslateXML
+ * @method verifiySchema
  * @param {data} XML template
+ * @returns {Boolean} If valid or not
+ * @see {@link http://www...github.com/albanm/node-libxml-xsd|libxml-xsd}
  */
-translateXML.prototype.verifiySchema = function(data) {
+TranslateXML.prototype.verifiySchema = function(data) {
   let future = new Future();
 
   let self = this;
@@ -84,7 +101,7 @@ translateXML.prototype.verifiySchema = function(data) {
 
       if (err) {
         let errStr = " Ligne "+err.int1+" colonne "+err.column+".";
-        Meteor.myFunctions.messageSender.new({templateUpload:true, title:"Erreur lors de la validation du XML..", errorMessage:errStr, percent:20}, self.msObject);
+        Meteor.myFunctions.MessageSender.new({templateUpload:true, title:"Erreur lors de la validation du XML..", errorMessage:errStr, percent:20}, self.msObject);
         return future.return(false);
       } else {
         return future.return(true);
@@ -96,4 +113,4 @@ translateXML.prototype.verifiySchema = function(data) {
 };
 
 
-Meteor.myFunctions.translateXML = new translateXML();
+Meteor.myFunctions.TranslateXML = new TranslateXML();

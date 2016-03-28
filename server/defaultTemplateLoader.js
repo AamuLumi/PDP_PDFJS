@@ -3,13 +3,22 @@ let fs = Meteor.npmRequire('fs');
 let path = Meteor.npmRequire('path');
 
 /**
-* Load some basics templates at startup
+ * @summary Constructor for the Default Template Loader.
+ * An DefaultTemplateLoader object is returned by Meteor.myFunctions.DefaultTemplateLoader
+ * This class is used to load some default templates at the startup
+ * @instancename DefaultTemplateLoader
+ * @class
 */
-let defaultTemplateLoader = function() {
+let DefaultTemplateLoader = function() {
   this.files = ['../web.browser/app/template_base.xml'];
 };
 
-defaultTemplateLoader.prototype.load = function() {
+/**
+ * @summary Load all the files specified in the array this.files
+ * @method load
+ * @memberOf DefaultTemplateLoader
+  */
+DefaultTemplateLoader.prototype.load = function() {
 
     let filefs = new FS.File(this.files[0]);
 
@@ -20,4 +29,4 @@ defaultTemplateLoader.prototype.load = function() {
     Collections.FilesToProcess.insert(filefs);
 };
 
-Meteor.myFunctions.defaultTemplateLoader = new defaultTemplateLoader();
+Meteor.myFunctions.DefaultTemplateLoader = new DefaultTemplateLoader();

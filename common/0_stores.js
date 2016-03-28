@@ -8,6 +8,6 @@ Stores.FilesToProcess = new FS.Store.FileSystem("filestoprocess", {
 
 Stores.FilesToProcess.on("stored", Meteor.bindEnvironment(function(storeName, fileObj){
   let msObject = null;
-  msObject = Meteor.myFunctions.messageSender.generateMSObject(fileObj.metadata.subscribeID);
+  msObject = Meteor.myFunctions.MessageSender.generateMSObject(fileObj.metadata.subscribeID);
   Meteor.myFunctions.translate(fileObj._id, fileObj.name(), msObject);
 }));

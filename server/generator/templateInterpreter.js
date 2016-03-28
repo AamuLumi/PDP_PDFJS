@@ -1,17 +1,25 @@
 let fs = Meteor.npmRequire('fs');
 let Future = Meteor.npmRequire('fibers/future');
 
-//TODO: returns
-
-let templateInterpreter = function() {};
+/**
+ * @summary Constructor for the Template Interpreter.
+ * An TemplateInterpreter object is returned by Meteor.myFunctions.TemplateInterpreter
+ * This class is used to covert a XML template to a JSON template.
+ * @instancename TemplateInterpreter
+ * @class
+*/
+let TemplateInterpreter = function() {};
 
 /**
- * Convert fields data and template to a pdfmake object
- * @param {textArray} text from form fields
+ * @summary Convert fields data and template to a pdfmake object with filled fields
+ * @method templateToObject
+ * @memberOf TemplateInterpreter
+ * @param {formData} text from form fields
  * @param {templateId} id of the choosen template
+ * @returns {Object} PDFMake object
  */
-templateInterpreter.prototype.templateToObject = function(
-  textArray, templateName) {
+TemplateInterpreter.prototype.templateToObject = function(
+  formData, templateName) {
 
   let template = this.getTemplate(templateName).content;
 
@@ -19,8 +27,8 @@ templateInterpreter.prototype.templateToObject = function(
 
   let fieldsData = [];
 
-  for (let key in textArray) {
-    fieldsData.push(textArray[key]);
+  for (let key in formData) {
+    fieldsData.push(formData[key]);
   }
 
   let tObject = {
@@ -35,10 +43,13 @@ templateInterpreter.prototype.templateToObject = function(
 };
 
 /**
- * Get template from the DB
+ * @summary Get template from the collection Collections.Templates
+ * @method getTemplate
+ * @memberOf TemplateInterpreter
  * @param {templateId} id of the choosen template
+ * @returns {Object} Template from the collection
  */
-templateInterpreter.prototype.getTemplate = function(templateName) {
+TemplateInterpreter.prototype.getTemplate = function(templateName) {
 
   return Collections.Templates.findOne({
     title: templateName
@@ -47,11 +58,14 @@ templateInterpreter.prototype.getTemplate = function(templateName) {
 };
 
 /**
- * Convert the JSON template en the fields data to a pdfmake object
+ * Convert the JSON template en the fields data to a PDFMmake object
+ * @method setPDFmakeObject
+ * @memberOf TemplateInterpreter
  * @param {content} JSON template
  * @param {fieldsData} text from form fields
+ * @return {Object} PDFMake object
  */
-templateInterpreter.prototype.setPDFmakeObject = function(
+TemplateInterpreter.prototype.setPDFmakeObject = function(
   content, fieldsData) {
   let result = [];
 
@@ -135,4 +149,4 @@ templateInterpreter.prototype.setPDFmakeObject = function(
 };
 
 
-Meteor.myFunctions.templateInterpreter = new templateInterpreter();
+Meteor.myFunctions.TemplateInterpreter = new TemplateInterpreter();

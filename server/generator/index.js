@@ -4,7 +4,7 @@ let base64 = Meteor.npmRequire('base64-stream');
 
 Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
 
-  Meteor.myFunctions.messageSender.new({}, msObject)
+  Meteor.myFunctions.MessageSender.new({}, msObject)
 
   if (!textArray) {
     return undefined;
@@ -32,7 +32,7 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
 
   let tObject;
 
-  tObject = Meteor.myFunctions.templateInterpreter.templateToObject(
+  tObject = Meteor.myFunctions.TemplateInterpreter.templateToObject(
   textArray, templateName);
 
   let pdfDoc = printer.createPdfKitDocument(tObject);
@@ -74,7 +74,7 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
   }));
 
   // Wait all process finish
-  Meteor.myFunctions.messageSender.new(future.wait(), msObject);
+  Meteor.myFunctions.MessageSender.new(future.wait(), msObject);
 
 
 };

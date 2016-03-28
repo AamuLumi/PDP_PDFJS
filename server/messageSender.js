@@ -1,6 +1,25 @@
-let messageSender = function() {};
+/**
+ * @summary Constructor for the Message Sender.
+ * An MessageSender object is returned by Meteor.myFunctions.MessageSender
+ * This class is used to add or update a message in the collection Collections.Messages.
+ * This collection can be accessed by the client by subscribing with his unique subscribeID
+ * and only return messages intended for it.
+ * @instancename MessageSender
+ * @class
+*/
+let MessageSender = function() {};
 
-messageSender.prototype.generateMSObject = function(subscribeID) {
+/**
+ * @summary Return an object containing the message ID (a randomly generated unique ID)
+ * and the subscribe ID to add a new message to the collection Collections.Messages with [`MessageSender`](#new)
+ * @method generateMSObject
+ * @memberOf MessageSender
+ * @param {subscribeID} Subscribe id, if equal 'server' the message will be logged to the console
+ * @returns {Object} Object
+ * @returns {Object.sid} Subscribe id
+ * @returns {Object.mid} Message id
+ */
+MessageSender.prototype.generateMSObject = function(subscribeID) {
 
   let d = new Date().getTime();
   let mid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -13,22 +32,32 @@ messageSender.prototype.generateMSObject = function(subscribeID) {
 
 };
 
-messageSender.prototype.new = function(object, msObject) {
+/**
+ * @summary Send a new message or update a existing message
+ * @method generateMSObject
+ * @memberOf MessageSender
+ * @param {message} The message to add to the collection Collections.Messages
+ * @param {msObject} Object containing the message ID and subscribe ID, see [`MessageSender`](#new)
+ * @returns {Object} Object
+ * @returns {Object.sid} Subscribe id
+ * @returns {Object.mid} Message id
+ */
+MessageSender.prototype.new = function(message, msObject) {
 
   if (msObject.sid != 'server'){
     Collections.Messages.upsert({
       mid:msObject.mid,
       sid:msObject.sid
     },{
-      content:object,
+      content:message,
       sid:msObject.sid,
       mid: msObject.mid
     });
   }
   else{
-    console.log(object);
+    console.log(message);
   }
 
 };
 
-Meteor.myFunctions.messageSender = new messageSender();
+Meteor.myFunctions.MessageSender = new MessageSender();
