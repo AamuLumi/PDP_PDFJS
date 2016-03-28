@@ -10,5 +10,8 @@
     "tests-perf": "cd tests/load_tests/ && npm install && npm start"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chimp": "^0.31.1"
+  }
 }
