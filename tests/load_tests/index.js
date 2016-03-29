@@ -11,12 +11,21 @@
 // Parameters of performance tests
 const NB_TRY = 100;
 const NB_CLIENTS = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+const TEST_FILES = ['./PDFGeneration.js', './templateUpload.js'];
+const TEMPLATES = ['template_2_pages', 'template_20_pages', 'template_200_pages'];
+
 
 // Lib
 const execFile = require('child_process').execFile;
 
-// Cursor on the NB_CLIENTS array
-let cursor = 0;
+// cursor on the NB_CLIENTS array
+let cursor_nbc = 0;
+
+// cursor on the TEST_FILES array
+let cursor_tf = 0;
+
+// cursor on the TEMPLATES array
+let cursor_t = 0;
 
 // Array containing the result
 let res = [];
@@ -28,16 +37,33 @@ function useResult() {
   console.log(res);
 }
 
+
+
 /**
  * Launch a test in a child process
  */
+
 function startTest() {
-  console.log('Test - Essais : ' + NB_TRY +
-    ' - Clients max : ' + NB_CLIENTS[cursor]);
+
+  let str;
+
+  if (cursor_nbc == 0){
+    str = 'Template : '+ TEMPLATES[cursor_t];
+    console.log(str);
+    res.push(str);
+    str = 'Test de : '+ TEST_FILES[cursor_tf];
+    console.log(str);
+    res.push(str);
+  }
+
+  str = 'Essais : ' + NB_TRY +
+    ' - Clients  : ' + NB_CLIENTS[cursor_nbc];
+  console.log(str);
+
 
   // Launch the test file in a child process
-  execFile('node', ['./PDFGenerationTest.js', NB_TRY, NB_CLIENTS[
-    cursor]], (err, out, stderr) => {
+  execFile('node', ['./loadTest.js', NB_TRY, NB_CLIENTS[
+    cursor_nbc], TEST_FILES[cursor_tf], TEMPLATES[cursor_t]], (err, out, stderr) => {
     // Communicate with the client
     if (err) throw err;
     if (stderr) console.log(stderr);
@@ -47,10 +73,21 @@ function startTest() {
     res.push(JSON.parse(out));
 
     // Go to next NB_CLIENTS
-    cursor++;
+    cursor_nbc++;
 
     // Check if tests are finished
-    if (cursor < NB_CLIENTS.length) startTest();
+    if (cursor_nbc < NB_CLIENTS.length) startTest();
+    else if (cursor_tf < TEST_FILES.length-1) {
+      cursor_tf++;
+      cursor_nbc = 0;
+      startTest();
+    }
+    else if (cursor_t < TEMPLATES.length-1) {
+      cursor_t++;
+      cursor_nbc = 0;
+      cursor_tf = 0;
+      startTest();
+    }
     else useResult();
   });
 }

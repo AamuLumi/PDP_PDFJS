@@ -11,7 +11,7 @@ const NB_CLIENTS = $NB_CLIENTS$;
 const TEMPLATE = $TEMPLATE$;
 
 // Method to test
-let methodName = 'PDF.generate';
+let methodName = 'xolvio/backdoor';
 
 // Current cumulated time
 let res = 0;
@@ -19,22 +19,15 @@ let res = 0;
 // Current number of clients who finished the method
 let nbCountedClients = 0;
 
-//To clean the collection
-let cleanCollection = function(path) {
-  Collection.PDF.remove({});
-};
-
 // Prepare the test
 meteorDown.init(function (Meteor) {
 
-  //Clean the collection
-  Meteor.call('xolvio/backdoor', cleanCollection.toString());
+  let f = function(path) {
+    Meteor.myFunctions.DefaultTemplateLoader.load(path);
+  };
 
-  Meteor.call(methodName,
-    {}, TEMPLATE, null, function(err, result){
-      //Clean the collection
-      Meteor.call('xolvio/backdoor', cleanCollection.toString());
-
+  Meteor.call(methodName, f.toString(), ["../web.browser/app/"+TEMPLATE+".xml"],
+  function(err, result){
       // Kill the client (to create another)
       Meteor.kill();
 

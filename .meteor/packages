@@ -30,3 +30,4 @@ iron:router
 aldeed:autoform
 velocity:console-reporter
 cfs:filesystem
+xolvio:backdoor
