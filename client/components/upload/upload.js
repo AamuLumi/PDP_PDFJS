@@ -10,6 +10,8 @@ Template.upload.events({
 
       Collections.FilesToProcess.insert(filefs, function (err, fileObj) {
       });
+
+      $(".file").val('');
     });
   }
 });
