@@ -2,7 +2,7 @@ let Future = Meteor.npmRequire('fibers/future');
 
 /**
  * Generate a PDF based on datas
- * @param {datas} Object JSON object with fields and values to add in PDF
+ * @param {String} datas Object JSON object with fields and values to add in PDF
  */
 function PDFGenerate(datas, selectedTemplate, subscribeID){
   let msObject = Meteor.myFunctions.MessageSender.generateMSObject(subscribeID);
@@ -12,7 +12,7 @@ function PDFGenerate(datas, selectedTemplate, subscribeID){
 /**
  * Get PDF base64 datas from the DB
  * It need a "Future" object to make some async stuff in Meteor
- * @param {name} String name of file to get from DB
+ * @param {String} name name of file to get from DB
  */
 function PDFGet(name){
   let stream = Collections.PDF.findOne(name).createReadStream();

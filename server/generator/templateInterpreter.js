@@ -14,8 +14,8 @@ let TemplateInterpreter = function() {};
  * @summary Convert fields data and template to a pdfmake object with filled fields
  * @method templateToObject
  * @memberOf TemplateInterpreter
- * @param {formData} String text from form fields
- * @param {templateId} String id of the choosen template
+ * @param {String} formData text from form fields
+ * @param {String} templateId id of the choosen template
  * @returns {Object} PDFMake object
  */
 TemplateInterpreter.prototype.templateToObject = function(
@@ -46,7 +46,7 @@ TemplateInterpreter.prototype.templateToObject = function(
  * @summary Get template from the collection Collections.Templates
  * @method getTemplate
  * @memberOf TemplateInterpreter
- * @param {templateId} id of the choosen template
+ * @param {String} templateId id of the choosen template
  * @returns {Object} Template from the collection
  */
 TemplateInterpreter.prototype.getTemplate = function(templateName) {
@@ -61,8 +61,8 @@ TemplateInterpreter.prototype.getTemplate = function(templateName) {
  * Convert the JSON template en the fields data to a PDFMmake object
  * @method setPDFmakeObject
  * @memberOf TemplateInterpreter
- * @param {content} String JSON template
- * @param {fieldsData} String text from form fields
+ * @param {String} content JSON template
+ * @param {String} fieldsData text from form fields
  * @return {Object} Object PDFMake object
  */
 TemplateInterpreter.prototype.setPDFmakeObject = function(
