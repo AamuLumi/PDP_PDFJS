@@ -95,7 +95,7 @@ if (Meteor.isClient) {
       Session.set('formSchema', formSchema);
     },
 
-    'click .generatePDFb': function(event) {
+    'submit .generatePDFb': function(event) {
       event.preventDefault();
 
       let datas = {};
