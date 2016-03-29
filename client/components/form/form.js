@@ -6,7 +6,7 @@ if (Meteor.isClient) {
   Template.form.helpers({
 
     isTemplateSelected: function(){
-      return (Session.get('formSchema') != '');
+      return (Session.get('selectedTemplate') != '');
     },
 
     formSchema: function() {
