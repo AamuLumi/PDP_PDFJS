@@ -45,40 +45,44 @@ if (Meteor.isClient) {
       Session.set('selectedTemplate', selectedTemplate);
 
       let formSchema = [];
-      let fields = Collections.Fields.findOne({title:selectedTemplate});
 
-      for (let i = 0; i < fields.content.length; i++) {
+      if (selectedTemplate != ''){
 
-        let fieldObject = {};
-        console.log(fields.content);
-        let field = fields.content[i];
+        let fields = Collections.Fields.findOne({title:selectedTemplate});
 
-        if ('name' in field)
-          fieldObject.fieldName = field.name;
-        else
-          fieldObject.fieldName = 'Field ' + (i + 1);
+        for (let i = 0; i < fields.content.length; i++) {
 
-        if ('type' in field)
-          fieldObject.fieldType = field.type;
-        else
-          fieldObject.fieldType = 'text';
+          let fieldObject = {};
+          console.log(fields.content);
+          let field = fields.content[i];
 
-        if ('default' in field)
-          fieldObject.fieldDefault = field.default;
-        else
-          fieldObject.fieldDefault = '';
+          if ('name' in field)
+            fieldObject.fieldName = field.name;
+          else
+            fieldObject.fieldName = 'Field ' + (i + 1);
 
-        if ('maxSize' in field)
-          fieldObject.fieldMaxSize = field.maxSize;
-        else
-          fieldObject.fieldMaxSize = '200';
+          if ('type' in field)
+            fieldObject.fieldType = field.type;
+          else
+            fieldObject.fieldType = 'text';
 
-        if ('minSize' in field)
-          fieldObject.fieldMinSize = field.minSize;
-        else
-          fieldObject.fieldMinSize = '0';
+          if ('default' in field)
+            fieldObject.fieldDefault = field.default;
+          else
+            fieldObject.fieldDefault = '';
 
-        formSchema.push(fieldObject);
+          if ('maxSize' in field)
+            fieldObject.fieldMaxSize = field.maxSize;
+          else
+            fieldObject.fieldMaxSize = '200';
+
+          if ('minSize' in field)
+            fieldObject.fieldMinSize = field.minSize;
+          else
+            fieldObject.fieldMinSize = '0';
+
+          formSchema.push(fieldObject);
+        }
       }
 
       console.log($('select#templatedd').val());
