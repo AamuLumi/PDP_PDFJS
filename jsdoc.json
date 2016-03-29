@@ -1,10 +1,10 @@
 {
   // Execute meteor-jsdoc in debug mode to track down errors.
-  "debug": false,
+  "debug": true,
   // node.js install path, default to: "`which node`" on Mac and Linux, "`where node`" on Windows
-  "nodePath": "",
+  "nodePath": "C:/Program Files/nodejs/node.exe",
   // Project docs path
-  "docsPath": "doc/jsdoc",
+  "docsPath": "C:/Users/saphi/Documents/GitHub/PDP_PDFJS/doc/jsdoc",
   // Project docs Meteor server port, default to: 3333
   "meteorPort": 3333,
   // Copy the Meteor docs server before building the docs (required for the first build)

@@ -20,8 +20,8 @@ let TranslateXML = function() {
  * @method translate
  * @memberOf TranslateXML
  * @param {data} XML template
- * @returns {Object} Teplate Object
- * @returns {Object.template} Teplate in JSON format
+ * @returns {Object} Object Template Object
+ * @returns {Object.template} Template in JSON format
  * @returns {Object.fields} Fields in JSON format
  */
 TranslateXML.prototype.translate = function(data, msObject) {
@@ -40,9 +40,9 @@ TranslateXML.prototype.translate = function(data, msObject) {
  * @summary Convert the XML template in two JSON object, the template and the fields
  * @method toJSON
  * @memberOf TranslateXML
- * @param {data} XML template
- * @returns {Object} Teplate Object
- * @returns {Object.template} Teplate in JSON format
+ * @param {data} String XML template
+ * @returns {Object} Template Object
+ * @returns {Object.template} Template in JSON format
  * @returns {Object.fields} Fields in JSON format
  */
 TranslateXML.prototype.toJSON = function(data) {
@@ -63,7 +63,7 @@ TranslateXML.prototype.toJSON = function(data) {
  * @summary Extract fields from the XML template
  * @memberOf TranslateXML
  * @method getFields
- * @param {data} XML template
+ * @param {data} String XML template
  * @returns {Array} Array of all fields in the XMl template
  */
 TranslateXML.prototype.getFields = function(data) {
@@ -88,7 +88,7 @@ TranslateXML.prototype.getFields = function(data) {
  * @summary Validate the XML template against the XSD schema
  * @memberOf TranslateXML
  * @method verifiySchema
- * @param {data} XML template
+ * @param {data} String XML template
  * @returns {Boolean} If valid or not
  * @see {@link http://www...github.com/albanm/node-libxml-xsd|libxml-xsd}
  */

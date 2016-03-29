@@ -38,8 +38,8 @@ let TranslateDOCX = function() {
  * @summary Get document.xml file contained in a .docx file
  * @method getDocument
  * @memberOf TranslateDOCX
- * @param  {String} data - DOCX filename
- * @return {Buffer}      the readed document.xml file
+ * @param  {data} String - DOCX filename
+ * @returns {Buffer}      the readed document.xml file
  */
 TranslateDOCX.prototype.getDocument = function(data) {
   let zip = new ADMZip(data);
@@ -51,7 +51,7 @@ TranslateDOCX.prototype.getDocument = function(data) {
  * @method isEmptyObject
  * @memberOf TranslateDOCX
  * @param  {Object} obj - the object to check
- * @return {Boolean}    true if empty
+ * @returns {Boolean}    true if empty
  */
 TranslateDOCX.prototype.isEmptyObject = function(obj) {
   return !Object.keys(obj).length;
@@ -66,8 +66,8 @@ TranslateDOCX.prototype.isArray = function(obj) {
  * @summary Return an XML avalaible color
  * @method getColorFor
  * @memberOf TranslateDOCX
- * @param  {String} strColor - the color in hexadecimal
- * @return {String}          an available color
+ * @param  {strColor} String - the color in hexadecimal
+ * @returns {String}          an available color
  */
 TranslateDOCX.prototype.getColorFor = function(strColor) {
   let r = parseInt('0x' + strColor.substring(0, 2));
@@ -93,7 +93,7 @@ TranslateDOCX.prototype.getColorFor = function(strColor) {
  * @method getFontSizeFor
  * @memberOf TranslateDOCX
  * @param  {String} strFontSize - the DOCX font size
- * @return {String}             the real font size
+ * @returns {String}             the real font size
  */
 TranslateDOCX.prototype.getFontSizeFor = function(strFontSize) {
   // Font in docx are doubled
@@ -104,8 +104,8 @@ TranslateDOCX.prototype.getFontSizeFor = function(strFontSize) {
  * @summary Return a avalaible font
  * @method getFontFor
  * @memberOf TranslateDOCX
- * @param  {String} strFont - the name of the font
- * @return {String}         an available font
+ * @param  {strFont} String - the name of the font
+ * @returns {String}         an available font
  */
 TranslateDOCX.prototype.getFontFor = function(strFont) {
   if (strFont.indexOf('Helvetica') > STR_NOT_FOUND)
@@ -120,8 +120,8 @@ TranslateDOCX.prototype.getFontFor = function(strFont) {
  * @summary Create a horizontal line with a specific width
  * @method getHorizontalLine
  * @memberOf TranslateDOCX
- * @param  {String} width - the width of the line
- * @return {Object}       the JSON object who represents the line
+ * @param  {width} String - the width of the line
+ * @returns {Object}     the JSON object who represents the line
  */
 TranslateDOCX.prototype.getHorizontalLine = function(width) {
   let res = horizontalLine;
@@ -137,10 +137,10 @@ TranslateDOCX.prototype.getHorizontalLine = function(width) {
  * 	to a text object.
  * @method addProperty
  * @memberOf TranslateDOCX
- * @param  {Object} object        - the base object to manipulate
- * @param  {String} objectTag     - the tag where property must be added
- * @param  {String} propertyName  - the name of the property
- * @param  {Object} propertyValue - the value of the property
+ * @param  {object} Object        - the base object to manipulate
+ * @param  {objectTag} String     - the tag where property must be added
+ * @param  {propertyName} String   - the name of the property
+ * @param  {propertyValue} String  - the value of the property
  */
 TranslateDOCX.prototype.addProperty = function(object, objectTag,
   propertyName, propertyValue) {
@@ -159,8 +159,8 @@ TranslateDOCX.prototype.addProperty = function(object, objectTag,
  * @summary Create a 'table' element from a 'w:tbl' DOCX element
  * @method getArrayFor
  * @memberOf TranslateDOCX
- * @param  {Object} array - the 'w:tbl' element to analyze
- * @return {Object}       the 'table' element
+ * @param  {array} Object - the 'w:tbl' element to analyze
+ * @returns {Object}      the 'table' element
  */
 TranslateDOCX.prototype.getArrayFor = function(array) {
   let res = {
@@ -205,8 +205,8 @@ TranslateDOCX.prototype.runIsField = function(run) {
  * @summary Create a 'text' element from a 'w:p' DOCX element
  * @method getTextFor
  * @memberOf TranslateDOCX
- * @param  {Object} textArray - the 'w:p' element to analyze
- * @return {Object|Array}           - the 'text' element
+ * @param  {textArray} Object - the 'w:p' element to analyze
+ * @returns {Object|Array} - the 'text' element
  */
 TranslateDOCX.prototype.getTextFor = function(textArray) {
   let res = [];
@@ -338,8 +338,8 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
  * @summary Analyze a 'w:p' element
  * @method analyzeParagraph
  * @memberOf TranslateDOCX
- * @param  {Object} p - the 'w:p' element to analyze
- * @return {Object}   the corresponding template element
+ * @param  {p} Object - the 'w:p' element to analyze
+ * @returns {Object}   the corresponding template element
  */
 TranslateDOCX.prototype.analyzeParagraph = function(p) {
   if (p['w:pPr'] && p['w:pPr']['w:pBdr'] &&
@@ -357,8 +357,8 @@ TranslateDOCX.prototype.analyzeParagraph = function(p) {
  * @summary Analyze elements from a DOCX element
  * @method analyzeElement
  * @memberOf TranslateDOCX
- * @param  {Object} data - the element to analyze
- * @return {Object}      the corresponding template element
+ * @param  {data} Object - the element to analyze
+ * @returns {Object}      the corresponding template element
  */
 TranslateDOCX.prototype.analyzeElement = function(data) {
   let res = [];
@@ -386,8 +386,8 @@ TranslateDOCX.prototype.analyzeElement = function(data) {
  * @summary Create a template from a document.xml JSON
  * @method createTemplateFrom
  * @memberOf TranslateDOCX
- * @param  {Object} data - the JSON to analyze
- * @return {Object}      the template
+ * @param  {data} Object - the JSON to analyze
+ * @returns {Object}     the template
  */
 TranslateDOCX.prototype.createTemplateFrom = function(data) {
   let template = {
@@ -407,7 +407,7 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
  * @method translate
  * @memberOf TranslateDOCX
  * @param  {String} data - the DOCX filename
- * @return {Object}      a JSON template & fields
+ * @returns {Object}      a JSON template & fields
  */
 TranslateDOCX.prototype.translate = function(data) {
   console.log('Starting DOCX translating ..');
