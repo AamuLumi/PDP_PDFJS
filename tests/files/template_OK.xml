@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<document>
+
+	<content>
+		<text>Field 1 :</text>
+	</content>
+	<content>
+		<field type ="date"/>
+	</content>
+	<content>
+		<text bold="true">Field 2 :</text>
+	</content>
+	<content>
+		<field type ="number" name ="Nombre test"/>
+	</content>
+	<content>
+		<text>Field 3 :</text>
+	</content>
+	<content>
+		<field type ="text" default="Ceci est un champ prérempli"/>
+	</content>
+	<content>
+		<text> H Line :</text>
+	</content>
+	<content>
+		<line x1="10" x2="400" y1="10" y2="10" width="1"/>
+	</content>
+	<content>
+		<text>Table :</text>
+	</content>
+	<content>
+		<table>
+			<row>
+				<content>
+					<text>C1 :</text>
+				</content>
+				<content>
+					<text>C2 :</text>
+				</content>
+				<content>
+					<text>C3 :</text>
+				</content>
+			</row>
+			<row>
+				<content>
+					<text>C1</text>
+				</content>
+				<content>
+					<text>C2</text>
+				</content>
+				<content>
+					<table>
+						<row>
+							<content>
+								<text>C1bis :</text>
+							</content>
+							<content>
+								<text>C2bis :</text>
+							</content>
+							<content>
+								<text>C3bis :</text>
+							</content>
+						</row>
+						<row>
+							<content>
+								<text>WOHO</text>
+							</content>
+							<content>
+								<text>WOHO</text>
+							</content>
+							<content>
+								<text>WOHO</text>
+							</content>
+						</row>
+					</table>
+				</content>
+			</row>
+		</table>
+	</content>
+	<content>
+		<text>V Line :</text>
+	</content>
+	<content>
+		<line x1="100" x2="100" y1="10" y2="100" width="1"/>
+	</content>
+	<content>
+		<text fontColor="blue">Color</text>
+	</content>
+		<content>
+		<text fontSize="8">Size</text>
+	</content>
+
+</document>
