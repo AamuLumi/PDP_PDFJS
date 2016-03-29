@@ -9,9 +9,10 @@ Template.upload.events({
       };
 
       Collections.FilesToProcess.insert(filefs, function (err, fileObj) {
+        if (err) console.err(err);
       });
 
-      $(".file").val('');
+      $('.file').val('');
     });
   }
 });

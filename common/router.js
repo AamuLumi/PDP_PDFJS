@@ -1,3 +1,4 @@
+// Application router
 
 Router.configure({
   notFoundTemplate: 'not_found'

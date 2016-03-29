@@ -24,7 +24,6 @@ let horizontalLine = {
   }
 };
 
-
 /**
  * @summary Constructor for the DOCX translator
  * An TranslateDOCX object is returned by Meteor.myFunctions.TranslateDOCX

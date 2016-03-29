@@ -2,9 +2,14 @@
  * load_tests module
  *
  * This is a child process.
+ *
+ * Arguments :
+ * - argv[2] : nombre d'essais
+ * - argv[3] : nombre de clients
+ *
  * It's based on meteor-down code.
  * (https://github.com/meteorhacks/meteor-down/blob/master/bin/meteor-down.js)
-*/
+ */
 
 'use strict';
 
