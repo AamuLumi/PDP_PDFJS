@@ -66,16 +66,20 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
     console.log(result);
 
     Collections.Templates.upsert({
+      _id:nameWext,
       title: nameWext
     }, {
       content: result.template,
+      _id:nameWext,
       title: nameWext
     });
 
     Collections.Fields.upsert({
+      _id:nameWext,
       title: nameWext
     }, {
       content: result.fields,
+      _id:nameWext,
       title: nameWext
     });
 
