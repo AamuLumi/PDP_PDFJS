@@ -4,6 +4,11 @@ if (Meteor.isClient) {
 
 
   Template.form.helpers({
+
+    isTemplateSelected: function(){
+      return (Session.get('formSchema') != '');
+    },
+
     formSchema: function() {
       return Session.get('formSchema');
     },
@@ -90,7 +95,7 @@ if (Meteor.isClient) {
       Session.set('formSchema', formSchema);
     },
 
-    'submit .generatePDF': function(event) {
+    'click .generatePDFb': function(event) {
       event.preventDefault();
 
       let datas = {};
@@ -112,6 +117,19 @@ if (Meteor.isClient) {
         Meteor.call('PDF.generate',
           datas, selectedTemplate, Session.get('subscribeID'));
         }
+    },
+
+    'click .deleteBtn' : function(event) {
+       event.preventDefault();
+
+       let selectedTemplate = Session.get('selectedTemplate');
+
+       if (selectedTemplate != ''){
+         Collections.Templates.remove({_id:selectedTemplate});
+         Collections.Fields.remove({_id:selectedTemplate});
+         Session.set('formSchema', []);
+         Session.set('selectedTemplate', '');
+       }
     }
   });
 }

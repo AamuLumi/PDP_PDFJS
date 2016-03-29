@@ -9,9 +9,14 @@
     			    {{/autoForm}}
   			    {{#each formSchema}} {{> formField}} {{/each}}
               <div class="row form-group is-empty">
-          <button class="generatePDF btn btn-primary" type="submit">
+          <button class="generatePDFb btn btn-primary" type="submit">
             Generate PDF
           </button>
+          {{#if isTemplateSelected}}
+          <button class="deleteBtn btn btn-primary">
+            Delete template
+          </button>
+          {{/if}}
         </div>
 
       </fieldset>
