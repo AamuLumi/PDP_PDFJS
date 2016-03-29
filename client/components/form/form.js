@@ -6,7 +6,7 @@ if (Meteor.isClient) {
   Template.form.helpers({
 
     isTemplateSelected: function(){
-      return (Session.get('selectedTemplate') != '');
+      return (Session.get('selectedTemplate') !== '');
     },
 
     formSchema: function() {
@@ -51,12 +51,10 @@ if (Meteor.isClient) {
 
       let formSchema = [];
 
-      if (selectedTemplate != ''){
-
+      if (selectedTemplate !== ''){
         let fields = Collections.Fields.findOne({title:selectedTemplate});
 
         for (let i = 0; i < fields.content.length; i++) {
-
           let fieldObject = {};
           console.log(fields.content);
           let field = fields.content[i];
@@ -95,7 +93,7 @@ if (Meteor.isClient) {
       Session.set('formSchema', formSchema);
     },
 
-    'submit .generatePDFb': function(event) {
+    'submit .generatePDF': function(event) {
       event.preventDefault();
 
       let datas = {};
@@ -104,7 +102,6 @@ if (Meteor.isClient) {
       console.log(selectedTemplate);
       $.each($(event.target).find(':input'), (key) => {
         c = event.target[key];
-        //console.log(c.type);
         if (c.type !== 'file' && c.type !== 'fieldset' && c.type !== 'submit') {
           console.log(c.type);
           datas[c.name] = c.value;
@@ -113,7 +110,7 @@ if (Meteor.isClient) {
 
       console.log(datas);
 
-      if (selectedTemplate != '') {
+      if (selectedTemplate !== '') {
         Meteor.call('PDF.generate',
           datas, selectedTemplate, Session.get('subscribeID'));
         }
@@ -124,7 +121,7 @@ if (Meteor.isClient) {
 
        let selectedTemplate = Session.get('selectedTemplate');
 
-       if (selectedTemplate != ''){
+       if (selectedTemplate !== ''){
          Collections.Templates.remove({_id:selectedTemplate});
          Collections.Fields.remove({_id:selectedTemplate});
          Session.set('formSchema', []);
