@@ -1,7 +1,6 @@
 let upFile = new Mongo.Collection('upFile');
 
 function beginStorage(fileObj) {
-  console.log("YEHAYEAHAYEAH");
   if (Meteor.isClient) {
     // Si on est sur le client, on t�l�verse les donn�es
     self.options.uploader && self.options.uploader(fileObj);
