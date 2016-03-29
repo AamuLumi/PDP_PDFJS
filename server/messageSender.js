@@ -14,7 +14,7 @@ let MessageSender = function() {};
  * and the subscribe ID to add a new message to the collection Collections.Messages with [`MessageSender`](#new)
  * @method generateMSObject
  * @memberOf MessageSender
- * @param {subscribeID} String Subscribe id, if equal 'server' the message will be logged to the console
+ * @param {String} subscribeID Subscribe id, if equal 'server' the message will be logged to the console
  * @returns {Object} Object
  * @returns {Object.sid} Subscribe id
  * @returns {Object.mid} Message id
@@ -36,8 +36,8 @@ MessageSender.prototype.generateMSObject = function(subscribeID) {
  * @summary Send a new message or update a existing message
  * @method new
  * @memberOf MessageSender
- * @param {message} String The message to add to the collection Collections.Messages
- * @param {msObject} Object containing the message ID and subscribe ID, see [`MessageSender`](#new)
+ * @param {String} message The message to add to the collection Collections.Messages
+ * @param {Object} msObject containing the message ID and subscribe ID, see [`MessageSender`](#new)
  */
 MessageSender.prototype.new = function(message, msObject) {
 
