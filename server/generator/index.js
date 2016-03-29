@@ -2,9 +2,10 @@ let PdfPrinter = Meteor.npmRequire('pdfmake');
 let Future = Meteor.npmRequire('fibers/future');
 let base64 = Meteor.npmRequire('base64-stream');
 
-Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
+Meteor.myFunctions.generatePDF = function(textArray,
+  templateName, msObject) {
 
-  Meteor.myFunctions.MessageSender.new({}, msObject)
+  Meteor.myFunctions.MessageSender.new({}, msObject);
 
   if (!textArray) {
     return undefined;
@@ -30,10 +31,10 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
   // Base filename is <timestamp>.pdf
   let filename = Date.now() + '.pdf';
 
-  let tObject;
+  let tObject = undefined;
 
   tObject = Meteor.myFunctions.TemplateInterpreter.templateToObject(
-  textArray, templateName);
+    textArray, templateName);
 
   let pdfDoc = printer.createPdfKitDocument(tObject);
 
@@ -67,7 +68,12 @@ Meteor.myFunctions.generatePDF = function(textArray, templateName, msObject) {
       Collections.PDF.insert(fileOutput);
 
       // Return the filename when all finished
-      future.return({fileGeneration:true, title:'PDF généré!', name:filename, size:fileOutput.size()});
+      future.return({
+        fileGeneration: true,
+        title: 'PDF généré !',
+        name: filename,
+        size: fileOutput.size()
+      });
     } catch (e) {
       future.return(e);
     }

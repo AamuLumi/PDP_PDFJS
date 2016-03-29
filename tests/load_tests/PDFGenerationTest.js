@@ -2,9 +2,14 @@
  * load_tests module
  *
  * This is a child process.
+ *
+ * Arguments :
+ * - argv[2] : nombre d'essais
+ * - argv[3] : nombre de clients
+ *
  * It's based on meteor-down code.
  * (https://github.com/meteorhacks/meteor-down/blob/master/bin/meteor-down.js)
-*/
+ */
 
 'use strict';
 
@@ -23,7 +28,8 @@ let meteorDown = new MeteorDown();
 let PDFGenerationTest = fs.readFileSync('./PDFGeneration.js').toString();
 
 // Replace $var$ with good values
-let currentTest = PDFGenerationTest.replace('$NB_TRY$', parseInt(process.argv[2])).replace(
+let currentTest = PDFGenerationTest.replace('$NB_TRY$', parseInt(
+  process.argv[2])).replace(
   '$NB_CLIENTS$', parseInt(process.argv[3]));
 
 // Create a context for the vm

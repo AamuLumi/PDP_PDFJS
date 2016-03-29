@@ -1,7 +1,8 @@
 let Future = Meteor.npmRequire('fibers/future');
 
 /**
- * Generate a PDF based on datas
+ * @summary Generate a PDF based on datas
+ * @method PDFGenerate
  * @param {String} datas Object JSON object with fields and values to add in PDF
  */
 function PDFGenerate(datas, selectedTemplate, subscribeID){
@@ -10,8 +11,9 @@ function PDFGenerate(datas, selectedTemplate, subscribeID){
 }
 
 /**
- * Get PDF base64 datas from the DB
+ * @summary Get PDF base64 datas from the DB
  * It need a "Future" object to make some async stuff in Meteor
+ * @method PDFGet
  * @param {String} name name of file to get from DB
  */
 function PDFGet(name){
@@ -32,6 +34,7 @@ function PDFGet(name){
 }
 
 Meteor.startup(function() {
+  // Load default template at server start
   Meteor.myFunctions.DefaultTemplateLoader.load();
 });
 

@@ -1,10 +1,7 @@
-let Future = Meteor.npmRequire('fibers/future');
-let fs = Meteor.npmRequire('fs');
-let path = Meteor.npmRequire('path');
-
 /**
  * @summary Constructor for the Default Template Loader.
- * An DefaultTemplateLoader object is returned by Meteor.myFunctions.DefaultTemplateLoader
+ * An DefaultTemplateLoader object is returned by
+ * Meteor.myFunctions.DefaultTemplateLoader
  * This class is used to load some default templates at the startup
  * @instancename DefaultTemplateLoader
  * @class

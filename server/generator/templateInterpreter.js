@@ -1,9 +1,7 @@
-let fs = Meteor.npmRequire('fs');
-let Future = Meteor.npmRequire('fibers/future');
-
 /**
  * @summary Constructor for the Template Interpreter.
- * An TemplateInterpreter object is returned by Meteor.myFunctions.TemplateInterpreter
+ * An TemplateInterpreter object is returned by
+ * Meteor.myFunctions.TemplateInterpreter
  * This class is used to covert a XML template to a JSON template.
  * @instancename TemplateInterpreter
  * @class
@@ -11,7 +9,8 @@ let Future = Meteor.npmRequire('fibers/future');
 let TemplateInterpreter = function() {};
 
 /**
- * @summary Convert fields data and template to a pdfmake object with filled fields
+ * @summary Convert fields data and template to a pdfmake object with
+ * filled fields
  * @method templateToObject
  * @memberOf TemplateInterpreter
  * @param {String} formData text from form fields
@@ -22,8 +21,6 @@ TemplateInterpreter.prototype.templateToObject = function(
   formData, templateName) {
 
   let template = this.getTemplate(templateName).content;
-
-
   let fieldsData = [];
 
   for (let key in formData) {
@@ -51,11 +48,9 @@ TemplateInterpreter.prototype.templateToObject = function(
  * @returns {Object} Template from the collection
  */
 TemplateInterpreter.prototype.getTemplate = function(templateName) {
-
   return Collections.Templates.findOne({
     title: templateName
   });
-
 };
 
 /**
@@ -93,14 +88,14 @@ TemplateInterpreter.prototype.setPDFmakeObject = function(
         }
 
         if ('italic' in content[i].text){
-          if (content[i].text.italic == 'true')
+          if (content[i].text.italic === 'true')
             text.italic = true;
           else
             text.italic = false;
         }
 
         if ('bold' in content[i].text){
-          if (content[i].text.bold == 'true')
+          if (content[i].text.bold === 'true')
             text.bold = true;
           else
             text.bold = false;
