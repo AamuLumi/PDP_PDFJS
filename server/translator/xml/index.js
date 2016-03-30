@@ -47,9 +47,7 @@ TranslateXML.prototype.translate = function(data, msObject) {
  */
 TranslateXML.prototype.toJSON = function(data) {
   let template = nodexml.xml2obj(data);
-  console.log(JSON.stringify(template));
   let fields = this.getFields(template);
-  console.log(JSON.stringify(fields));
 
   Meteor.myFunctions.MessageSender.new({
     templateUpload: true,
@@ -114,8 +112,11 @@ TranslateXML.prototype.verifiySchema = function(data) {
           errorMessage: errStr,
           percent: 20
         }, self.msObject);
+        console.err('XML Translation : Error');
+        console.err(err);
         return future.return(false);
       } else {
+        console.log('XML Translation : OK');
         return future.return(true);
       }
     }));

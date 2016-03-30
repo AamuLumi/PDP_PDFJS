@@ -1,4 +1,3 @@
-@watch
 Feature: Upload a template
 
   Scenario: Unsuccessfully upload a template

@@ -5,9 +5,12 @@ let Future = Meteor.npmRequire('fibers/future');
  * @method PDFGenerate
  * @param {String} datas Object JSON object with fields and values to add in PDF
  */
-function PDFGenerate(datas, selectedTemplate, subscribeID){
-  let msObject = Meteor.myFunctions.MessageSender.generateMSObject(subscribeID);
-  Meteor.myFunctions.generatePDF(datas, selectedTemplate, msObject);
+function PDFGenerate(datas, selectedTemplate, subscribeID) {
+  let msObject = Meteor.myFunctions.MessageSender.generateMSObject(
+    subscribeID);
+
+  Meteor.myFunctions.generatePDF(datas,
+    selectedTemplate, msObject);
 }
 
 /**
@@ -16,7 +19,7 @@ function PDFGenerate(datas, selectedTemplate, subscribeID){
  * @method PDFGet
  * @param {String} name name of file to get from DB
  */
-function PDFGet(name){
+function PDFGet(name) {
   let stream = Collections.PDF.findOne(name).createReadStream();
 
   let future = new Future();
@@ -35,6 +38,7 @@ function PDFGet(name){
 
 Meteor.startup(function() {
   // Load default template at server start
+  console.log('Loading default templates...');
   Meteor.myFunctions.DefaultTemplateLoader.load();
 });
 

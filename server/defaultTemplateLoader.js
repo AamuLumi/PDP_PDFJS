@@ -16,7 +16,6 @@ let DefaultTemplateLoader = function() {
  * @memberOf DefaultTemplateLoader
   */
 DefaultTemplateLoader.prototype.load = function() {
-
     let filefs = new FS.File(this.files[0]);
 
     filefs.metadata = {

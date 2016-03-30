@@ -62,33 +62,31 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
 
     data.filename = filename;
     let result = translator.translate(data, msObject);
+    if (result !== undefined) {
+      Collections.Templates.upsert({
+        _id: nameWext,
+        title: nameWext
+      }, {
+        content: result.template,
+        _id: nameWext,
+        title: nameWext
+      });
 
-    console.log(result);
+      Collections.Fields.upsert({
+        _id: nameWext,
+        title: nameWext
+      }, {
+        content: result.fields,
+        _id: nameWext,
+        title: nameWext
+      });
 
-    Collections.Templates.upsert({
-      _id:nameWext,
-      title: nameWext
-    }, {
-      content: result.template,
-      _id:nameWext,
-      title: nameWext
-    });
-
-    Collections.Fields.upsert({
-      _id:nameWext,
-      title: nameWext
-    }, {
-      content: result.fields,
-      _id:nameWext,
-      title: nameWext
-    });
-
-    Meteor.myFunctions.MessageSender.new({
-      templateUpload: true,
-      title: 'Template uploaded!',
-      percent: 100,
-      name: filename
-    }, msObject);
-
+      Meteor.myFunctions.MessageSender.new({
+        templateUpload: true,
+        title: 'Template uploaded!',
+        percent: 100,
+        name: filename
+      }, msObject);
+    }
   }
 };
