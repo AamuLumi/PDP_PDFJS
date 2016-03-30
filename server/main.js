@@ -39,7 +39,7 @@ function PDFGet(name) {
 Meteor.startup(function() {
   // Load default template at server start
   console.log('Loading default templates...');
-  Meteor.myFunctions.DefaultTemplateLoader.load();
+  Meteor.myFunctions.DefaultTemplateLoader.loadAll();
 });
 
 Meteor.methods({

@@ -25,12 +25,12 @@ const MeteorDown = require('meteor-down');
 let meteorDown = new MeteorDown();
 
 // Read the file containing the meteor-down test
-let PDFGenerationTest = fs.readFileSync('./PDFGeneration.js').toString();
+let testFile = fs.readFileSync(String((process.argv[4]))).toString();
 
 // Replace $var$ with good values
-let currentTest = PDFGenerationTest.replace('$NB_TRY$', parseInt(
-  process.argv[2])).replace(
-  '$NB_CLIENTS$', parseInt(process.argv[3]));
+let currentTest = testFile.replace('$NB_TRY$', parseInt(process.argv[2]))
+    .replace('$NB_CLIENTS$', parseInt(process.argv[3]))
+    .replace('$TEMPLATE$', '"'+String(process.argv[5])+'"');
 
 // Create a context for the vm
 let context = {

@@ -12,7 +12,7 @@ Stores.FilesToProcess.on('stored', Meteor.bindEnvironment(
 
     msObject = Meteor.myFunctions.MessageSender
       .generateMSObject(fileObj.metadata.subscribeID);
-      
+
     Meteor.myFunctions.translate(fileObj._id, fileObj.name(),
       msObject);
   }));

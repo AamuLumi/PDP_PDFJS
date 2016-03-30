@@ -12,11 +12,23 @@ let DefaultTemplateLoader = function() {
 
 /**
  * @summary Load all the files specified in the array this.files
+ * @method loadAll
+ * @memberOf DefaultTemplateLoader
+  */
+DefaultTemplateLoader.prototype.loadAll = function() {
+  for (let i = 0; i < this.files.length; i++) {
+    this.load(this.files[i]);
+  }
+};
+
+/**
+ * @summary Load a file
  * @method load
  * @memberOf DefaultTemplateLoader
   */
-DefaultTemplateLoader.prototype.load = function() {
-    let filefs = new FS.File(this.files[0]);
+DefaultTemplateLoader.prototype.load = function(path) {
+
+    let filefs = new FS.File(path);
 
     filefs.metadata = {
         subscribeID: 'server'
