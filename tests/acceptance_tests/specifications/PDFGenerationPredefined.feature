@@ -1,4 +1,3 @@
-@watch
 Feature: Generate PDF with predefined form
 
   Scenario: Generate basic empty PDF

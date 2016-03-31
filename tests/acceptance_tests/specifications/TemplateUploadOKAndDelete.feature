@@ -1,4 +1,3 @@
-@watch
 Feature: Upload and delete a template
 
   Scenario: Successfully upload a template and then delete it

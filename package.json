@@ -5,9 +5,12 @@
   "private": true,
   "scripts": {
     "start": "meteor",
+    "tests-unit": "./node_modules/chimp/bin/chimp.js --mocha --ddp=http://localhost:3000 --path=tests/unit_tests",
+    "tests-unit-watch": "./node_modules/chimp/bin/chimp.js --mocha --watch --ddp=http://localhost:3000 --path=tests/unit_tests",
     "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
     "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/acceptance_tests",
-    "tests-perf": "cd tests/load_tests/ && npm install && npm start"
+    "tests-perf": "cd tests/load_tests/ && npm install && npm start",
+    "tests-unit": "cd tests/unit_tests/ && npm install && npm start"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
   "license": "MIT",

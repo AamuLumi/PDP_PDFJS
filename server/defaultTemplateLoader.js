@@ -16,7 +16,7 @@ let DefaultTemplateLoader = function() {
  * @memberOf DefaultTemplateLoader
   */
 DefaultTemplateLoader.prototype.loadAll = function() {
-  for (var i = 0; i < this.files.length; i++) {
+  for (let i = 0; i < this.files.length; i++) {
     this.load(this.files[i]);
   }
 };

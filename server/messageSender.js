@@ -1,9 +1,10 @@
 /**
  * @summary Constructor for the Message Sender.
  * An MessageSender object is returned by Meteor.myFunctions.MessageSender
- * This class is used to add or update a message in the collection Collections.Messages.
- * This collection can be accessed by the client by subscribing with his unique subscribeID
- * and only return messages intended for it.
+ * This class is used to add or update a message in the collection
+ * Collections.Messages.
+ * This collection can be accessed by the client by subscribing with his unique
+ * subscribeID and only return messages intended for it.
  * @instancename MessageSender
  * @class
  */
@@ -30,7 +31,7 @@ MessageSender.prototype.generateMSObject = function(subscribeID) {
     function(c) {
       let r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 
   return {
@@ -59,8 +60,6 @@ MessageSender.prototype.new = function(message, msObject) {
       sid: msObject.sid,
       mid: msObject.mid
     });
-  } else {
-    console.log(message);
   }
 };
 

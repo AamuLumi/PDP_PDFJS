@@ -313,22 +313,6 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
   }
 
   if (res.length === 1) return res[0];
-  else if (res.length > 1) {
-    // // We concatenate nested strings, because Word separates them.
-    // let tmp = '';
-    //
-    // let finalRes = [];
-    //
-    // for (let i = 0; i < res.length; i++){
-    //   if (res[i].text && res[i].text['@text']) tmp += res[i].text['@text'];
-    //   else if (res[i].text) tmp += res[i].text;
-    // }
-    //
-    // if (res[0].text['@text']) res[0].text['@text'] += tmp;
-    // else res[0].text += tmp;
-
-    return res;
-  }
 
   return res;
 };
@@ -426,7 +410,7 @@ TranslateDOCX.prototype.translate = function(data) {
       dataJSON));
     let template = this.createTemplateFrom(dataJSON);
 
-    console.log('DOCX Translation : OK ..');
+    console.log('DOCX Translation : OK');
 
     return future.return({
       template: template,

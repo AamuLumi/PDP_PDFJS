@@ -1,4 +1,3 @@
-@watch
 Feature: Generate PDF with a value
 
   Scenario: Generate PDF with value "Coucou" in one field
