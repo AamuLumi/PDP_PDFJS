@@ -1,20 +1,82 @@
 <template name="fileGeneration">
     <div class="row">
       <div class="bs-component">
-        <div class="panel panel-success">
+        {{#if compare this.type 'danger'}}
+          <div class="panel panel-danger">
           <div class="panel-heading">
             <h3 class="panel-title">{{title}}</h3>
           </div>
           <div class="panel-body">
           <div>
+            {{#if this.name}}
               Nom : {{name}}
-              <br /> Taille : {{size}} octets
+            {{/if}}
+            <br />
+              Erreur: {{errorMessage}}
+              <br />
+          </div>
+          <br />
+            <div class="progress">
+                <div class="progress-bar
+                progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{percent}}"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
+                  {{percent}}% Complete
+                </div>
             </div>
+          </div>
+          </div>
+          {{/if}}
+          {{#if compare this.type 'info'}}
+            <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{title}}</h3>
+            </div>
+            <div class="panel-body">
+            <div>
+              {{#if this.name}}
+                Nom : {{name}}
+              {{/if}}
+            <br />
+            <br />
+            </div>
+              <div class="progress">
+                  <div class="progress-bar
+                  progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{{percent}}"
+                  aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
+                    {{percent}}% Complete
+                  </div>
+              </div>
+            </div>
+            </div>
+        {{/if}}
+        {{#if compare this.type 'success'}}
+          <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{title}}</h3>
+          </div>
+          <div class="panel-body">
+          <div>
+            {{#if this.name}}
+              Nom : {{name}}
+            {{/if}}
+            <br /> Taille : {{size}} octets
+            <br />
             <a class="generatedPDFLink" name={{name}}>
               Ouvrir le PDF
             </a>
+            <br />
+            <br />
           </div>
-        </div>
+            <div class="progress">
+                <div class="progress-bar
+                progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{{percent}}"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
+                  {{percent}}% Complete
+                </div>
+            </div>
+          </div>
+          </div>
+        {{/if}}
       </div>
     </div>
 </template>

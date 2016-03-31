@@ -2,7 +2,6 @@ if (Meteor.isClient) {
   Session.setDefault('formSchema', []);
   Session.setDefault('selectedTemplate', '');
 
-
   Template.form.helpers({
 
     isTemplateSelected: function(){
