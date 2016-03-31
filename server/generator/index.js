@@ -5,7 +5,13 @@ let base64 = Meteor.npmRequire('base64-stream');
 Meteor.myFunctions.generatePDF = function(textArray,
   templateName, msObject) {
 
-  Meteor.myFunctions.MessageSender.new({}, msObject);
+  Meteor.myFunctions.MessageSender.new({
+    fileGeneration: true,
+    title: 'PDF en cours de génération..',
+    name: filename,
+    percent: 20,
+    type: 'info'
+  }, msObject);
 
   if (!textArray) {
     return undefined;
@@ -42,6 +48,14 @@ Meteor.myFunctions.generatePDF = function(textArray,
 
   pdfDoc.end();
 
+  Meteor.myFunctions.MessageSender.new({
+    fileGeneration: true,
+    title: 'PDF en cours de génération..',
+    name: filename,
+    percent: 60,
+    type: 'info'
+  }, msObject);
+
   // Concatenate data in the bufferString
   stream.on('data', (d) => {
     bufferString += d;
@@ -72,7 +86,9 @@ Meteor.myFunctions.generatePDF = function(textArray,
         fileGeneration: true,
         title: 'PDF généré !',
         name: filename,
-        size: fileOutput.size()
+        size: fileOutput.size(),
+        type: 'success',
+        percent: 100
       });
     } catch (e) {
       future.return(e);
