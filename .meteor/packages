@@ -17,7 +17,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 insecure                # Allow all DB writes from clients (for prototyping)
 
-npm-container
 percolate:momentum
 twbs:bootstrap
 cfs:standard-packages
