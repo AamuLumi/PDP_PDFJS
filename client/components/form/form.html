@@ -1,25 +1,37 @@
 <template name="form">
   <div class="row">
-    <form class="generatePDF well bs-component form-horizontal">
+  <div class="panel panel-default">
+    <div class="panel-heading header">
+        <h1 class="text-center"><strong>PDFJS</strong></h1>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal generatePDF">
       <fieldset>
-          <legend>Données du PDF</legend>
             {{> upload}}
             	{{#autoForm id="templateSelect" schema=templatesOptions}}
     			       {{> afQuickFields id="templatedd"}}
     			    {{/autoForm}}
   			    {{#each formSchema}} {{> formField}} {{/each}}
               <div class="row form-group is-empty">
-          <button class="generatePDFButton btn btn-primary">
-            Generate PDF
-          </button>
           {{#if isTemplateSelected}}
-          <button class="deleteBtn btn btn-primary">
-            Delete template
-          </button>
+            <button class="generatePDFButton btn btn-primary">
+              Generate PDF
+            </button>
+            <button class="deleteBtn btn btn-danger pull-right">
+              Delete template
+            </button>
+          {{else}}
+            <button disabled class="generatePDFButton btn btn-primary">
+              Generate PDF
+            </button>
+            <button disabled class="deleteBtn btn btn-danger pull-right">
+              Delete template
+            </button>
           {{/if}}
         </div>
-
       </fieldset>
     </form>
+  </div>
+  </div>
   </div>
 </template>

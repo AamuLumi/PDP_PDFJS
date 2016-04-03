@@ -51,8 +51,9 @@ TranslateXML.prototype.toJSON = function(data) {
 
   Meteor.myFunctions.MessageSender.new({
     templateUpload: true,
-    title: 'Template en cours d\'upload..',
-    percent: 60
+    title: 'Template en cours de téléversement..',
+    percent: 60,
+    type: 'info'
   }, this.msObject);
 
   return {
@@ -110,7 +111,8 @@ TranslateXML.prototype.verifiySchema = function(data) {
           templateUpload: true,
           title: 'Erreur lors de la validation du XML..',
           errorMessage: errStr,
-          percent: 20
+          percent: 20,
+          type: 'danger'
         }, self.msObject);
         console.err('XML Translation : Error');
         console.err(err);

@@ -37,9 +37,10 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
 
   Meteor.myFunctions.MessageSender.new({
     templateUpload: true,
-    title: 'Template en cours d\'upload ...',
+    title: 'Template en cours de téléversement..',
     name: filename,
-    percent: 20
+    percent: 20,
+    type: 'info'
   }, msObject);
 
   let ext = path.extname(filename);
@@ -56,12 +57,25 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
       '-' + filename;
     translator = Meteor.myFunctions.translateDOCX;
   }
+  else {
+    Meteor.myFunctions.MessageSender.new({
+      templateUpload: true,
+      title: 'Format non reconnu.',
+      errorMessage: 'Format non reconnu, les formats compatibles sont : XML, DOCX',
+      percent: 20,
+      type: 'danger'
+    }, msObject);
+  }
 
   if (translator && data) {
 
     data.filename = filename;
     let result = translator.translate(data, msObject);
+
+    Collections.FilesToProcess.remove({_id: id});
+
     if (result !== undefined) {
+
       Collections.Templates.upsert({
         _id: nameWext,
         title: nameWext
@@ -82,10 +96,14 @@ Meteor.myFunctions.translate = function(id, filename, msObject) {
 
       Meteor.myFunctions.MessageSender.new({
         templateUpload: true,
-        title: 'Template uploaded!',
+        title: 'Template téléversé !',
         percent: 100,
-        name: filename
+        name: filename,
+        type: 'info'
       }, msObject);
+
     }
+
   }
+
 };

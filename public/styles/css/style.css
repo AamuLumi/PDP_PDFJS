@@ -1,0 +1,31 @@
+
+.generatedPDFLink{
+  cursor: pointer;
+}
+
+.generatePDF{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.maindiv {
+  margin-top: 5%;
+}
+
+.bgcontainer {
+  background: linear-gradient(to bottom, #16a085 0%,#16a085 50%,#000000 50%,#EEE 50%,#EEE 100%) !important;
+  height: 500px;
+}
+
+.header {
+  background-color: #1abc9c !important;
+  height: auto;
+  color: white !important;
+}
+ .no-padding {
+   padding: 0 !important;
+ }
+
+ .no-margin {
+   margin: 0 !important;
+ }

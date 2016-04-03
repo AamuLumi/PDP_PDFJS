@@ -1,107 +1,169 @@
 {
-  "document": {
-    "content": [{
-      "text": "Field 1 :"
-    }, {
-      "field": ""
-    }, {
-      "text": "Field 2 :"
-    }, {
-      "field": ""
-    }, {
-      "text": "Field 3 :"
-    }, {
-      "field": ""
-    }, {
-      "text": "H Line :"
-    }, {
-      "line": {
-        "@": [
-          "x1",
-          "x2",
-          "y1",
-          "y2",
-          "width"
-        ],
-        "x1": "10",
-        "x2": "400",
-        "y1": "10",
-        "y2": "10",
-        "width": "1"
-      }
-    }, {
-      "text": "Table :"
-    }, {
-      "table": {
-        "row": [{
-          "content": [{
-            "text": "C1 :"
-          }, {
-            "text": "C2 :"
-          }, {
-            "text": "C3 :"
-          }]
-        }, {
-          "content": [{
-            "text": "C1"
-          }, {
-            "text": "C2"
-          }, {
-            "table": {
-              "row": [{
-                "content": [{
-                  "text": "C1bis :"
-                }, {
-                  "text": "C2bis :"
-                }, {
-                  "text": "C3bis :"
-                }]
-              }, {
-                "content": [{
-                  "text": "WOHO"
-                }, {
-                  "text": "WOHO"
-                }, {
-                  "text": "WOHO"
-                }]
-              }]
+   "document":{
+      "content":[
+         {
+            "text":"Field 1 :"
+         },
+         {
+            "field":{
+               "@":[
+                  "type"
+               ],
+               "type":"date"
             }
-          }]
-        }]
-      }
-    }, {
-      "text": "V Line :"
-    }, {
-      "line": {
-        "@": [
-          "x1",
-          "x2",
-          "y1",
-          "y2",
-          "width"
-        ],
-        "x1": "100",
-        "x2": "100",
-        "y1": "10",
-        "y2": "100",
-        "width": "1"
-      }
-    }, {
-      "text": {
-        "@text": "Color",
-        "@": [
-          "fontColor"
-        ],
-        "fontColor": "blue"
-      }
-    }, {
-      "text": {
-        "@text": "Size",
-        "@": [
-          "fontSize"
-        ],
-        "fontSize": "8"
-      }
-    }]
-  }
+         },
+         {
+            "text":{
+               "@text":"Field 2 :",
+               "@":[
+                  "bold"
+               ],
+               "bold":"true"
+            }
+         },
+         {
+            "field":{
+               "@":[
+                  "type",
+                  "name"
+               ],
+               "type":"number",
+               "name":"Nombre test"
+            }
+         },
+         {
+            "text":"Field 3 :"
+         },
+         {
+            "field":{
+               "@":[
+                  "type",
+                  "default"
+               ],
+               "type":"text",
+               "default":"Ceci est un champ prérempli"
+            }
+         },
+         {
+            "text":"H Line :"
+         },
+         {
+            "line":{
+               "@":[
+                  "x1",
+                  "x2",
+                  "y1",
+                  "y2",
+                  "width"
+               ],
+               "x1":"10",
+               "x2":"400",
+               "y1":"10",
+               "y2":"10",
+               "width":"1"
+            }
+         },
+         {
+            "text":"Table :"
+         },
+         {
+            "table":{
+               "row":[
+                  {
+                     "content":[
+                        {
+                           "text":"C1 :"
+                        },
+                        {
+                           "text":"C2 :"
+                        },
+                        {
+                           "text":"C3 :"
+                        }
+                     ]
+                  },
+                  {
+                     "content":[
+                        {
+                           "text":"C1"
+                        },
+                        {
+                           "text":"C2"
+                        },
+                        {
+                           "table":{
+                              "row":[
+                                 {
+                                    "content":[
+                                       {
+                                          "text":"C1bis :"
+                                       },
+                                       {
+                                          "text":"C2bis :"
+                                       },
+                                       {
+                                          "text":"C3bis :"
+                                       }
+                                    ]
+                                 },
+                                 {
+                                    "content":[
+                                       {
+                                          "text":"WOHO"
+                                       },
+                                       {
+                                          "text":"WOHO"
+                                       },
+                                       {
+                                          "text":"WOHO"
+                                       }
+                                    ]
+                                 }
+                              ]
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         },
+         {
+            "text":"V Line :"
+         },
+         {
+            "line":{
+               "@":[
+                  "x1",
+                  "x2",
+                  "y1",
+                  "y2",
+                  "width"
+               ],
+               "x1":"100",
+               "x2":"100",
+               "y1":"10",
+               "y2":"100",
+               "width":"1"
+            }
+         },
+         {
+            "text":{
+               "@text":"Color",
+               "@":[
+                  "fontColor"
+               ],
+               "fontColor":"blue"
+            }
+         },
+         {
+            "text":{
+               "@text":"Size",
+               "@":[
+                  "fontSize"
+               ],
+               "fontSize":"8"
+            }
+         }
+      ]
+   }
 }

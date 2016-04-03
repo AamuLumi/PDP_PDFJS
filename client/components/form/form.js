@@ -2,7 +2,6 @@ if (Meteor.isClient) {
   Session.setDefault('formSchema', []);
   Session.setDefault('selectedTemplate', '');
 
-
   Template.form.helpers({
 
     isTemplateSelected: function(){
@@ -102,7 +101,7 @@ if (Meteor.isClient) {
       console.log(selectedTemplate);
       $.each($(event.target).find(':input'), (key) => {
         c = event.target[key];
-        if (c.type !== 'file' && c.type !== 'fieldset' && c.type !== 'submit') {
+        if (c.type !== 'file' && c.type !== 'fieldset' && c.classList[0] !== 'upload') {
           console.log(c.type);
           datas[c.name] = c.value;
         }

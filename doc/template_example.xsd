@@ -5,7 +5,7 @@
 <!-- attributes -->
 <!-- form : [name of the complex/simple type]_[name of the attribute] -->
 
-	
+
 <!-- line -->
 <xs:simpleType name="line_x1">
 <xs:restriction base="xs:integer">
@@ -13,35 +13,35 @@
       <xs:maxInclusive value="800"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="line_x2">
 <xs:restriction base="xs:integer">
       <xs:minInclusive value="0"/>
       <xs:maxInclusive value="800"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="line_y1">
 <xs:restriction base="xs:integer">
       <xs:minInclusive value="0"/>
       <xs:maxInclusive value="800"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="line_y2">
 <xs:restriction base="xs:integer">
       <xs:minInclusive value="0"/>
       <xs:maxInclusive value="800"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="line_width">
 <xs:restriction base="xs:integer">
       <xs:minInclusive value="1"/>
       <xs:maxInclusive value="10"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <!-- field -->
 <xs:simpleType name="field_type">
   <xs:restriction base="xs:string">
@@ -50,26 +50,31 @@
 	<xs:enumeration value="numbers"/>
   </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="field_default">
     <xs:restriction base="xs:string">
     </xs:restriction>
 </xs:simpleType>
-	
+
+<xs:simpleType name="field_name">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="field_maxSize">
 	<xs:restriction base="xs:integer">
       <xs:minInclusive value="1"/>
       <xs:maxInclusive value="100"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <xs:simpleType name="field_minSize">
 	<xs:restriction base="xs:integer">
       <xs:minInclusive value="1"/>
       <xs:maxInclusive value="100"/>
     </xs:restriction>
 </xs:simpleType>
-	
+
 <!-- text -->
 <xs:simpleType name="all_fontColor">
   <xs:restriction base="xs:string">
@@ -78,6 +83,29 @@
 	<xs:enumeration value="green"/>
 	<xs:enumeration value="black"/>
 	<xs:enumeration value="yellow"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_italic">
+  <xs:restriction base="xs:string">
+	<xs:enumeration value="true"/>
+	<xs:enumeration value="false"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_bold">
+  <xs:restriction base="xs:string">
+	<xs:enumeration value="true"/>
+	<xs:enumeration value="false"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="all_alignment">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="left"/>
+    <xs:enumeration value="right"/>
+	<xs:enumeration value="centered"/>
+	<xs:enumeration value="justified"/>
   </xs:restriction>
 </xs:simpleType>
 
@@ -100,21 +128,25 @@
 
 <xs:attributeGroup name="fontAttributes">
   <xs:attribute name="fontSize" type="all_fontSize" />
-  <xs:attribute name="font" type="all_font"/> 
+  <xs:attribute name="font" type="all_font"/>
   <xs:attribute name="fontColor" type="all_fontColor"/>
+	<xs:attribute name="alignment" type="all_alignment"/>
+	<xs:attribute name="italic" type="all_italic"/>
+	<xs:attribute name="bold" type="all_bold"/>
 </xs:attributeGroup>
-	
+
 <xs:attributeGroup name="lineAttributes">
   <xs:attribute name="x1" type="line_x1" use="required"/>
-  <xs:attribute name="x2" type="line_x2" use="required"/> 
+  <xs:attribute name="x2" type="line_x2" use="required"/>
   <xs:attribute name="y1" type="line_y1" use="required"/>
   <xs:attribute name="y2" type="line_y2" use="required"/>
   <xs:attribute name="width" type="line_width" use="required"/>
 </xs:attributeGroup>
-	
+
 <xs:attributeGroup name="fieldAttributes">
   <xs:attribute name="type" type="field_type"/>
-  <xs:attribute name="default" type="field_default"/> 
+  <xs:attribute name="default" type="field_default"/>
+	<xs:attribute name="name" type="field_name"/>
   <xs:attribute name="maxSize" type="field_maxSize"/>
   <xs:attribute name="minSize" type="field_minSize"/>
 </xs:attributeGroup>
@@ -122,7 +154,7 @@
 
 <!--********************** definition of complex types ***********************-->
 
- <xs:complexType name="content">
+<xs:complexType name="content">
 		<xs:choice maxOccurs="1" minOccurs="1">
 			<xs:element name="table" type="table" maxOccurs="unbounded"/>
 			<xs:element name="line" type="line" maxOccurs="unbounded"/>
@@ -130,7 +162,7 @@
 			<xs:element name="field" type="field" maxOccurs="unbounded"/>
 		</xs:choice>
 </xs:complexType>
-	
+
 <xs:complexType name="text">
   <xs:simpleContent>
     <xs:extension base="xs:string">
@@ -138,7 +170,7 @@
     </xs:extension>
   </xs:simpleContent>
 </xs:complexType>
- 
+
 
 <xs:complexType name="line">
       <xs:attributeGroup ref="lineAttributes"/>
@@ -146,7 +178,7 @@
 
 
 <xs:complexType name="field">
-          <xs:attributeGroup ref="fieldAttributes"/>
+        <xs:attributeGroup ref="fieldAttributes"/>
 	      <xs:attributeGroup ref="fontAttributes"/>
  </xs:complexType>
 

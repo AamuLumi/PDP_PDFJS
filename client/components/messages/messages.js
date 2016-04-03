@@ -6,6 +6,23 @@ Template.generatedFiles.helpers({
       });
 
     return messages;
+  },
+
+  'compare': function(v1, v2) {
+      return true;
+  }
+
+});
+
+Template.fileGeneration.helpers({
+  'compare': function(v1, v2) {
+      return v1 === v2;
+  }
+});
+
+Template.templateUpload.helpers({
+  'compare': function(v1, v2) {
+      return v1 === v2;
   }
 });
 

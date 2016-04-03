@@ -1,6 +1,7 @@
 <template name="upload">
-    <label for="uploadField" class="control-label">Upload a template</label>
-    <div class="fileinput fileinput-new" data-provides="fileinput">
-    <span class="btn btn-file btn-upload"><span>Click here to select a file</span><input class="file" type="file" /></span>
-    </div>
+<div class="form-group">
+<label for="inputFile" class="control-label">Upload a template</label>
+<input type="text" readonly="" class="upload form-control" value="Click here to select a file.." placeholder="">
+<input type="file" class="file" id="inputFile" multiple="">
+</div>
 </template>

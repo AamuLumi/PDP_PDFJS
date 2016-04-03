@@ -1,8 +1,8 @@
 <template name="templateUpload">
     <div class="row">
       <div class="bs-component">
-        {{#if this.errorMessage}}
-          <div class="panel panel-danger templateError">
+        {{#if compare this.type 'danger'}}
+          <div class="panel panel-danger">
           <div class="panel-heading">
             <h3 class="panel-title">{{title}}</h3>
           </div>
@@ -11,11 +11,14 @@
             {{#if this.name}}
               Nom : {{name}}
             {{/if}}
+            <br />
               Erreur: {{errorMessage}}
+              <br />
+              <br />
           </div>
             <div class="progress">
                 <div class="progress-bar
-                progress-bar-danger" role="progressbar" aria-valuenow="{{percent}}"
+                progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{percent}}"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
                   {{percent}}% Complete
                 </div>
@@ -23,7 +26,7 @@
           </div>
           </div>
         {{else}}
-          <div class="panel panel-info templateUploaded">
+          <div class="panel panel-info">
           <div class="panel-heading">
             <h3 class="panel-title">{{title}}</h3>
           </div>
@@ -32,10 +35,12 @@
             {{#if this.name}}
               Nom : {{name}}
             {{/if}}
+            <br />
+            <br />
           </div>
             <div class="progress">
                 <div class="progress-bar
-                progress-bar-info" role="progressbar" aria-valuenow="{{percent}}"
+                progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{{percent}}"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
                   {{percent}}% Complete
                 </div>
