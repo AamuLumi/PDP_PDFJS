@@ -34,7 +34,7 @@ An application must run on **http://localhost:3000**.
 ### Unit tests
 
 ```
-npm run unit-tests
+npm run tests-unit
 ```
 
 ### Load tests
@@ -43,7 +43,7 @@ This is tests based on PDF generation time and templates uploads time with
 different amount of clients.
 
 ```
-npm run load-tests
+npm run tests-load
 ```
 
 ### Acceptance tests
@@ -52,7 +52,7 @@ This command needs a running application on port 3000.
 It will launch a **Chimp** application to test basic stories.
 
 ```
-npm run acceptance-tests
+npm run tests-acceptance
 ```
 
 ## Licence
