@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "start": "meteor",
-    "tests-unit": "meteor test --driver-package practicalmeteor:mocha --port 3100",
-    "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
+    "unit-tests": "meteor test --driver-package practicalmeteor:mocha --port 3100",
+    "acceptance-tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
     "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/acceptance_tests",
-    "tests-perf": "cd tests/load_tests/ && npm install && npm start"
+    "load-tests": "cd tests/load_tests/ && npm install && npm start"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
   "license": "MIT",
