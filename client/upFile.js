@@ -1,4 +1,4 @@
-let upFile = new Mongo.Collection('upFile');
+new Mongo.Collection('upFile');
 
 function beginStorage(fileObj) {
   if (Meteor.isClient) {
@@ -20,9 +20,7 @@ function checkAndInsert(fileObj) {
     );
   }
 
-
   fileObj.collectionName = self.name;
-
 
   if (callback) {
     fileObj._id = self.files.insert(FS.Utility.cloneFileRecord(

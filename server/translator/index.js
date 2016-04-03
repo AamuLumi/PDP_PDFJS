@@ -1,7 +1,6 @@
-let path = Meteor.npmRequire('path');
-let Future = Meteor.npmRequire('fibers/future');
-let fs = Meteor.npmRequire('fs');
-
+import path from 'path';
+import Future from 'fibers/future';
+import fs from 'fs';
 
 /**
  * @summary Get a temporary file from the folder ../web.browser/app/TempFiles

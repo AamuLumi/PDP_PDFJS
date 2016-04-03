@@ -1,7 +1,7 @@
-let ADMZip = Meteor.npmRequire('adm-zip');
-let fs = Meteor.npmRequire('fs');
-let parser = Meteor.npmRequire('xml2js');
-let Future = Meteor.npmRequire('fibers/future');
+import ADMZip from 'adm-zip';
+import fs from 'fs';
+import parser from 'xml2js';
+import Future from 'fibers/future';
 
 let STR_NOT_FOUND = -1;
 

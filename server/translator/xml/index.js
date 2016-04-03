@@ -1,6 +1,6 @@
-let nodexml = Meteor.npmRequire('nodexml');
-let xmlvalidator = Meteor.npmRequire('libxml-xsd');
-let Future = Meteor.npmRequire('fibers/future');
+import nodexml from 'nodexml';
+import xmlvalidator from 'libxml-xsd';
+import Future from 'fibers/future';
 
 /**
  * @summary Constructor for the XML translator
@@ -114,6 +114,7 @@ TranslateXML.prototype.verifiySchema = function(data) {
         }, self.msObject);
         console.err('XML Translation : Error');
         console.err(err);
+        console.err(validationErrors);
         return future.return(false);
       } else {
         console.log('XML Translation : OK');

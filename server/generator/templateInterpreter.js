@@ -34,8 +34,6 @@ TemplateInterpreter.prototype.templateToObject = function(
   tObject.content = this.setPDFmakeObject(template.document.content,
     fieldsData);
 
-  console.log(JSON.stringify(tObject));
-
   return tObject;
 
 };

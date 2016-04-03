@@ -5,16 +5,21 @@
   "private": true,
   "scripts": {
     "start": "meteor",
-    "tests-unit": "./node_modules/chimp/bin/chimp.js --mocha --ddp=http://localhost:3000 --path=tests/unit_tests",
+    "tests-unit": "cd tests/unit_tests/ && npm install && npm start",
     "tests-unit-watch": "./node_modules/chimp/bin/chimp.js --mocha --watch --ddp=http://localhost:3000 --path=tests/unit_tests",
     "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
     "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/acceptance_tests",
-    "tests-perf": "cd tests/load_tests/ && npm install && npm start",
-    "tests-unit": "cd tests/unit_tests/ && npm install && npm start"
+    "tests-perf": "cd tests/load_tests/ && npm install && npm start"
   },
   "author": "Florian Kauder <flokauder@hotmail.com>",
   "license": "MIT",
   "dependencies": {
-    "chimp": "^0.31.1"
+    "adm-zip": "^0.4.7",
+    "base64-stream": "^0.1.3",
+    "chimp": "^0.31.1",
+    "libxml-xsd": "^0.5.2",
+    "nodexml": "^1.0.2",
+    "pdfmake": "^0.1.18",
+    "xml2js": "^0.4.16"
   }
 }

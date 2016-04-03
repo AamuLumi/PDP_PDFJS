@@ -1,4 +1,4 @@
-let Future = Meteor.npmRequire('fibers/future');
+import Future from 'fibers/future';
 
 /**
  * @summary Generate a PDF based on datas

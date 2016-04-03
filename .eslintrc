@@ -12,7 +12,8 @@
     "forOf": true,
     "spread": true,
     "templateString": true,
-    "globalReturn": true
+    "globalReturn": true,
+    "modules": true
   },
   "rules": {
     "comma-dangle": [2, "never"],

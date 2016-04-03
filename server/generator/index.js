@@ -1,6 +1,6 @@
-let PdfPrinter = Meteor.npmRequire('pdfmake');
-let Future = Meteor.npmRequire('fibers/future');
-let base64 = Meteor.npmRequire('base64-stream');
+import PdfPrinter from 'pdfmake';
+import Future from 'fibers/future';
+import base64 from 'base64-stream';
 
 Meteor.myFunctions.generatePDF = function(textArray,
   templateName, msObject) {
@@ -33,8 +33,12 @@ Meteor.myFunctions.generatePDF = function(textArray,
 
   let tObject = undefined;
 
+  console.log('Interpreting template');
+
   tObject = Meteor.myFunctions.TemplateInterpreter.templateToObject(
     textArray, templateName);
+
+  console.log('Creating PDF document');
 
   let pdfDoc = printer.createPdfKitDocument(tObject);
 
@@ -42,14 +46,18 @@ Meteor.myFunctions.generatePDF = function(textArray,
 
   pdfDoc.end();
 
+  console.log('Encoding PDF document');
+
   // Concatenate data in the bufferString
   stream.on('data', (d) => {
     bufferString += d;
   });
 
   // At the end of buffer, create FS.File and add it to DB
-  stream.on('end', Meteor.bindEnvironment(() => {
+  stream.on('finish', Meteor.bindEnvironment(() => {
     try {
+      console.log('Storing PDF document');
+
       let fileOutput = new FS.File();
 
       // File settings
