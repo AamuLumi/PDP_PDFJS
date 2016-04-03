@@ -37,4 +37,4 @@ DefaultTemplateLoader.prototype.load = function(path) {
     Collections.FilesToProcess.insert(filefs);
 };
 
-Meteor.myFunctions.DefaultTemplateLoader = new DefaultTemplateLoader();
+export default new DefaultTemplateLoader();

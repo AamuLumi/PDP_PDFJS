@@ -1,10 +1,11 @@
 import nodexml from 'nodexml';
 import xmlvalidator from 'libxml-xsd';
 import Future from 'fibers/future';
+import MessageSender from '../../tools/messageSender';
 
 /**
  * @summary Constructor for the XML translator
- * An TranslateXML object is returned by Meteor.myFunctions.TranslateXML
+ * An TranslateXML object is returned by TranslateXML module
  * @instancename TranslateXML
  * @class
  */
@@ -49,7 +50,7 @@ TranslateXML.prototype.toJSON = function(data) {
   let template = nodexml.xml2obj(data);
   let fields = this.getFields(template);
 
-  Meteor.myFunctions.MessageSender.new({
+  MessageSender.new({
     templateUpload: true,
     title: 'Template en cours de téléversement..',
     percent: 60,
@@ -107,7 +108,7 @@ TranslateXML.prototype.verifiySchema = function(data) {
       if (err) {
         let errStr = ' Ligne ' + err.int1 +
           ' colonne ' + err.column + '.';
-        Meteor.myFunctions.MessageSender.new({
+        MessageSender.new({
           templateUpload: true,
           title: 'Erreur lors de la validation du XML..',
           errorMessage: errStr,
@@ -129,4 +130,4 @@ TranslateXML.prototype.verifiySchema = function(data) {
 };
 
 
-Meteor.myFunctions.TranslateXML = new TranslateXML();
+export default new TranslateXML();

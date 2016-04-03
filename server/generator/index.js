@@ -1,11 +1,13 @@
 import PdfPrinter from 'pdfmake';
 import Future from 'fibers/future';
 import base64 from 'base64-stream';
+import TemplateInterpreter from './templateInterpreter';
+import MessageSender from '../tools/messageSender';
 
-Meteor.myFunctions.generatePDF = function(textArray,
+export default function generatePDF(textArray,
   templateName, msObject) {
 
-  Meteor.myFunctions.MessageSender.new({
+  MessageSender.new({
     fileGeneration: true,
     title: 'PDF en cours de génération..',
     name: filename,
@@ -41,7 +43,7 @@ Meteor.myFunctions.generatePDF = function(textArray,
 
   console.log('Interpreting template');
 
-  tObject = Meteor.myFunctions.TemplateInterpreter.templateToObject(
+  tObject = TemplateInterpreter.templateToObject(
     textArray, templateName);
 
   console.log('Creating PDF document');
@@ -54,7 +56,7 @@ Meteor.myFunctions.generatePDF = function(textArray,
 
   console.log('Encoding PDF document');
 
-  Meteor.myFunctions.MessageSender.new({
+  MessageSender.new({
     fileGeneration: true,
     title: 'PDF en cours de génération..',
     name: filename,
@@ -68,7 +70,7 @@ Meteor.myFunctions.generatePDF = function(textArray,
   });
 
   // At the end of buffer, create FS.File and add it to DB
-  stream.on('finish', Meteor.bindEnvironment(() => {
+  stream.on('end', Meteor.bindEnvironment(() => {
     try {
       console.log('Storing PDF document');
 
@@ -104,7 +106,5 @@ Meteor.myFunctions.generatePDF = function(textArray,
   }));
 
   // Wait all process finish
-  Meteor.myFunctions.MessageSender.new(future.wait(), msObject);
-
-
-};
+  MessageSender.new(future.wait(), msObject);
+}

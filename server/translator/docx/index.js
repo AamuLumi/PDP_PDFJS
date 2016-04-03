@@ -26,13 +26,14 @@ let horizontalLine = {
 
 /**
  * @summary Constructor for the DOCX translator
- * An TranslateDOCX object is returned by Meteor.myFunctions.TranslateDOCX
+ * An TranslateDOCX object is returned by TranslateDOCX module
  * @instancename TranslateDOCX
  * @class
 */
 let TranslateDOCX = function() {
 
 };
+
 /**
  * @summary Get document.xml file contained in a .docx file
  * @method getDocument
@@ -421,4 +422,4 @@ TranslateDOCX.prototype.translate = function(data) {
   return future.wait();
 };
 
-Meteor.myFunctions.translateDOCX = new TranslateDOCX();
+export default new TranslateDOCX();

@@ -1,4 +1,8 @@
 import Future from 'fibers/future';
+import MessageSender from './tools/messageSender';
+import DefaultTemplateLoader from './tools/defaultTemplateLoader';
+import GeneratePDF from './generator';
+import Translate from './translator';
 
 /**
  * @summary Generate a PDF based on datas
@@ -6,11 +10,9 @@ import Future from 'fibers/future';
  * @param {String} datas Object JSON object with fields and values to add in PDF
  */
 function PDFGenerate(datas, selectedTemplate, subscribeID) {
-  let msObject = Meteor.myFunctions.MessageSender.generateMSObject(
-    subscribeID);
+  let msObject = MessageSender.generateMSObject(subscribeID);
 
-  Meteor.myFunctions.generatePDF(datas,
-    selectedTemplate, msObject);
+  GeneratePDF(datas, selectedTemplate, msObject);
 }
 
 /**
@@ -39,10 +41,12 @@ function PDFGet(name) {
 Meteor.startup(function() {
   // Load default template at server start
   console.log('Loading default templates...');
-  Meteor.myFunctions.DefaultTemplateLoader.loadAll();
+  DefaultTemplateLoader.loadAll();
 });
 
 Meteor.methods({
   'PDF.generate': PDFGenerate,
-  'PDF.get': PDFGet
+  'PDF.get': PDFGet,
+  'MessageSender.generate': MessageSender.generateMSObject,
+  'Translator.translate': Translate
 });

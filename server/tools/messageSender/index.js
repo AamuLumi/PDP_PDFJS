@@ -1,6 +1,6 @@
 /**
  * @summary Constructor for the Message Sender.
- * An MessageSender object is returned by Meteor.myFunctions.MessageSender
+ * An MessageSender object is returned by MessageSender module
  * This class is used to add or update a message in the collection
  * Collections.Messages.
  * This collection can be accessed by the client by subscribing with his unique
@@ -8,7 +8,8 @@
  * @instancename MessageSender
  * @class
  */
-let MessageSender = function() {};
+let MessageSender = function() {
+};
 
 /**
  * @summary Return an object containing the message ID
@@ -63,4 +64,4 @@ MessageSender.prototype.new = function(message, msObject) {
   }
 };
 
-Meteor.myFunctions.MessageSender = new MessageSender();
+export default new MessageSender();

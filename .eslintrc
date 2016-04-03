@@ -40,7 +40,6 @@
     // Variables
     "init-declarations": [2, "always"],
     "no-delete-var": [2],
-    "no-unused-vars": [2],
     "no-undef": [0], // because Meteor container who reads files
     "no-use-before-define": [2],
     // NodeJS
