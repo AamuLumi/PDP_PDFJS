@@ -77,7 +77,6 @@ momentjs:moment@2.10.6
 mongo@1.1.5
 mongo-id@1.0.2
 mongo-livedata@1.0.10
-npm-container@1.2.0
 npm-mongo@1.4.41
 observe-sequence@1.0.9
 ordered-dict@1.0.5

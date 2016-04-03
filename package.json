@@ -6,7 +6,7 @@
   "scripts": {
     "start": "meteor",
     "tests-unit": "meteor test --driver-package practicalmeteor:mocha --port 3100",
-    "tests": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
+    "tests-acceptance": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --path=tests/acceptance_tests",
     "tests-watch": "./node_modules/chimp/bin/chimp.js --ddp=http://localhost:3000 --watch --path=tests/acceptance_tests",
     "tests-perf": "cd tests/load_tests/ && npm install && npm start"
   },

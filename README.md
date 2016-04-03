@@ -8,22 +8,22 @@
 - [x] Generate a PDF
 - [x] Send PDF to client
 - [x] Read XML template files
+- [x] Read DOCX template files
+- [x] Generate a PDF with a template
 
 ## Installation
 
-```
-npm start
-```
+This application need a Meteor >= 1.3 installation.
+If you're running on a older Meteor, please update.
 
-Currently, a XML library needs Java to works, and a JAVA_HOME variable set with the JVM. For example, on Linux :
 ```
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64/
+meteor npm install
 ```
 
 ## Running
 
 ```
-npm start
+meteor
 ```
 
 This command will start a server on port 3000.
@@ -31,13 +31,29 @@ An application must run on **http://localhost:3000**.
 
 ## Test
 
+### Unit tests
+
 ```
-npm Install
-npm run tests
+npm run tests-unit
 ```
 
-This command will run chimp tests on the application.
-**Server must be running**.
+### Load tests
+
+This is tests based on PDF generation time and templates uploads time with
+different amount of clients.
+
+```
+npm run tests-load
+```
+
+### Acceptance tests
+
+This command needs a running application on port 3000.
+It will launch a **Chimp** application to test basic stories.
+
+```
+npm run tests-acceptance
+```
 
 ## Licence
 
