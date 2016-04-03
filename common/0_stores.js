@@ -8,9 +8,9 @@ Stores.FilesToProcess = new FS.Store.FileSystem('filestoprocess', {
 
 Stores.FilesToProcess.on('stored', Meteor.bindEnvironment(
   function(storeName, fileObj) {
-    Meteor.call('MessageSender.generate', {
-      'id': fileObj.metadata.subscribeID
-    }, (err, res) => {
+    Meteor.call('MessageSender.generate',
+      fileObj.metadata.subscribeID
+    , (err, res) => {
       if (err) console.err(err);
       if (res)
         Meteor.call('Translator.translate',
