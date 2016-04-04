@@ -1,4 +1,4 @@
-import '../../ui/client/components/home/home.js'
+import '../../ui/client/components/home/home.js';
 
 // Application router
 Router.configure({

@@ -4,7 +4,10 @@ import fs from 'fs';
 import DOCXTranslator from './docx';
 import XMLTranslator from './xml';
 import MessageSender from '../tools/messageSender';
-import { Collections } from '../../collections.js';
+import {
+  Collections
+}
+from '../../collections.js';
 
 
 /**
@@ -74,10 +77,11 @@ export default function translate(id, filename, msObject) {
     data.filename = filename;
     let result = translator.translate(data, msObject);
 
-    Collections.FilesToProcess.remove({_id: id});
+    Collections.FilesToProcess.remove({
+      _id: id
+    });
 
     if (result !== undefined) {
-
       Collections.Templates.upsert({
         _id: nameWext,
         title: nameWext
@@ -103,9 +107,6 @@ export default function translate(id, filename, msObject) {
         name: filename,
         type: 'info'
       }, msObject);
-
     }
-
   }
-
-};
+}
