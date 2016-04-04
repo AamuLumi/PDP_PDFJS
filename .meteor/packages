@@ -31,3 +31,5 @@ standard-minifier-css
 standard-minifier-js
 practicalmeteor:mocha
 practicalmeteor:chai
+underscore
+stub-collections

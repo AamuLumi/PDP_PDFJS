@@ -11,8 +11,8 @@
 // Parameters of performance tests
 const NB_TRY = 100;
 const NB_CLIENTS = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-const TEST_FILES = ['./PDFGeneration.js', './templateUpload.js'];
-const TEMPLATES = ['template_2_pages', 'template_20_pages', 'template_200_pages'];
+const TEST_FILES = ['./templateUpload.js', './PDFGeneration.js', ];
+const TEMPLATES = ['template_1_pages', 'template_5_pages', 'template_15_pages', 'template_25_pages',];
 
 
 // Lib
