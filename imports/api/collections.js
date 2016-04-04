@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Stores } from './stores.js';
 
-let CollectionsObj = {};
+CollectionsObj = {};
 
 // Add helper Collections for Client
 Meteor.isClient && Template.registerHelper('Collections', CollectionsObj);
@@ -20,7 +20,5 @@ CollectionsObj.Templates = new Mongo.Collection('templates');
 CollectionsObj.Fields = new Mongo.Collection('fields');
 
 CollectionsObj.Messages = new Mongo.Collection('messages');
-
-CollectionsGlobal = CollectionsObj;
 
 export const Collections = CollectionsObj;

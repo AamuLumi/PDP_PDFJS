@@ -24,11 +24,7 @@ meteorDown.init(function (Meteor) {
 
   let f = function(path) {
 
-    let filefs = new FS.File(path);
-    filefs.metadata = {
-        subscribeID: 'server'
-    };
-    CollectionsGlobal.FilesToProcess.insert(filefs);
+    CollectionsObj.FilesToProcess.insert(path);
 
   };
 
