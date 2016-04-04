@@ -1,5 +1,4 @@
 import ADMZip from 'adm-zip';
-import fs from 'fs';
 import parser from 'xml2js';
 import Future from 'fibers/future';
 
@@ -29,7 +28,7 @@ let horizontalLine = {
  * An TranslateDOCX object is returned by TranslateDOCX module
  * @instancename TranslateDOCX
  * @class
-*/
+ */
 let TranslateDOCX = function() {
 
 };
@@ -70,11 +69,13 @@ TranslateDOCX.prototype.isArray = function(obj) {
  * @returns {String}          an available color
  */
 TranslateDOCX.prototype.getColorFor = function(strColor) {
+  // Transforms string to hexadecimals numbers to facilitate calculation
   let r = parseInt('0x' + strColor.substring(0, 2));
   let g = parseInt('0x' + strColor.substring(2, 4));
   let b = parseInt('0x' + strColor.substring(4, 6));
   let mid = 0x80;
 
+  // Check what is the nearest color
   if (r >= mid && g < mid && b < mid)
     return 'red';
   else if (r < mid && g < mid && b >= mid)
@@ -144,14 +145,18 @@ TranslateDOCX.prototype.getHorizontalLine = function(width) {
  */
 TranslateDOCX.prototype.addProperty = function(object, objectTag,
   propertyName, propertyValue) {
+  // If object don't contain objectTag, create it
   if (object[objectTag] === undefined)
     object[objectTag] = {};
 
+  // Add the property to the tag
+  // If a property already has been set, ['@'] isn't empty
   if (object[objectTag]['@'] !== undefined)
     object[objectTag]['@'].push(propertyName);
-  else
+  else // Else no property has been added
     object[objectTag]['@'] = [propertyName];
 
+  // Add the value
   object[objectTag][propertyName] = propertyValue;
 };
 
@@ -169,12 +174,17 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
   let currentRow = [];
   let currentContent = null;
 
+  // For each row
   for (let row of array['w:tr']) {
     currentContent = [];
+    // For each column
     for (let cell of row['w:tc']) {
+      // Analyze the cell as a element
+      // It allow to create nested and complex tables
       currentContent.push(this.analyzeElement(cell));
     }
 
+    // Push cell value
     currentRow.push({
       'content': currentContent
     });
@@ -187,18 +197,91 @@ TranslateDOCX.prototype.getArrayFor = function(array) {
   return res;
 };
 
+/**
+ * @summary Check if an element is a field
+ * @method runIsField
+ * @memberOf TranslateDOCX
+ * @param  {Object} run - the run to check
+ * @returns {Boolean} - true if run is a field
+ */
 TranslateDOCX.prototype.runIsField = function(run) {
   if (!run['w:rPr']['w:highlight'] && !run['w:rPr']['w:shd'])
     return false;
+  // Word field style
   else if (run['w:rPr']['w:highlight'] && run['w:rPr'][
       'w:highlight'
     ]['@']['w:val'] === 'lightGray')
     return true;
+  // Google Docs field style
   else if (run['w:rPr']['w:shd'] && run['w:rPr']['w:shd']['@']
     ['w:fill'] === 'cccccc')
     return true;
 
   return false;
+};
+
+/**
+ * @summary Compute a field element
+ * WARNING : Field element returned is for document.
+ * The method add a completed field element in global variable fields.
+ * @method extractField
+ * @memberOf TranslateDOCX
+ * @param  {Object} current - the current element computed by getTextFor
+ * @returns {Object} - a field element to add to template
+ */
+TranslateDOCX.prototype.extractField = function(current){
+  let fieldObject = {
+    'type': 'text'
+  };
+
+  // If current.text is an object, some properties are defined
+  if (typeof current.text === 'object') {
+    // So we must copy them to the field element to keep them
+    for (let k in current.text)
+      // Check if is a custom property (= property we have fixed)
+      if (current.text.hasOwnProperty(k)) {
+        // If this is the text element
+        if (k === '@text')
+          fieldObject.default = current.text[k];
+        // Else this is a property
+        else if (k !== '@')
+          fieldObject[k] = current.text[k];
+      }
+  } // Else current have only text
+  else
+    fieldObject.text = current.text;
+
+  // Get options
+  let fieldOptions = fieldObject.default.split('!');
+  let isEmptyField = false;
+
+  // Set undefined to the default value
+  fieldObject.default = undefined;
+
+  // Read options
+  for (let opt of fieldOptions) {
+    if (opt === '$n')
+      fieldObject.type = 'number';
+    else if (opt === '$d')
+      fieldObject.type = 'date';
+    else if (opt === '$empty')
+      isEmptyField = true;
+    else
+      fieldObject.default = opt;
+  }
+
+  // If empty has been set, remove values from default
+  if (isEmptyField) {
+    fieldObject.default = undefined;
+  }
+
+  // Push element to the global variable fields
+  fields.push(fieldObject);
+
+  // Return a document element
+  return {
+    'field': ''
+  };
 };
 
 /**
@@ -225,6 +308,7 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
           isField = true;
         }
 
+        // Check if there's a font color
         if (el['w:rPr']['w:color'])
           this.addProperty(current, 'text', 'fontColor',
             this.getColorFor(el['w:rPr']['w:color']['@'][
@@ -232,6 +316,7 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
             ])
           );
 
+        // Check if there's a font size
         if (el['w:rPr']['w:sz'])
           this.addProperty(current, 'text', 'fontSize',
             this.getFontSizeFor(el['w:rPr']['w:sz']['@'][
@@ -239,6 +324,7 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
             ])
           );
 
+        // Check if there's a font
         if (el['w:rPr']['w:rFonts'])
           this.addProperty(current, 'text', 'font',
             this.getFontFor(el['w:rPr']['w:rFonts']['@'][
@@ -267,52 +353,17 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
         current = undefined;
       }
 
+      // If element is text
       if (current && !isField) res.push(current);
+      // Else if is a field -> extract the field datas
       else if (current && isField) {
-        let fieldObject = {
-          'type': 'text'
-        };
-
-        if (typeof current.text === 'object') {
-          for (let k in current.text)
-            if (current.text.hasOwnProperty(k)) {
-              if (k === '@text')
-                fieldObject.default = current.text[k];
-              else if (k !== '@')
-                fieldObject[k] = current.text[k];
-            }
-        } else
-          fieldObject.text = current.text;
-
-        let fieldOptions = fieldObject.default.split('!');
-        let isEmptyField = false;
-        fieldObject.default = undefined;
-
-        for (let opt of fieldOptions) {
-          if (opt === '$n')
-            fieldObject.type = 'number';
-          else if (opt === '$d')
-            fieldObject.type = 'date';
-          else if (opt === '$empty')
-            isEmptyField = true;
-          else
-            fieldObject.default = opt;
-        }
-
-
-        if (isEmptyField) {
-          fieldObject.default = undefined;
-        }
-
-        res.push({
-          'field': ''
-        });
-
-        fields.push(fieldObject);
+        res.push(this.extractField(current));
       }
     }
   }
 
+  // If only one element in res array, return the element
+  // It avoids to call for()->merge in analyzeElement
   if (res.length === 1) return res[0];
 
   return res;
@@ -326,12 +377,14 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
  * @returns {Object}   the corresponding template element
  */
 TranslateDOCX.prototype.analyzeParagraph = function(p) {
+  // Check if paragraph is an horizontal line
   if (p['w:pPr'] && p['w:pPr']['w:pBdr'] &&
     p['w:pPr']['w:pBdr']['w:top'] &&
     !p['w:r'])
     return this.getHorizontalLine(p['w:pPr']['w:pBdr']['w:top']
       ['w:sz']);
 
+  // Else, return an analyze of the run
   if (p['w:r']) {
     return this.getTextFor(p);
   }
@@ -347,17 +400,21 @@ TranslateDOCX.prototype.analyzeParagraph = function(p) {
 TranslateDOCX.prototype.analyzeElement = function(data) {
   let res = [];
 
+  // For each child of element
   for (let p of data['@@']) {
+    // If is paragraph
     if (p['#name'] === 'w:p') {
       let pAnalyzed = this.analyzeParagraph(p);
 
+      // analyzeParagraph can returns array
+      // If is an array, merge results in res array
       if (this.isArray(pAnalyzed)) {
         for (let e of pAnalyzed)
           res.push(e);
       } else if (pAnalyzed && !this.isEmptyObject(pAnalyzed))
-        res.push(
-          pAnalyzed);
-    } else if (p['#name'] === 'w:tbl')
+        res.push(pAnalyzed);
+    } // Else if table
+    else if (p['#name'] === 'w:tbl')
       res.push(this.getArrayFor(p));
   }
 
@@ -396,10 +453,14 @@ TranslateDOCX.prototype.createTemplateFrom = function(data) {
 TranslateDOCX.prototype.translate = function(data) {
   console.log('Starting DOCX translating ..');
 
+  // Extract document from DOCX
   let fileString = this.getDocument(data);
+
+  // Create Future to transforms async call to sync call
   let future = new Future();
   fields = [];
 
+  // Parse XML to JSON
   parser.parseString(fileString, {
     attrkey: '@',
     explicitArray: false,
@@ -407,8 +468,7 @@ TranslateDOCX.prototype.translate = function(data) {
     preserveChildrenOrder: true,
     childkey: '@@'
   }, Meteor.bindEnvironment((err, dataJSON) => {
-    fs.writeFileSync('./text.json', JSON.stringify(
-      dataJSON));
+    // Compute template
     let template = this.createTemplateFrom(dataJSON);
 
     console.log('DOCX Translation : OK');

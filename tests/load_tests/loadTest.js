@@ -6,7 +6,8 @@
  * Arguments :
  * - argv[2] : nombre d'essais
  * - argv[3] : nombre de clients
- *
+ * - argv[4] : fichier de test à lire
+ * - argv[5] : template à lire
  * It's based on meteor-down code.
  * (https://github.com/meteorhacks/meteor-down/blob/master/bin/meteor-down.js)
  */
