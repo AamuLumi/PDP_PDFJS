@@ -26,7 +26,7 @@ meteorDown.init(function (Meteor) {
     Meteor.myFunctions.DefaultTemplateLoader.load(path);
   };
 
-  Meteor.call(methodName, f.toString(), ["../web.browser/app/"+TEMPLATE+".xml"],
+  Meteor.call(methodName, f.toString(), ['../web.browser/app/'+TEMPLATE+'.xml'],
   function(err, result){
       // Kill the client (to create another)
       Meteor.kill();

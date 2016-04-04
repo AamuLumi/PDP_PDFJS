@@ -7,6 +7,9 @@ import MessageSender from '../tools/messageSender';
 export default function generatePDF(textArray,
   templateName, msObject) {
 
+  // Base filename is <timestamp>.pdf
+  let filename = Date.now() + '.pdf';
+
   MessageSender.new({
     fileGeneration: true,
     title: 'PDF en cours de génération..',
@@ -35,9 +38,6 @@ export default function generatePDF(textArray,
 
   // We need future to create async methods in Meteor
   let future = new Future();
-
-  // Base filename is <timestamp>.pdf
-  let filename = Date.now() + '.pdf';
 
   let tObject = undefined;
 
