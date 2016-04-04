@@ -21,7 +21,7 @@ let nbCountedClients = 0;
 
 //To clean the collection
 let cleanCollection = function(path) {
-  Collection.PDF.remove({});
+  CollectionsGlobal.PDF.remove({});
 };
 
 // Prepare the test

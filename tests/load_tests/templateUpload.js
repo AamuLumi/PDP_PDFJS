@@ -23,7 +23,13 @@ let nbCountedClients = 0;
 meteorDown.init(function (Meteor) {
 
   let f = function(path) {
-    Meteor.myFunctions.DefaultTemplateLoader.load(path);
+
+    let filefs = new FS.File(path);
+    filefs.metadata = {
+        subscribeID: 'server'
+    };
+    CollectionsGlobal.FilesToProcess.insert(filefs);
+
   };
 
   Meteor.call(methodName, f.toString(), ['../web.browser/app/'+TEMPLATE+'.xml'],
