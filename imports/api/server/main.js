@@ -12,8 +12,9 @@ import { Collections } from '../collections.js';
  * @param {String} datas Object JSON object with fields and values to add in PDF
  */
 function PDFGenerate(datas, selectedTemplate, subscribeID) {
+  //Generate the msObject needed to send messages to the client
   let msObject = MessageSender.generateMSObject(subscribeID);
-
+  //Call the PDF generation module
   GeneratePDF(datas, selectedTemplate, msObject);
 }
 

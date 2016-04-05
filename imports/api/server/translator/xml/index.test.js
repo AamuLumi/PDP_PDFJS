@@ -108,14 +108,17 @@ describe('XML Translator', function() {
 
     it('translate(String, Object)', function() {
       let xml =
-        '<content><text bold="true">Hello</text></content>';
+        '<document><content><text bold="true">Hello' +
+        '</text></content></document>';
       let expect = {
         'template': {
-          'content': {
-            'text': {
-              '@text': 'Hello',
-              '@': ['bold'],
-              'bold': 'true'
+          'document': {
+            'content': {
+              'text': {
+                '@text': 'Hello',
+                '@': ['bold'],
+                'bold': 'true'
+              }
             }
           }
         },

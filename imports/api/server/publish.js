@@ -21,7 +21,6 @@ Meteor.publish('fields', function() {
 Meteor.publish('messages', function(subscribeID) {
   //Delete all messages when the client disconnect
   this._session.socket.on('close', Meteor.bindEnvironment(() => {
-    console.log(subscribeID);
     Collections.Messages.remove({
       sid: subscribeID
     });

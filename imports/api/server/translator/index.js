@@ -21,6 +21,7 @@ function GetTempFile(name) {
 
   let future = new Future();
 
+ //We read the temporary file corresponding to the template and return the content
   fs.readFile('../web.browser/app/TempFiles/filestoprocess-' +
     name, 'utf8',
     Meteor.bindEnvironment(function(err, data) {
@@ -55,13 +56,20 @@ export default function translate(id, filename, msObject) {
   let translator = undefined;
   let data = undefined;
 
+  //If the file is a XML file
   if (ext === '.xml') {
+    //Get the content of the temp file
     data = GetTempFile(id + '-' + filename);
+    //Select the XML Translator
     translator = XMLTranslator;
+  //If the file if a DOCX file
   } else if (ext === '.docx') {
+    //Get the path of the temp file
     data = '../web.browser/app/TempFiles/filestoprocess-' + id +
       '-' + filename;
+    //Select the DOCX Translator
     translator = DOCXTranslator;
+  //If the file extension is not
   } else {
     MessageSender.new({
       templateUpload: true,
@@ -72,16 +80,22 @@ export default function translate(id, filename, msObject) {
     }, msObject);
   }
 
+  //If we have a translator and data to translate
   if (translator && data) {
 
     data.filename = filename;
+
+    //Translate to JSON
     let result = translator.translate(data, msObject);
 
+    //Remove temp file
     Collections.FilesToProcess.remove({
       _id: id
     });
 
     if (result !== undefined) {
+
+      //Insert or update the JSON template
       Collections.Templates.upsert({
         _id: nameWext,
         title: nameWext
@@ -91,6 +105,7 @@ export default function translate(id, filename, msObject) {
         title: nameWext
       });
 
+      //Insert or update the JSON fields
       Collections.Fields.upsert({
         _id: nameWext,
         title: nameWext

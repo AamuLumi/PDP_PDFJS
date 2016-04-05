@@ -15,7 +15,7 @@ let TemplateInterpreter = function() {};
  * filled fields
  * @method templateToObject
  * @memberOf TemplateInterpreter
- * @param {String} formData text from form fields
+ * @param {Object} formData text from form fields
  * @param {String} templateId id of the choosen template
  * @returns {Object} PDFMake object
  */
