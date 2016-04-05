@@ -54,11 +54,9 @@ MessageSender.prototype.generateMSObject = function(subscribeID) {
  * see [`MessageSender`](#new)
  */
 MessageSender.prototype.new = function(message, msObject) {
-  if (msObject.sid == 'server_Hide') {
-
-  } else if (msObject.sid == 'server_Show') {
+  if (msObject.sid === 'server_Show') {
     console.log(message);
-  } else {
+  } else if (msObject.sid !== 'server_Hide'){
     Collections.Messages.upsert({
       mid: msObject.mid,
       sid: msObject.sid

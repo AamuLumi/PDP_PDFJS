@@ -76,12 +76,13 @@ TranslateXML.prototype.toJSON = function(data) {
 TranslateXML.prototype.getFields = function(data) {
   let fields = [];
 
-  //For each properties in data
+  // For each properties in data
   for (let prop in data) {
-    //If prop is a field, we add it to the array
+    // If prop is a field, we add it to the array
     if (prop === this.fieldName) {
       fields = fields.concat(data[prop]);
-    //If prop is a object we call recursively getFields with this object as parameter
+    // If prop is a object we call recursively getFields with this object
+    // as parameter
     } else if (data[prop] instanceof Object) {
       let resultTemp = this.getFields(data[prop]);
       //If the object contained fields, we add them to the array

@@ -21,7 +21,8 @@ function GetTempFile(name) {
 
   let future = new Future();
 
- //We read the temporary file corresponding to the template and return the content
+ // We read the temporary file corresponding to the template and return
+ // the content
   fs.readFile('../web.browser/app/TempFiles/filestoprocess-' +
     name, 'utf8',
     Meteor.bindEnvironment(function(err, data) {
@@ -74,7 +75,8 @@ export default function translate(id, filename, msObject) {
     MessageSender.new({
       templateUpload: true,
       title: 'Format non reconnu.',
-      errorMessage: 'Format non reconnu, les formats compatibles sont : XML, DOCX',
+      errorMessage:
+        'Format non reconnu, les formats compatibles sont : XML, DOCX',
       percent: 20,
       type: 'danger'
     }, msObject);

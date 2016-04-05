@@ -1,4 +1,7 @@
-import { Collections } from '../../../../api/collections.js';
+import {
+  Collections
+}
+from '../../../../api/collections.js';
 
 import './form.html';
 import '../upload/upload.js';
@@ -10,59 +13,70 @@ if (Meteor.isClient) {
   Session.setDefault('selectedTemplate', '');
 
   Template.form.helpers({
-
-    isTemplateSelected: function(){
+    // Check if the template is selected
+    isTemplateSelected: function() {
       return (Session.get('selectedTemplate') !== '');
     },
 
+    // Get the form schema
     formSchema: function() {
       return Session.get('formSchema');
     },
 
+    // Get templates available
     templatesOptions: function() {
-
       let templates = Collections.Templates.find({});
 
       let options = [];
-      console.log(templates);
 
+      // Create a template selector element
       templates.forEach(function(template) {
-          options.push({label: template.title, value: template.title});
-          console.log( template.title );
+        options.push({
+          label: template.title,
+          value: template.title
+        });
       });
 
       return new SimpleSchema({
-         choose: {
-           type: Number,
-           allowedValues: [
-             1,
-             2,
-             3
-           ],
-           optional: true,
-           label: 'Choose a template',
-           autoform: {
-             options: options
-           }
-         }
-       });
+        choose: {
+          type: Number,
+          allowedValues: [
+            1,
+            2,
+            3
+          ],
+          optional: true,
+          label: 'Choose a template',
+          autoform: {
+            options: options
+          }
+        }
+      });
     }
   });
 
   Template.form.events({
+    // On selecting a new template
     'change #templatedd': function(e) {
+      // Get the selected template
       let selectedTemplate = $('select#templatedd').val();
 
+      // Update current selected template
       Session.set('selectedTemplate', selectedTemplate);
 
       let formSchema = [];
 
-      if (selectedTemplate !== ''){
-        let fields = Collections.Fields.findOne({title:selectedTemplate});
+      // If template is valid
+      if (selectedTemplate !== '') {
+        // Get template fields from DB
+        let fields = Collections.Fields.findOne({
+          title: selectedTemplate
+        });
 
+        // Create the form
+        // It compute a form with the fields JSON
         for (let i = 0; i < fields.content.length; i++) {
           let fieldObject = {};
-          console.log(fields.content);
           let field = fields.content[i];
 
           if ('name' in field)
@@ -94,45 +108,64 @@ if (Meteor.isClient) {
         }
       }
 
-      console.log($('select#templatedd').val());
-
+      // Set current form
       Session.set('formSchema', formSchema);
     },
 
+    // On button generate PDF click
     'submit .generatePDF': function(event) {
+      // Remove default button actin
       event.preventDefault();
 
       let datas = {};
       let c = undefined;
-      let selectedTemplate = Session.get('selectedTemplate');
-      console.log(selectedTemplate);
+
+      // Get the template
+      let selectedTemplate = Session.get(
+        'selectedTemplate');
+
+      // For each fields
       $.each($(event.target).find(':input'), (key) => {
         c = event.target[key];
-        if (c.type !== 'file' && c.type !== 'fieldset' && c.classList[0] !== 'upload') {
-          console.log(c.type);
+        // If field is in the form
+        if (c.type !== 'file' && c.type !== 'fieldset' &&
+          c.classList[0] !== 'upload') {
+            // Add field value to datas
           datas[c.name] = c.value;
         }
       });
 
-      console.log(datas);
-
+      // If selected template is valid
       if (selectedTemplate !== '') {
+        // Generate a PDF
         Meteor.call('PDF.generate',
-          datas, selectedTemplate, Session.get('subscribeID'));
-        }
+          datas, selectedTemplate, Session.get(
+            'subscribeID'));
+      }
     },
 
-    'click .deleteBtn' : function(event) {
-       event.preventDefault();
+    // On button delete template click
+    'click .deleteBtn': function(event) {
+      // Remove default action
+      event.preventDefault();
 
-       let selectedTemplate = Session.get('selectedTemplate');
+      let selectedTemplate = Session.get(
+        'selectedTemplate');
 
-       if (selectedTemplate !== ''){
-         Collections.Templates.remove({_id:selectedTemplate});
-         Collections.Fields.remove({_id:selectedTemplate});
-         Session.set('formSchema', []);
-         Session.set('selectedTemplate', '');
-       }
+      // If template is valid
+      if (selectedTemplate !== '') {
+        // Remove template from DB
+        Collections.Templates.remove({
+          _id: selectedTemplate
+        });
+        Collections.Fields.remove({
+          _id: selectedTemplate
+        });
+
+        // Set client selection to null
+        Session.set('formSchema', []);
+        Session.set('selectedTemplate', '');
+      }
     }
   });
 }
