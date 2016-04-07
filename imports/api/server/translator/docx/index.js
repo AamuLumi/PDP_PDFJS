@@ -249,7 +249,7 @@ TranslateDOCX.prototype.extractField = function(current){
       }
   } // Else current have only text
   else
-    fieldObject.text = current.text;
+    fieldObject.default = current.text;
 
   // Get options
   let fieldOptions = fieldObject.default.split('!');
