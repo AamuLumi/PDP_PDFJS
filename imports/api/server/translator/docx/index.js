@@ -229,7 +229,7 @@ TranslateDOCX.prototype.runIsField = function(run) {
  * @param  {Object} current - the current element computed by getTextFor
  * @returns {Object} - a field element to add to template
  */
-TranslateDOCX.prototype.extractField = function(current){
+TranslateDOCX.prototype.extractField = function(current) {
   let fieldObject = {
     'type': 'text'
   };
@@ -238,15 +238,15 @@ TranslateDOCX.prototype.extractField = function(current){
   if (typeof current.text === 'object') {
     // So we must copy them to the field element to keep them
     for (let k in current.text)
-      // Check if is a custom property (= property we have fixed)
+    // Check if is a custom property (= property we have fixed)
       if (current.text.hasOwnProperty(k)) {
-        // If this is the text element
-        if (k === '@text')
-          fieldObject.default = current.text[k];
-        // Else this is a property
-        else if (k !== '@')
-          fieldObject[k] = current.text[k];
-      }
+      // If this is the text element
+      if (k === '@text')
+        fieldObject.default = current.text[k];
+      // Else this is a property
+      else if (k !== '@')
+        fieldObject[k] = current.text[k];
+    }
   } // Else current have only text
   else
     fieldObject.default = current.text;
@@ -282,6 +282,136 @@ TranslateDOCX.prototype.extractField = function(current){
   return {
     'field': ''
   };
+};
+
+/**
+ * Clone an object, an array or a date
+ * Source :
+ * http://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+ * @param  {Object} obj - object to clone (or array or date)
+ * @return {Object}     cloned object / array / date
+ */
+TranslateDOCX.prototype.clone = function clone(obj) {
+  let copy = undefined;
+
+  // Handle the 3 simple types, and null or undefined
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  // Handle Date
+  if (obj instanceof Date) {
+    copy = new Date();
+    copy.setTime(obj.getTime());
+    return copy;
+  }
+
+  // Handle Array
+  if (obj instanceof Array) {
+    copy = [];
+    for (let i = 0, len = obj.length; i < len; i++) {
+      copy[i] = clone(obj[i]);
+    }
+    return copy;
+  }
+
+  // Handle Object
+  if (obj instanceof Object) {
+    copy = {};
+    for (let attr in obj) {
+      if (obj.hasOwnProperty(attr)) copy[attr] = this.clone(
+        obj[attr]);
+    }
+    return copy;
+  }
+
+  throw new Error(
+    'Unable to copy obj! Its type isn\'t supported.');
+};
+
+/**
+ * Extract spacebars fields from a run
+ * @param  {Array} resArray - current res extracted by getTextFor
+ * @return {Array}          an array with spacebard remplaced
+ */
+TranslateDOCX.prototype.extractSpacebars = function(resArray) {
+  let analyzedRes = [];
+  let position = -1;
+  let positionEnd = -1;
+  let isObject = false;
+  let copy = undefined;
+
+  for (let t of resArray) {
+    if (t.text) {
+      // Get the text value
+      if (typeof t.text === 'object') {
+        current = t.text['@text'];
+        isObject = true;
+      } else {
+        current = t.text;
+      }
+
+      // Search the first spacebar
+      position = current.indexOf('{{');
+
+      // While there's spacebars in current
+      while (position !== -1) {
+        // Search the end of the first spacebar
+        positionEnd = current.indexOf('}}');
+
+        // Create an object to push text before spacebar
+        // Call it only if the text before spacebar exists (position > 0)
+        if (position > 0) {
+          // Clone the current object to get style properties
+          copy = this.clone(t);
+
+          // Copy text in the copy object
+          if (isObject) {
+            copy.text['@text'] = current.substring(0, position);
+          } else {
+            copy.text = current.substring(0, position);
+          }
+
+          // Push the object in the new res array
+          analyzedRes.push(copy);
+        }
+
+        // Create a new copy for the spacebar
+        copy = this.clone(t);
+
+        // Add the field value {{fieldValue}}
+        if (isObject) {
+          copy.text['@text'] = current.substring(position + 2,
+            positionEnd);
+        } else {
+          copy.text = current.substring(position + 2,
+            positionEnd);
+        }
+
+        // Extract the field from the value
+        analyzedRes.push(this.extractField(copy));
+
+        // Search next spacebar
+        current = current.substring(positionEnd + 2);
+        position = current.indexOf('{{');
+      }
+
+      // If there's text after spacebar
+      if (current !== '') {
+        if (isObject) {
+          t.text['@text'] = current;
+        } else {
+          t.text = current;
+        }
+
+        analyzedRes.push(t);
+      }
+    } else {
+      analyzedRes.push(t);
+    }
+  }
+
+  return analyzedRes;
 };
 
 /**
@@ -361,6 +491,9 @@ TranslateDOCX.prototype.getTextFor = function(textArray) {
       }
     }
   }
+
+  // Call spacebars extractor
+  res = this.extractSpacebars(res);
 
   // If only one element in res array, return the element
   // It avoids to call for()->merge in analyzeElement
